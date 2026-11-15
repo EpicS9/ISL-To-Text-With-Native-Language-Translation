@@ -194,6 +194,9 @@ class FastISLPredictorV2:
         def clean_dict(d):
             if isinstance(d, dict):
                 d.pop("quantization_config", None)
+                d.pop("optional", None)
+                if "batch_shape" in d:
+                    d["batch_input_shape"] = d.pop("batch_shape")
                 for v in d.values():
                     clean_dict(v)
             elif isinstance(d, list):
