@@ -27,6 +27,12 @@ from typing import List, Optional, Dict, Any
 import cv2
 import numpy as np
 import mediapipe as mp
+try:
+    if not hasattr(mp, "solutions"):
+        import mediapipe.python.solutions as mp_solutions
+        mp.solutions = mp_solutions
+except Exception:
+    pass
 import requests
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Query, Response
 from fastapi.responses import StreamingResponse

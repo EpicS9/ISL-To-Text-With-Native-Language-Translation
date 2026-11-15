@@ -13,7 +13,7 @@ websockets>=11.0
 # Note: numpy is pinned < 2.0.0 for TensorFlow 2.13+ & MediaPipe compatibility
 numpy>=1.23.5,<2.0.0
 tensorflow>=2.13.0,<2.16.0
-mediapipe>=0.10.9
+mediapipe==0.10.9
 opencv-python-headless>=4.8.0; sys_platform != "win32"
 opencv-python>=4.8.0; sys_platform == "win32"
 

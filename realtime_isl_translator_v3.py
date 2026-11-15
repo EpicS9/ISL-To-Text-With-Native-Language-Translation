@@ -29,6 +29,13 @@ import cv2
 import numpy as np
 import mediapipe as mp
 
+try:
+    if not hasattr(mp, "solutions"):
+        import mediapipe.python.solutions as mp_solutions
+        mp.solutions = mp_solutions
+except Exception:
+    pass
+
 # Silence TF / Keras info logs
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import keras
