@@ -309,13 +309,19 @@ export default function App() {
 
   // 5. Authentic Google MediaPipe Landmark Styling on Canvas
   const drawLandmarks = (landmarks, canvas) => {
-    if (!canvas) return;
-    if (videoRef.current && videoRef.current.videoWidth > 0) {
-      if (canvas.width !== videoRef.current.videoWidth || canvas.height !== videoRef.current.videoHeight) {
-        canvas.width = videoRef.current.videoWidth;
-        canvas.height = videoRef.current.videoHeight;
-      }
+    if (!canvas || !landmarks) return;
+    const targetW = (videoRef.current && videoRef.current.videoWidth > 0)
+      ? videoRef.current.videoWidth
+      : (canvas.clientWidth || 1280);
+    const targetH = (videoRef.current && videoRef.current.videoHeight > 0)
+      ? videoRef.current.videoHeight
+      : (canvas.clientHeight || 720);
+
+    if (canvas.width !== targetW || canvas.height !== targetH) {
+      canvas.width = targetW;
+      canvas.height = targetH;
     }
+
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -328,7 +334,7 @@ export default function App() {
         middle: '#42A5F5',   // Blue
         ring: '#AB47BC',     // Purple
         pinky: '#EC407A',    // Vibrant Pink
-        palm: '#ECEFF1'      // Silver White
+        palm: '#00E676'      // Neon Green
       };
 
       const segments = [
@@ -341,8 +347,9 @@ export default function App() {
       ];
 
       // Draw bone connections
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 4;
       ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
       segments.forEach(({ indices, color }) => {
         ctx.strokeStyle = color;
         indices.forEach(([i, j]) => {
@@ -361,25 +368,39 @@ export default function App() {
         const py = y * canvas.height;
         ctx.fillStyle = '#FF3D00';
         ctx.beginPath();
-        ctx.arc(px, py, 4, 0, 2 * Math.PI);
+        ctx.arc(px, py, 5, 0, 2 * Math.PI);
         ctx.fill();
 
         ctx.fillStyle = '#FFFFFF';
         ctx.beginPath();
-        ctx.arc(px, py, 2, 0, 2 * Math.PI);
+        ctx.arc(px, py, 2.5, 0, 2 * Math.PI);
         ctx.fill();
       });
     };
 
     const drawPose = (points) => {
       if (!points || points.length === 0) return;
-      const POSE_LINES = [
-        [11, 12], [11, 13], [13, 15], [12, 14], [14, 16]
+      const POSE_CONNECTIONS = [
+        // Face outline
+        [0, 1], [1, 2], [2, 3], [3, 7],
+        [0, 4], [4, 5], [5, 6], [6, 8],
+        [9, 10],
+        // Shoulders & Torso
+        [11, 12],
+        [11, 13], [13, 15],
+        [12, 14], [14, 16],
+        // Wrists to hands
+        [15, 17], [15, 19], [15, 21],
+        [16, 18], [16, 20], [16, 22],
+        // Hips
+        [11, 23], [12, 24], [23, 24]
       ];
+
       ctx.strokeStyle = '#00E676';
       ctx.lineWidth = 3.5;
       ctx.lineCap = 'round';
-      POSE_LINES.forEach(([i, j]) => {
+      ctx.lineJoin = 'round';
+      POSE_CONNECTIONS.forEach(([i, j]) => {
         if (points[i] && points[j]) {
           ctx.beginPath();
           ctx.moveTo(points[i][0] * canvas.width, points[i][1] * canvas.height);
@@ -387,7 +408,9 @@ export default function App() {
           ctx.stroke();
         }
       });
-      [11, 12, 13, 14, 15, 16].forEach(idx => {
+
+      const KEY_POSE_INDICES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+      KEY_POSE_INDICES.forEach(idx => {
         if (points[idx]) {
           const px = points[idx][0] * canvas.width;
           const py = points[idx][1] * canvas.height;
@@ -403,9 +426,9 @@ export default function App() {
       });
     };
 
-    drawHand(landmarks.left_hand);
-    drawHand(landmarks.right_hand);
-    drawPose(landmarks.pose);
+    if (landmarks.pose && landmarks.pose.length > 0) drawPose(landmarks.pose);
+    if (landmarks.left_hand && landmarks.left_hand.length > 0) drawHand(landmarks.left_hand);
+    if (landmarks.right_hand && landmarks.right_hand.length > 0) drawHand(landmarks.right_hand);
   };
 
   // 6. Camera Lifecycle & Device Management
@@ -525,7 +548,7 @@ export default function App() {
 
       if (timestamp - lastSent > sendInterval) {
         lastSent = timestamp;
-        if (videoRef.current.readyState === videoRef.current.HAVE_ENOUGH_DATA) {
+        if (videoRef.current.readyState >= 2 && videoRef.current.videoWidth > 0) {
           captureCtx.drawImage(videoRef.current, 0, 0, captureCanvas.width, captureCanvas.height);
           const base64Data = captureCanvas.toDataURL('image/jpeg', 0.72);
 

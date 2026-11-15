@@ -1574,7 +1574,17 @@ async def websocket_inference_endpoint(websocket: WebSocket):
                     continue
 
                 h, w, _ = frame.shape
+
+                # Continuous accurate FPS measurement for incoming frame stream
+                frame_counter += 1
+                if frame_counter % 10 == 0:
+                    dt = time.time() - t_start
+                    if dt > 0.001:
+                        measured_fps = 10.0 / dt
+                    t_start = time.time()
+
                 rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                rgb_frame.flags.writeable = False
 
                 # Process MediaPipe
                 if mp_holistic is None:
@@ -1584,19 +1594,18 @@ async def websocket_inference_endpoint(websocket: WebSocket):
                         pass
 
                 results = mp_holistic.process(rgb_frame) if mp_holistic else None
-                has_landmarks = bool(results and (results.left_hand_landmarks or results.right_hand_landmarks or results.pose_landmarks))
+                rgb_frame.flags.writeable = True
 
-                overlay_landmarks = None
-                if has_landmarks:
-                    overlay_landmarks = {
-                        "pose": [[lm.x, lm.y] for lm in results.pose_landmarks.landmark] if results.pose_landmarks else [],
-                        "left_hand": [[lm.x, lm.y] for lm in results.left_hand_landmarks.landmark] if results.left_hand_landmarks else [],
-                        "right_hand": [[lm.x, lm.y] for lm in results.right_hand_landmarks.landmark] if results.right_hand_landmarks else []
-                    }
+                overlay_landmarks = {
+                    "pose": [[lm.x, lm.y] for lm in results.pose_landmarks.landmark] if (results and results.pose_landmarks) else [],
+                    "left_hand": [[lm.x, lm.y] for lm in results.left_hand_landmarks.landmark] if (results and results.left_hand_landmarks) else [],
+                    "right_hand": [[lm.x, lm.y] for lm in results.right_hand_landmarks.landmark] if (results and results.right_hand_landmarks) else []
+                }
+                has_landmarks = bool(overlay_landmarks["pose"] or overlay_landmarks["left_hand"] or overlay_landmarks["right_hand"])
 
                 if not has_landmarks:
                     await websocket.send_text(json.dumps({
-                        "status": "no_hand",
+                        "status": "no_subject",
                         "sign": None,
                         "confidence": 0.0,
                         "top3": [],
@@ -1635,13 +1644,14 @@ async def websocket_inference_endpoint(websocket: WebSocket):
 
                 # Compute browser hand stillness / motion displacement
                 browser_hand_pts = []
-                if results.left_hand_landmarks:
+                if results and results.left_hand_landmarks:
                     browser_hand_pts.extend([[lm.x, lm.y] for lm in results.left_hand_landmarks.landmark])
-                if results.right_hand_landmarks:
+                if results and results.right_hand_landmarks:
                     browser_hand_pts.extend([[lm.x, lm.y] for lm in results.right_hand_landmarks.landmark])
 
                 now = time.time()
-                if browser_hand_pts:
+                hands_detected = bool(browser_hand_pts)
+                if hands_detected:
                     browser_last_hand_seen = now
                     curr_b_centroid = np.mean(browser_hand_pts, axis=0)
                     if browser_prev_hand_centroid is not None:
@@ -1660,17 +1670,21 @@ async def websocket_inference_endpoint(websocket: WebSocket):
                 pred_conf = 0.0
                 top3_list = []
 
-                if current_mode == "STATIC":
-                    pred_sign, pred_conf, top3_list = engine.predict_static(norm_vec)
-                else:
-                    sequence_buffer.append(norm_vec)
-                    if len(sequence_buffer) == SEQUENCE_LENGTH:
-                        seq_arr = np.array(sequence_buffer, dtype=np.float32)
-                        pred_sign, pred_conf, top3_list = engine.predict_dynamic(seq_arr)
+                if hands_detected:
+                    if current_mode == "STATIC":
+                        pred_sign, pred_conf, top3_list = engine.predict_static(norm_vec)
                     else:
-                        pred_sign = "Buffering..."
-                        pred_conf = len(sequence_buffer) / float(SEQUENCE_LENGTH)
-                        top3_list = []
+                        sequence_buffer.append(norm_vec)
+                        if len(sequence_buffer) == SEQUENCE_LENGTH:
+                            seq_arr = np.array(sequence_buffer, dtype=np.float32)
+                            pred_sign, pred_conf, top3_list = engine.predict_dynamic(seq_arr)
+                        else:
+                            pred_sign = "Buffering..."
+                            pred_conf = len(sequence_buffer) / float(SEQUENCE_LENGTH)
+                            top3_list = []
+                else:
+                    if current_mode == "DYNAMIC":
+                        sequence_buffer.clear()
 
                 t_infer_end = time.time()
                 latency_ms = round((t_infer_end - t_infer_start) * 1000, 1)
@@ -1704,13 +1718,8 @@ async def websocket_inference_endpoint(websocket: WebSocket):
                                     last_committed_sign = pred_sign
                                     last_committed_time = now
 
-                frame_counter += 1
-                if frame_counter % 15 == 0:
-                    measured_fps = 15.0 / (time.time() - t_start)
-                    t_start = time.time()
-
-                if not has_landmarks:
-                    status_text = "no_hand"
+                if not hands_detected:
+                    status_text = "waiting_for_hands"
                 elif current_mode == "STATIC" and not browser_hand_is_still:
                     status_text = "moving"
                 elif pred_conf >= conf_threshold:
@@ -1720,7 +1729,7 @@ async def websocket_inference_endpoint(websocket: WebSocket):
 
                 resp = {
                     "status": status_text,
-                    "sign": pred_sign if pred_sign != "Buffering..." else None,
+                    "sign": pred_sign if pred_sign and pred_sign != "Buffering..." else None,
                     "confidence": round(pred_conf, 3),
                     "top3": [[str(s), round(p, 3)] for s, p in top3_list],
                     "mode": current_mode,
