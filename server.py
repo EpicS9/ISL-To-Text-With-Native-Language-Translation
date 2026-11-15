@@ -758,6 +758,7 @@ def load_models_on_startup():
 # =============================================================================
 
 @app.get("/api/health")
+@app.get("/healthz")
 def health_check():
     """Real health check verifying backend status and model readiness."""
     models_ready = engine is not None and mp_holistic is not None
