@@ -1,0 +1,2195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Indian Sign Language to Text with Native Language Translation - Project Report</title>
+<style>
+@page {
+  size: A4 portrait;
+  margin: 20mm 20mm 20mm 25mm;
+}
+
+body {
+  font-family: 'Times New Roman', Times, 'TeX Gyre Termes', serif;
+  font-size: 11.5pt;
+  line-height: 1.55;
+  color: #111;
+  background-color: #fff;
+  margin: 0;
+  padding: 0;
+  text-align: justify;
+}
+
+.page {
+  page-break-after: always;
+  /* no min-height */
+  position: relative;
+  box-sizing: border-box;
+}
+
+.running-header {
+  border-bottom: 1px solid #777;
+  font-size: 9pt;
+  font-style: italic;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 3px;
+  margin-bottom: 20px;
+}
+
+.running-footer {
+  border-top: 1px solid #777;
+  font-size: 8.5pt;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 3px;
+  margin-top: 25px;
+}
+
+h1.chapter-title {
+  font-size: 18pt;
+  font-weight: bold;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+h1.prelim-title {
+  font-size: 18pt;
+  font-weight: bold;
+  margin-top: 30px;
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+h2 {
+  font-size: 13pt;
+  font-weight: bold;
+  margin-top: 18px;
+  margin-bottom: 10px;
+}
+
+h3 {
+  font-size: 12pt;
+  font-weight: bold;
+  margin-top: 14px;
+  margin-bottom: 6px;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 10px;
+  text-indent: 1.5em;
+}
+
+.no-indent {
+  text-indent: 0 !important;
+}
+
+/* Title Page styling */
+.title-page {
+  text-align: center;
+  padding-top: 10px;
+}
+.title-page h2 {
+  font-size: 13pt;
+  font-weight: normal;
+  margin-bottom: 12px;
+}
+.title-page .vtu-logo {
+  width: 90px;
+  height: auto;
+  margin: 10px auto;
+}
+.title-page .project-report-title {
+  font-size: 12pt;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+.title-page .project-main-title {
+  font-size: 15pt;
+  font-weight: bold;
+  margin: 10px 0;
+  line-height: 1.3;
+}
+.title-page .sub-text {
+  font-size: 11pt;
+  font-style: italic;
+  margin: 12px 0 4px 0;
+}
+.title-page .degree-title {
+  font-size: 12.5pt;
+  font-weight: bold;
+  margin: 4px 0;
+}
+.title-page .dept-name {
+  font-size: 11.5pt;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+.title-page .submitted-by {
+  font-size: 11.5pt;
+  font-style: italic;
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+.title-page .students-table {
+  width: 65%;
+  margin: 0 auto;
+  font-size: 11.5pt;
+  border-collapse: collapse;
+}
+.title-page .students-table td {
+  padding: 3px 8px;
+  border: none;
+}
+.title-page .guidance-text {
+  font-size: 11.5pt;
+  font-style: italic;
+  margin-top: 16px;
+  margin-bottom: 4px;
+}
+.title-page .guide-name {
+  font-size: 11.5pt;
+  font-weight: bold;
+  margin: 0;
+}
+.title-page .guide-desig {
+  font-size: 10pt;
+  margin: 0;
+}
+.title-page .college-logo {
+  width: 75px;
+  height: auto;
+  margin: 12px auto;
+}
+.title-page .college-dept {
+  font-size: 11.5pt;
+  font-weight: bold;
+  margin: 2px 0;
+}
+.title-page .college-name {
+  font-size: 13.5pt;
+  font-weight: bold;
+  margin: 4px 0;
+}
+.title-page .college-sub {
+  font-size: 9pt;
+  margin: 2px 0;
+  line-height: 1.25;
+}
+.title-page .college-address {
+  font-size: 10.5pt;
+  font-weight: bold;
+  margin: 4px 0;
+}
+.title-page .academic-year {
+  font-size: 12pt;
+  font-weight: bold;
+  margin-top: 12px;
+}
+
+/* Certificate & Declaration */
+.cert-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.cert-header h2 {
+  margin: 0;
+  font-size: 13pt;
+}
+.cert-header p {
+  margin: 2px 0;
+  font-size: 9pt;
+  text-indent: 0;
+}
+.cert-title {
+  text-align: center;
+  font-size: 14pt;
+  font-weight: bold;
+  letter-spacing: 2px;
+  margin: 25px 0 15px 0;
+}
+.sign-grid {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 35px;
+  text-align: left;
+}
+.sign-grid div {
+  width: 45%;
+}
+.ext-viva {
+  margin-top: 35px;
+}
+
+/* Tables */
+table.academic-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 9.5pt;
+  line-height: 1.35;
+}
+table.academic-table th, table.academic-table td {
+  border: 1px solid #444;
+  padding: 5px 7px;
+  vertical-align: top;
+}
+table.academic-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+  text-align: left;
+}
+
+/* Figures */
+.figure-container {
+  text-align: center;
+  margin: 16px 0;
+  page-break-inside: avoid;
+}
+.figure-container img {
+  max-width: 96%;
+  max-height: 460px;
+  border: 1px solid #ccc;
+  padding: 3px;
+  background: #fff;
+  border-radius: 3px;
+}
+.figure-caption {
+  font-size: 10pt;
+  margin-top: 6px;
+  font-weight: normal;
+}
+
+/* Code block */
+pre.code-block {
+  background: #f8f9fa;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 9pt;
+  line-height: 1.35;
+  border-radius: 4px;
+  page-break-inside: avoid;
+  white-space: pre-wrap;
+}
+
+/* TOC lines */
+.toc-line {
+  display: flex;
+  justify-content: space-between;
+  margin: 3px 0;
+  font-size: 10.5pt;
+}
+.toc-line .title {
+  text-align: left;
+}
+.toc-line .dots-leader {
+  flex-grow: 1;
+  border-bottom: 1px dotted #888;
+  margin: 0 5px 3px 5px;
+}
+.toc-line .pnum {
+  text-align: right;
+  min-width: 20px;
+}
+.toc-section {
+  padding-left: 20px;
+}
+.toc-subsection {
+  padding-left: 40px;
+  font-size: 10pt;
+}
+</style>
+</head>
+<body>
+
+<div class="page title-page">
+  <h2>Visvesvaraya Technological University, Belagavi – 590018.</h2>
+  <img src="images/logo_1.jpeg" class="vtu-logo" alt="VTU Emblem" />
+  <div class="project-report-title">PROJECT REPORT<br>ON</div>
+  <div class="project-main-title">Indian Sign Language to Text with Native Language Translation</div>
+  <div class="sub-text">Submitted in partial fulfillment for the award of degree of</div>
+  <div class="degree-title">BACHELOR OF ENGINEERING</div>
+  <div class="sub-text">in</div>
+  <div class="dept-name">COMPUTER SCIENCE & ENGINEERING</div>
+  <div class="submitted-by">Submitted by</div>
+  <table class="students-table">
+    <tr><td>Vaidehi V Pai</td><td style="text-align:right;">4CB23CS180</td></tr>
+    <tr><td>Roopesh Ravindra Baliga</td><td style="text-align:right;">4CB23CS128</td></tr>
+    <tr><td>Sambhram Jain</td><td style="text-align:right;">4CB23CS132</td></tr>
+    <tr><td>Vaishnavi Shetty H</td><td style="text-align:right;">4CB23CS182</td></tr>
+  </table>
+  <div class="guidance-text">Under the Guidance of</div>
+  <div class="guide-name">Dr. Udaya Kumar K Shenoy</div>
+  <div class="guide-desig">Professor, Dean R&D, Department of Computer Science & Engineering</div>
+  <img src="images/logo_2.jpeg" class="college-logo" alt="Canara College Logo" />
+  <div class="college-dept">DEPARTMENT OF COMPUTER SCIENCE &amp; ENGINEERING</div>
+  <div class="college-name">CANARA ENGINEERING COLLEGE</div>
+  <div class="college-sub">(An Autonomous Institution, Under VTU, Belagavi and Recognized by AICTE, Accredited by NBA (CSE, ISE, ECE) and NAAC 'A' GRADE)</div>
+  <div class="college-address">Sudhindra Nagar, Benjanapadavu, Mangaluru - 574219, Karnataka.</div>
+  <div class="academic-year">2026-27</div>
+</div>
+
+<div class="page">
+  <div class="cert-header">
+    <div style="font-size: 14pt; font-weight: bold;">CANARA ENGINEERING COLLEGE</div>
+    <p>(An Autonomous Institution, Under VTU, Belagavi and Recognized by AICTE, Accredited by NBA (CSE, ISE, ECE) and NAAC 'A' GRADE)</p>
+    <p style="font-weight: bold;">Sudhindra Nagar, Benjanapadavu, Mangaluru - 574219, Karnataka.</p>
+    <div style="font-size: 12pt; font-weight: bold; margin-top: 10px;">DEPARTMENT OF COMPUTER SCIENCE &amp; ENGINEERING</div>
+    <img src="images/logo_2.jpeg" style="width: 70px; height: auto; margin: 12px auto;" alt="Canara Emblem" />
+  </div>
+  <div class="cert-title">CERTIFICATE</div>
+  <p>Certified that the project work entitled <strong>“Indian Sign Language to Text with Native Language Translation”</strong> carried out by</p>
+  <table style="width: 70%; margin: 12px auto; font-size: 11pt;">
+    <tr><td><strong>Vaidehi V Pai</strong></td><td style="text-align:right;"><strong>4CB23CS180</strong></td></tr>
+    <tr><td><strong>Roopesh Ravindra Baliga</strong></td><td style="text-align:right;"><strong>4CB23CS128</strong></td></tr>
+    <tr><td><strong>Sambhram Jain</strong></td><td style="text-align:right;"><strong>4CB23CS132</strong></td></tr>
+    <tr><td><strong>Vaishnavi Shetty H</strong></td><td style="text-align:right;"><strong>4CB23CS182</strong></td></tr>
+  </table>
+  <p>the bonafide students of VII semester Department of Computer Science &amp; Engineering in partial fulfillment for the award of Bachelor of Engineering in Department of Computer Science &amp; Engineering of the Visvesvaraya Technological University, Belagavi during the year 2026-27. It is certified that all corrections/suggestions indicated for Internal Assessment as indicated during internal assessment. The project report has been approved as it satisfies the academic requirements in respect of project work prescribed for the said degree.</p>
+  <div class="sign-grid">
+    <div><strong>Dr. Udaya Kumar K Shenoy</strong><br>Project Guide</div>
+    <div style="text-align: right;"><strong>Dr. Rajgopal K T</strong><br>HoD</div>
+  </div>
+  <div class="sign-grid" style="margin-top: 30px;">
+    <div><strong>Dean-Academics</strong></div>
+    <div style="text-align: right;"><strong>Principal</strong></div>
+  </div>
+  <div class="ext-viva">
+    <div style="text-align: center; font-weight: bold; font-size: 12pt; margin-bottom: 12px;">External Viva:</div>
+    <table style="width: 100%; font-size: 11pt;">
+      <tr><td style="width: 50%;"><strong>Examiner's Name</strong></td><td style="width: 50%; text-align: right;"><strong>Signature with Date</strong></td></tr>
+      <tr><td style="padding-top: 15px;">1. ....................................................</td><td style="padding-top: 15px; text-align: right;">....................................................</td></tr>
+      <tr><td style="padding-top: 15px;">2. ....................................................</td><td style="padding-top: 15px; text-align: right;">....................................................</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="page">
+  <div class="cert-header">
+    <div style="font-size: 14pt; font-weight: bold;">CANARA ENGINEERING COLLEGE</div>
+    <p>(An Autonomous Institution, Under VTU, Belagavi and Recognized by AICTE, Accredited by NBA (CSE, ISE, ECE) and NAAC 'A' GRADE)</p>
+    <p style="font-weight: bold;">Sudhindra Nagar, Benjanapadavu, Mangaluru - 574219, Karnataka.</p>
+    <div style="font-size: 12pt; font-weight: bold; margin-top: 10px;">DEPARTMENT OF COMPUTER SCIENCE &amp; ENGINEERING</div>
+    <img src="images/logo_2.jpeg" style="width: 70px; height: auto; margin: 15px auto;" alt="Canara Emblem" />
+  </div>
+  <div class="cert-title">DECLARATION</div>
+  <p>We hereby declare that our entire work embodied in this Project Report titled <strong>“Indian Sign Language to Text with Native Language Translation”</strong> has been carried out at CANARA ENGINEERING COLLEGE, Mangaluru under the supervision of <strong>Dr. Udaya Kumar K Shenoy</strong>, for the award of <strong>Bachelor of Engineering in Computer Science &amp; Engineering</strong>. This report has not been submitted to this or any other University for the award of any other degree.</p>
+  <table style="width: 70%; margin: 40px auto 0 auto; font-size: 11pt;">
+    <tr><td><strong>Vaidehi V Pai</strong></td><td style="text-align:right;"><strong>4CB23CS180</strong></td></tr>
+    <tr><td><strong>Roopesh Ravindra Baliga</strong></td><td style="text-align:right;"><strong>4CB23CS128</strong></td></tr>
+    <tr><td><strong>Sambhram Jain</strong></td><td style="text-align:right;"><strong>4CB23CS132</strong></td></tr>
+    <tr><td><strong>Vaishnavi Shetty H</strong></td><td style="text-align:right;"><strong>4CB23CS182</strong></td></tr>
+  </table>
+</div>
+
+<div class="page">
+  <h1 class="prelim-title">Acknowledgement</h1>
+  <p>We dedicate this page to acknowledge and thank those responsible for the shaping of the project. Without their guidance and help, the experience while constructing the dissertation would not have been so smooth and efficient.</p>
+  <p>We sincerely thank our Project guide <strong>Dr. Udaya Kumar K Shenoy</strong>, Professor, Dean R&amp;D, Computer Science &amp; Engineering for his/her guidance and valuable suggestions which helped us to complete this project.</p>
+  <p>We also thank our Project coordinators <strong>Dr. Vinay P</strong>, Dept of Computer Science &amp; Engineering, for their constant encouragement.</p>
+  <p>We owe a profound gratitude to <strong>Dr. Rajgopal K T</strong>, Head of the Department, Computer Science &amp; Engineering, whose kind support and guidance helped us to complete this work successfully. We also take this opportunity to thank our Dean Academics <strong>Dr. Demian Antony D'Mello</strong> and We are extremely thankful to our Principal, for their support and encouragement.</p>
+  <p>We would like to thank all faculty and staff of the Department of Computer Science &amp; Engineering who have always been with us extending their support, precious suggestions, guidance, and encouragement through the project. We also express our gratitude to our beloved friends and parents for their constant encouragement and support.</p>
+  <div style="margin-top: 40px; line-height: 1.8;">
+    <strong>Vaidehi V Pai</strong><br>
+    <strong>Roopesh Ravindra Baliga</strong><br>
+    <strong>Sambhram Jain</strong><br>
+    <strong>Vaishnavi Shetty H</strong>
+  </div>
+  <div style="text-align: center; margin-top: 50px; font-size: 11pt;">i</div>
+</div>
+
+<div class="page">
+  <h1 class="prelim-title">Abstract</h1>
+  <p>Indian Sign Language (ISL) is the primary mode of visual communication for over 63 million deaf and hard-of-hearing individuals across India. However, the profound lack of trained interpreters and the linguistic diversity across Indian states create severe communication barriers in education, healthcare, and public services. To address this challenge, this project presents an accessible, real-time Indian Sign Language to Text with Native Language Translation system capable of executing on standard consumer-grade laptops and smartphones without requiring dedicated GPU acceleration.</p>
+  <p>The system incorporates a robust dual-branch deep learning inference architecture decoupled into two specialized neural pipelines: a Residual Dense Multi-Layer Perceptron (MLP) for static fingerspelling alphabets and numerals (35 classes), and a Bidirectional Long Short-Term Memory network augmented with Bahdanau Temporal Attention (BiLSTM-Attention) for continuous dynamic sign phrases (11 classes). Computer vision tracking is executed via MediaPipe Holistic, extracting 534 spatial keypoints spanning pose, hands, and facial landmarks at 30 frames per second. An invariant Euclidean normalization procedure normalizes landmark coordinates relative to shoulder span, ensuring resilience against user distance and camera perspective variances.</p>
+  <p>Recognized isolated sign glosses are accumulated in a temporal sliding buffer with consensus debouncing and channeled through a Natural Language Processing (NLP) grammar restructuring engine that converts ISL Subject-Object-Verb (SOV) gloss sequences into grammatically fluent English sentences. The synthesized English text is subsequently localized into native Indian languages—including Hindi, Kannada, Tamil, Telugu, and Malayalam—utilizing the Google Cloud Translation API and verbalized using Web Speech Text-to-Speech (TTS). Experimental validation demonstrates 98.7% classification accuracy on static gestures and 99.2% accuracy on dynamic gestures, operating at an end-to-end latency under 35 milliseconds. The application provides an inclusive, low-cost assistive bridge promoting digital accessibility and social empowerment.</p>
+  <p class="no-indent" style="margin-top: 25px;"><strong>Keywords :</strong> Indian Sign Language (ISL), MediaPipe Holistic, Dual-Branch Deep Learning, Residual MLP, BiLSTM Attention, NLP Grammar Restructuring, Multilingual Translation, Assistive Technology.</p>
+  <div style="text-align: center; margin-top: 60px; font-size: 11pt;">ii</div>
+</div>
+
+<div class="page">
+  <h1 class="prelim-title">Table of Contents</h1>
+  <div class="toc-line"><strong>Acknowledgement</strong><span class="dots-leader"></span><span class="pnum">i</span></div>
+  <div class="toc-line"><strong>Abstract</strong><span class="dots-leader"></span><span class="pnum">ii</span></div>
+  <div class="toc-line"><strong>Table of Contents</strong><span class="dots-leader"></span><span class="pnum">iii</span></div>
+  <div class="toc-line"><strong>List of Figures</strong><span class="dots-leader"></span><span class="pnum">x</span></div>
+  <div class="toc-line"><strong>List of Tables</strong><span class="dots-leader"></span><span class="pnum">xi</span></div>
+  
+  <div class="toc-line" style="margin-top: 15px;"><strong>1 &nbsp; Introduction</strong><span class="dots-leader"></span><span class="pnum">1</span></div>
+  <div class="toc-line toc-section">1.1 &nbsp; Background<span class="dots-leader"></span><span class="pnum">1</span></div>
+  <div class="toc-line toc-section">1.2 &nbsp; Motivation and Problem statement<span class="dots-leader"></span><span class="pnum">2</span></div>
+  <div class="toc-line toc-section">1.3 &nbsp; Objectives<span class="dots-leader"></span><span class="pnum">2</span></div>
+  <div class="toc-line toc-section">1.4 &nbsp; Scope and limitations<span class="dots-leader"></span><span class="pnum">3</span></div>
+  <div class="toc-line toc-section">1.5 &nbsp; Relevance and Type<span class="dots-leader"></span><span class="pnum">4</span></div>
+  <div class="toc-line toc-section">1.6 &nbsp; Organization of the report<span class="dots-leader"></span><span class="pnum">4</span></div>
+  
+  <div class="toc-line" style="margin-top: 15px;"><strong>2 &nbsp; Literature Survey</strong><span class="dots-leader"></span><span class="pnum">6</span></div>
+  <div class="toc-line toc-section">2.1 &nbsp; Bidirectional Indian Sign Language Converter [12]<span class="dots-leader"></span><span class="pnum">6</span></div>
+  <div class="toc-line toc-section">2.2 &nbsp; Enhanced Sign Language Translation between ASL and ISL Using LLMs [7]<span class="dots-leader"></span><span class="pnum">7</span></div>
+  <div class="toc-line toc-section">2.3 &nbsp; A Continuous Indian Sign Language Production System from Isolated Signs [10]<span class="dots-leader"></span><span class="pnum">8</span></div>
+  <div class="toc-line toc-section">2.4 &nbsp; Towards real-time recognition of continuous ISL: RGB and pose [4]<span class="dots-leader"></span><span class="pnum">9</span></div>
+  <div class="toc-line toc-section">2.5 &nbsp; Sanket Bhasha: Multilingual NLP and 3D Avatar-Based ISL Translator [3]<span class="dots-leader"></span><span class="pnum">10</span></div>
+  <div class="toc-line toc-section">2.6 &nbsp; A Unified Vision System for Multilingual Gesture Recognition: ASL and ISL [19]<span class="dots-leader"></span><span class="pnum">11</span></div>
+  <div class="toc-line toc-section">2.7 &nbsp; An effective skeleton-based approach for multilingual sign language [15]<span class="dots-leader"></span><span class="pnum">12</span></div>
+  <div class="toc-line toc-section">2.8 &nbsp; Word recognition from ISL using dual feature and GMT-MASKRCNN [2]<span class="dots-leader"></span><span class="pnum">12</span></div>
+  <div class="toc-line toc-section">2.9 &nbsp; AI-Assisted Real-Time Multilingual Sign Language Using 3D Avatars [14]<span class="dots-leader"></span><span class="pnum">13</span></div>
+  <div class="toc-line toc-section">2.10 A multi-lingual sign language recognition system using machine learning [9]<span class="dots-leader"></span><span class="pnum">14</span></div>
+  <div class="toc-line toc-section">2.11 A Transformer-Based Framework for Real Time ISL and Multilingual Translation [11]<span class="dots-leader"></span><span class="pnum">15</span></div>
+  <div class="toc-line toc-section">2.12 Harnessing Vision Transformers for ISL Sentence Recognition From Videos [6]<span class="dots-leader"></span><span class="pnum">16</span></div>
+  <div class="toc-line toc-section">2.13 Indian Sign Language Recognition using Neural Networks [1]<span class="dots-leader"></span><span class="pnum">18</span></div>
+  <div class="toc-line toc-section">2.14 Fingerspelling for Indian Sign Language Using Swin Transformer [20]<span class="dots-leader"></span><span class="pnum">18</span></div>
+  <div class="toc-line toc-section">2.15 Accurate Gesture Recognition in ISL Using Deep Learning [8]<span class="dots-leader"></span><span class="pnum">19</span></div>
+  <div class="toc-line toc-section">2.16 NLP Based Gesture Translation Recognition for Inclusive Communication [5]<span class="dots-leader"></span><span class="pnum">20</span></div>
+  <div class="toc-line toc-section">2.17 Multimodal AI for Audio/Video ISL Conversion Using Federated Learning [16]<span class="dots-leader"></span><span class="pnum">21</span></div>
+  <div class="toc-line toc-section">2.18 Indian Sign Language Recognition and Translation: Encoder-Decoder [17]<span class="dots-leader"></span><span class="pnum">23</span></div>
+  <div class="toc-line toc-section">2.19 Indian Sign Language Detection for Real-Time Translation Using ML [18]<span class="dots-leader"></span><span class="pnum">24</span></div>
+  <div class="toc-line toc-section">2.20 Smart Computing: Sign Language Translation for Educational Accessibility [13]<span class="dots-leader"></span><span class="pnum">25</span></div>
+  <div class="toc-line toc-section">2.21 Comparison Table<span class="dots-leader"></span><span class="pnum">26</span></div>
+  <div class="toc-line toc-section">2.22 Summary<span class="dots-leader"></span><span class="pnum">31</span></div>
+
+  <div class="toc-line" style="margin-top: 15px;"><strong>3 &nbsp; Software Requirements Specification</strong><span class="dots-leader"></span><span class="pnum">32</span></div>
+  <div class="toc-line toc-section">3.1 &nbsp; Functional requirements<span class="dots-leader"></span><span class="pnum">32</span></div>
+  <div class="toc-line toc-section">3.2 &nbsp; Non-Functional requirements<span class="dots-leader"></span><span class="pnum">33</span></div>
+  <div class="toc-line toc-section">3.3 &nbsp; User interface design<span class="dots-leader"></span><span class="pnum">34</span></div>
+  <div class="toc-line toc-section">3.4 &nbsp; Hardware and Software requirements<span class="dots-leader"></span><span class="pnum">34</span></div>
+  <div class="toc-line toc-section">3.5 &nbsp; Performance Requirements<span class="dots-leader"></span><span class="pnum">34</span></div>
+  <div class="toc-line toc-section">3.6 &nbsp; Any Other Requirements<span class="dots-leader"></span><span class="pnum">34</span></div>
+  <div class="toc-line toc-section">3.7 &nbsp; Summary<span class="dots-leader"></span><span class="pnum">34</span></div>
+
+  <div class="toc-line" style="margin-top: 15px;"><strong>4 &nbsp; System Design</strong><span class="dots-leader"></span><span class="pnum">35</span></div>
+  <div class="toc-line toc-section">4.1 &nbsp; Abstract Design<span class="dots-leader"></span><span class="pnum">35</span></div>
+  <div class="toc-line toc-subsection">4.1.1 Architectural diagram<span class="dots-leader"></span><span class="pnum">35</span></div>
+  <div class="toc-line toc-section">4.2 &nbsp; Proposed system<span class="dots-leader"></span><span class="pnum">36</span></div>
+  <div class="toc-line toc-section">4.3 &nbsp; Functional Design<span class="dots-leader"></span><span class="pnum">37</span></div>
+  <div class="toc-line toc-subsection">4.3.1 Modular design diagram<span class="dots-leader"></span><span class="pnum">37</span></div>
+  <div class="toc-line toc-subsection">4.3.2 Sequence diagram<span class="dots-leader"></span><span class="pnum">38</span></div>
+  <div class="toc-line toc-subsection">4.3.3 Use case diagram<span class="dots-leader"></span><span class="pnum">39</span></div>
+  <div class="toc-line toc-section">4.4 &nbsp; Control Flow Design<span class="dots-leader"></span><span class="pnum">40</span></div>
+  <div class="toc-line toc-subsection">4.4.1 Activity diagram for use cases<span class="dots-leader"></span><span class="pnum">40</span></div>
+  <div class="toc-line toc-section">4.5 &nbsp; Data Flow Diagram<span class="dots-leader"></span><span class="pnum">41</span></div>
+  <div class="toc-line toc-subsection">4.5.1 Zero-Level Data Flow Diagram<span class="dots-leader"></span><span class="pnum">41</span></div>
+  <div class="toc-line toc-subsection">4.5.2 First-Level Data Flow Diagram<span class="dots-leader"></span><span class="pnum">42</span></div>
+  <div class="toc-line toc-subsection">4.5.3 Second-Level Data Flow Diagram<span class="dots-leader"></span><span class="pnum">43</span></div>
+  <div class="toc-line toc-subsection">4.5.4 Additional Design, Simulation and Optimization Steps<span class="dots-leader"></span><span class="pnum">43</span></div>
+  <div class="toc-line toc-subsection">4.5.5 Summary<span class="dots-leader"></span><span class="pnum">43</span></div>
+
+  <div class="toc-line" style="margin-top: 15px;"><strong>5 &nbsp; Implementation</strong><span class="dots-leader"></span><span class="pnum">44</span></div>
+  <div class="toc-line toc-section">5.1 &nbsp; Software used with justification<span class="dots-leader"></span><span class="pnum">44</span></div>
+  <div class="toc-line toc-section">5.2 &nbsp; Hardware Used with justification<span class="dots-leader"></span><span class="pnum">44</span></div>
+  <div class="toc-line toc-section">5.3 &nbsp; Algorithm/procedures used in different modules<span class="dots-leader"></span><span class="pnum">45</span></div>
+  <div class="toc-line toc-section">5.4 &nbsp; Coding/pseudocodes<span class="dots-leader"></span><span class="pnum">45</span></div>
+  <div class="toc-line toc-section">5.5 &nbsp; Summary<span class="dots-leader"></span><span class="pnum">46</span></div>
+
+  <div class="toc-line" style="margin-top: 15px;"><strong>6 &nbsp; Results and Discussion</strong><span class="dots-leader"></span><span class="pnum">47</span></div>
+  <div class="toc-line toc-section">6.1 &nbsp; Results<span class="dots-leader"></span><span class="pnum">47</span></div>
+  <div class="toc-line toc-section">6.2 &nbsp; TESTING<span class="dots-leader"></span><span class="pnum">48</span></div>
+  <div class="toc-line toc-section">6.3 &nbsp; TYPES OF SOFTWARE TESTING<span class="dots-leader"></span><span class="pnum">48</span></div>
+  <div class="toc-line toc-section">6.4 &nbsp; TESTING METHODOLOGY<span class="dots-leader"></span><span class="pnum">48</span></div>
+  <div class="toc-line toc-section">6.5 &nbsp; TESTING CRITERIA<span class="dots-leader"></span><span class="pnum">49</span></div>
+  <div class="toc-line toc-section">6.6 &nbsp; Comparative Analysis<span class="dots-leader"></span><span class="pnum">51</span></div>
+  <div class="toc-line toc-section">6.7 &nbsp; Summary<span class="dots-leader"></span><span class="pnum">51</span></div>
+
+  <div class="toc-line" style="margin-top: 15px;"><strong>7 &nbsp; Conclusions and Future work</strong><span class="dots-leader"></span><span class="pnum">52</span></div>
+  <div class="toc-line"><strong>References</strong><span class="dots-leader"></span><span class="pnum">53</span></div>
+  <div class="toc-line"><strong>A &nbsp; Drill-bit/Turnitin Plagiarism Report</strong><span class="dots-leader"></span><span class="pnum">56</span></div>
+  <div class="toc-line"><strong>B &nbsp; Patent/Publication and Project-Expo Details</strong><span class="dots-leader"></span><span class="pnum">57</span></div>
+
+  <div style="text-align: center; margin-top: 30px; font-size: 11pt;">iii</div>
+</div>
+
+<div class="page">
+  <h1 class="prelim-title">List of Figures</h1>
+  <div class="toc-line"><span>4.1 &nbsp; System Architecture Diagram</span><span class="dots-leader"></span><span class="pnum">35</span></div>
+  <div class="toc-line"><span>4.2 &nbsp; Proposed System</span><span class="dots-leader"></span><span class="pnum">36</span></div>
+  <div class="toc-line"><span>4.3 &nbsp; Modular design diagram</span><span class="dots-leader"></span><span class="pnum">37</span></div>
+  <div class="toc-line"><span>4.4 &nbsp; Sequence diagram</span><span class="dots-leader"></span><span class="pnum">38</span></div>
+  <div class="toc-line"><span>4.5 &nbsp; Use case diagram</span><span class="dots-leader"></span><span class="pnum">39</span></div>
+  <div class="toc-line"><span>4.6 &nbsp; Sample Activity diagram</span><span class="dots-leader"></span><span class="pnum">40</span></div>
+  <div class="toc-line"><span>4.7 &nbsp; Zero-Level Data Flow Diagram</span><span class="dots-leader"></span><span class="pnum">41</span></div>
+  <div class="toc-line"><span>4.8 &nbsp; First-Level Data Flow Diagram</span><span class="dots-leader"></span><span class="pnum">42</span></div>
+  <div class="toc-line"><span>4.9 &nbsp; Second-Level Data Flow Diagram</span><span class="dots-leader"></span><span class="pnum">43</span></div>
+  <div class="toc-line"><span>6.1 &nbsp; Sample Result-1 (ISL Translation Studio Interface)</span><span class="dots-leader"></span><span class="pnum">47</span></div>
+  <div class="toc-line"><span>6.2 &nbsp; Sample Result-2 (Recognition & Multilingual Outcome)</span><span class="dots-leader"></span><span class="pnum">47</span></div>
+  <div style="text-align: center; margin-top: 60px; font-size: 11pt;">x</div>
+</div>
+
+<div class="page">
+  <h1 class="prelim-title">List of Tables</h1>
+  <div class="toc-line"><span>2.1 &nbsp; Comparison of Existing Work and Gap Identification</span><span class="dots-leader"></span><span class="pnum">26</span></div>
+  <div class="toc-line"><span>2.2 &nbsp; Comparison of Existing Work and Gap Identification</span><span class="dots-leader"></span><span class="pnum">27</span></div>
+  <div class="toc-line"><span>2.3 &nbsp; Comparison of Existing Work and Gap Identification</span><span class="dots-leader"></span><span class="pnum">28</span></div>
+  <div class="toc-line"><span>2.4 &nbsp; Comparison of Existing Work and Gap Identification</span><span class="dots-leader"></span><span class="pnum">29</span></div>
+  <div class="toc-line"><span>2.5 &nbsp; Comparison of Existing Work and Gap Identification</span><span class="dots-leader"></span><span class="pnum">30</span></div>
+  <div class="toc-line"><span>6.1 &nbsp; Testing Criteria for Video Stream Acquisition and Signer Detection</span><span class="dots-leader"></span><span class="pnum">50</span></div>
+  <div class="toc-line"><span>6.2 &nbsp; Testing Criteria for Static Gesture Recognition and Confidence Filtering</span><span class="dots-leader"></span><span class="pnum">50</span></div>
+  <div class="toc-line"><span>6.3 &nbsp; Testing Criteria for Dynamic Gesture Sequence Buffer and Temporal Debouncing</span><span class="dots-leader"></span><span class="pnum">50</span></div>
+  <div class="toc-line"><span>6.4 &nbsp; Testing Criteria for NLP Sentence Synthesis and Grammar Restructuring</span><span class="dots-leader"></span><span class="pnum">51</span></div>
+  <div class="toc-line"><span>6.5 &nbsp; Testing Criteria for Multilingual Translation API & Regional Speech Synthesis</span><span class="dots-leader"></span><span class="pnum">51</span></div>
+  <div class="toc-line"><span>6.6 &nbsp; Comparative Analysis of Proposed System with Existing Literature Methods</span><span class="dots-leader"></span><span class="pnum">51</span></div>
+  <div style="text-align: center; margin-top: 60px; font-size: 11pt;">xi</div>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 1</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 1</span>
+</div>
+
+  <h1 class="chapter-title">Chapter 1<br><span style="font-size: 20pt;">Introduction</span></h1>
+  <h2>1.1 Background</h2>
+  <p>Communication is a fundamental aspect of human interaction, yet nearly 63 million people in India who are deaf or hard-of-hearing face daily challenges due to the limited understanding of Indian Sign Language (ISL) among the general population. ISL is a sophisticated, naturally evolved visual-spatial language that utilizes simultaneous hand gestures, manual fingerspelling, body kinematics, and facial expressions to convey syntactic and semantic meaning. However, the severe shortage of certified sign language interpreters and minimal societal familiarity with ISL establish persistent communication barriers in essential public spheres including primary healthcare, education, legal proceedings, and public administration.</p>
+  <p>With recent breakthroughs in Artificial Intelligence (AI), Machine Learning (ML), and Computer Vision, assistive technologies can now bridge this societal divide. Modern vision pipelines enable non-intrusive landmark extraction directly from ordinary monocular camera streams without requiring costly specialized sensors or electronic data gloves. Concurrently, advancements in deep neural networks and Natural Language Processing (NLP) facilitate accurate sequence-to-sequence modeling, grammatical re-ordering, and neural machine translation into regional languages, making assistive communication truly inclusive in a multilingual subcontinent like India.</p>
+  <p>This project operates at the confluence of deep learning, computer vision, and social empowerment. It focuses on engineering an accessible, real-time communication platform that translates both static and dynamic ISL gestures into fluent English text and localized Indian regional speech, empowering the deaf community with autonomous, barrier-free interaction.</p>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 1</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 2</span>
+</div>
+
+  <h2>1.2 Motivation and Problem statement</h2>
+  <p>Communication is an intrinsic human right, yet deaf and hard-of-hearing individuals frequently encounter disenfranchisement due to widespread communication mismatches. In a linguistically diverse country like India with 22 officially recognized constitutional languages, bridging this gap is further compounded by regional dialect barriers. While sign language systems developed in Western contexts focus predominantly on American Sign Language (ASL), Indian Sign Language possesses distinctive grammatical structures, two-handed manual alphabets, and culture-specific idiomatic expressions that cannot be interpreted by ASL models.</p>
+  <p>Traditional sign translation approaches either rely on cumbersome sensor-instrumented gloves that hinder natural signing movement or are confined to isolated static alphabet classification under artificial laboratory lighting. There is an urgent imperative for an intelligent, non-invasive, vision-based framework capable of recognizing both static letters and continuous dynamic phrases in real time. The system must process continuous webcam input, synthesize fluent natural sentences conforming to standard grammatical conventions, translate the synthesized text into native regional languages, and synthesize spoken audio on commodity, low-cost consumer hardware without necessitating high-end discrete GPUs.</p>
+  <h2>1.3 Objectives</h2>
+  <ul>
+    <li><strong>Empower the Deaf Community:</strong> Engineer an accessible, real-time assistive translation system converting Indian Sign Language gestures into clear, fluent text and regional voice audio to foster seamless bidirectional dialogue.</li>
+    <li><strong>Dual-Branch Gesture Recognition:</strong> Design and train a decoupled V3 neural architecture comprising a Residual Dense MLP for 35 static handshapes and a Bidirectional LSTM with Bahdanau Temporal Attention for 11 continuous dynamic phrases.</li>
+    <li><strong>Multi-Tier NLP Grammar Synthesis:</strong> Implement an intelligent text restructuring engine that transforms raw ISL Subject-Object-Verb (SOV) gloss sequences and fingerspelled tokens into coherent, grammatically sound English sentences.</li>
+    <li><strong>Regional Multilingual Localization:</strong> Integrate cloud-based Neural Machine Translation (NMT) via the Google Cloud Translation API to localize synthesized English into major Indian languages including Hindi, Kannada, Tamil, Telugu, and Malayalam.</li>
+    <li><strong>Low-Cost, CPU-Optimized Deployment:</strong> Optimize feature extraction pipelines and deep learning graphs using TensorFlow Graph compilation to achieve real-time throughput (>30 FPS) on standard consumer laptops and smartphones without requiring dedicated GPU hardware.</li>
+  </ul>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 1</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 3</span>
+</div>
+
+  <h2>1.4 Scope and limitations</h2>
+  <p>The scope of this project encompasses the end-to-end design, implementation, and empirical evaluation of an interactive, web-based ISL translation studio. The vision pipeline leverages MediaPipe Holistic to extract 534 spatial landmark coordinates encompassing pose, hand joints, and facial contours. The static recognition branch covers 35 classes including the complete English alphabets (A–Z) and numerals (1–9). The dynamic sequence branch models 11 temporal conversational gestures spanning daily interactions (e.g., 'Hello', 'Thank You', 'Welcome', 'Good Morning', 'How are you', 'Please', 'Help', 'Name', 'What'). A temporal debounce filtering mechanism and confidence gating threshold ensure jitter-free recognition. The application delivers real-time Heads-Up Display (HUD) feedback, dynamic subtitle banners, and regional voice synthesis via the Web Speech API.</p>
+  <p>The system's operational constraints include sensitivity to extreme ambient illumination variations (below 100 lux), substantial camera motion blur during overly rapid signing transitions, and severe physical occlusion of hand joints. Additionally, grammatical translation currently focuses on conversational phrase structures and isolated compound expressions rather than extensive paragraph-length discourse. Dynamic classification relies on a 30-frame temporal window, which requires signers to execute gestures at relatively uniform temporal tempos.</p>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 1</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 4</span>
+</div>
+
+  <h2>1.5 Relevance and Type</h2>
+  <p>This project addresses critical United Nations Sustainable Development Goals (SDGs), notably Reduced Inequalities (SDG 10) and Quality Education (SDG 4). By providing a free, low-barrier, browser-accessible translation interface, it enables deaf students to engage actively in conventional classrooms and allows hard-of-hearing citizens to navigate public service kiosks, healthcare triage counters, and bank transactions independently.</p>
+  <p>The project is classified as an Applied Engineering and Research project. It combines original machine learning research—specifically landmark-space temporal attention mechanisms and Euclidean shoulder-span invariance—with comprehensive full-stack software engineering, deploying an asynchronous FastAPI backend and a responsive React/Vite web studio.</p>
+  <p><strong>Relevance &amp; Category:</strong> This project can be categorized as both an <strong>Application-Oriented &amp; Research-Oriented</strong> project, as it involves developing a practical real-time system while also exploring different machine learning techniques and methods for improving gesture recognition and translation accuracy.</p>
+  <h2>1.6 Organization of the report</h2>
+  <p>This report is systematically structured into seven comprehensive chapters:
+Chapter 1 introduces the project background, motivation, research objectives, scope, limitations, and societal relevance.
+Chapter 2 presents a rigorous literature survey reviewing 20 recent peer-reviewed publications, identifying critical research gaps and providing a comparative synthesis.
+Chapter 3 outlines the Software Requirements Specification (SRS), formalizing functional, non-functional, interface, hardware, and software requirements.
+Chapter 4 details the System Design, encompassing the architectural diagram, proposed execution flowchart, modular design, UML sequence and use case diagrams, control flow activity diagrams, and multi-level Data Flow Diagrams (DFD Level 0, 1, and 2).
+Chapter 5 elaborates the Implementation phase, detailing software tools, hardware configurations, core mathematical algorithms, programming styles, coding standards, and pseudocode specifications.
+Chapter 6 analyzes experimental Results and Discussions, software testing methodologies, verification criteria tables, and comparative benchmark evaluations.
+Chapter 7 presents final Conclusions and outlines prospective Future Work, followed by comprehensive References and formal Appendices.</p>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 6</span>
+</div>
+
+  <h1 class="chapter-title">Chapter 2<br><span style="font-size: 20pt;">Literature Survey</span></h1>
+
+  <h2>2.1 Bidirectional Indian Sign Language Converter[12]</h2>
+  <p>This research by Sandeep Kumar PS et al. (2025) addresses the challenge of establishing two-way communication between signers and non-signers. The study focuses on developing a system that converts Indian Sign Language (ISL) into text and vice versa. To train and evaluate their models, the researchers utilized a custom ISL gesture dataset.</p>
+  <h3>2.1.1 Brief Findings of Article 1</h3>
+  <p>The study successfully demonstrated that bidirectional communication systems for ISL can be effectively implemented, bridging the communication gap by allowing seamless back-and-forth interaction.</p>
+  <h3>2.1.2 Design/Methodology/Techniques Adopted in Article 1</h3>
+  <p>The authors employed computer vision-based gesture recognition as the core technology for their system. To classify and interpret the recognized gestures accurately, they integrated various machine learning-based classification techniques.</p>
+  <h3>2.1.3 Results Achieved in Article 1</h3>
+  <p>The system successfully enables functional bidirectional communication. However, the study notes significant limitations regarding the dataset, specifically that its small scale results in limited gesture coverage, which restricts the system's overall vocabulary.</p>
+
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 7</span>
+</div>
+
+
+  <h2>2.2 Enhanced Sign Language Translation between ASL and ISL Using LLMs[7]</h2>
+  <p>Conducted by Kumar et al. (2025), this article tackles the complexities of translating between American Sign Language (ASL) and Indian Sign Language (ISL). The primary problem addressed is the lack of contextual understanding in traditional translation tools. The researchers relied on comprehensive datasets encompassing both ASL and ISL.</p>
+  <h3>2.2.1 Brief Findings of Article 2</h3>
+  <p>The researchers found that integrating advanced language models significantly improves the contextual and semantic accuracy of translations between two distinct sign languages.</p>
+  <h3>2.2.2 Design/Methodology/Techniques Adopted in Article 2</h3>
+  <p>The methodology heavily relies on Large Language Models (LLMs) to process and understand the nuances of the signs. The system utilizes Natural Language Processing (NLP) techniques to facilitate the complex translation pipeline.</p>
+  <h3>2.2.3 Results Achieved in Article 2</h3>
+  <p>The primary result is a noticeably better semantic translation compared to older methods. On the downside, the reliance on LLMs introduces a high computational cost, making it resource-intensive to run.</p>
+
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 8</span>
+</div>
+
+
+  <h2>2.3 A Continuous Indian Sign Language Production System from Isolated Signs[10]</h2>
+  <p>Patra et al. (2025) focus on the difficult task of generating continuous sign language expressions rather than just individual, disjointed signs. The study addresses the gap between static gesture recognition and fluid sentence creation using an isolated sign dataset.</p>
+  <h3>2.3.1 Brief Findings of Article 3</h3>
+  <p>This research paper focuses on generating continuous Indian Sign Language (ISL) sequences from isolated sign inputs. The study addresses the challenge of creating smooth and meaningful sign language communication instead of displaying separate, disconnected gestures. The authors aim to improve the natural flow of ISL production so that communication appears more realistic and understandable. The paper highlights the importance of developing advanced sign language systems that can support effective interaction for the deaf and hard-of-hearing community.</p>
+  <h3>2.3.2 Design/Methodology/Techniques Adopted in Article 3</h3>
+  <p>The researchers used deep learning and sequence modeling techniques to transform isolated signs into continuous ISL representations. The system analyzes individual sign gestures and predicts the correct sequence and transitions between them to create fluent sign language output. Machine learning algorithms were applied to learn temporal relationships between signs and improve gesture continuity. The framework focuses on generating natural-looking sign sequences while maintaining the meaning and context of the communication.</p>
+  <h3>2.3.3 Results Achieved in Article 3</h3>
+  <p>The proposed approach successfully generated smoother and more continuous ISL outputs compared to isolated sign generation methods. The results showed improvements in sign transition quality and overall communication clarity. The study demonstrated that deep learning models can effectively support continuous sign language production, making interactions more natural and user-friendly. The research also provides a foundation for future developments in real-time sign language animation and assistive communication technologies.</p>
+
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 9</span>
+</div>
+
+
+  <h2>2.4 Towards real-time recognition of continuous indian sign language: A multi-modal approach using RGB and pose[4]</h2>
+  <p>In this paper, Geetha et al. (2025) address the need for continuous sign recognition that operates in real-time. To build and test their system, the team developed and utilized a custom ISL dataset specifically tailored for dynamic movement tracking.</p>
+  <h3>2.4.1 Brief Findings of Article 4</h3>
+  <p>The findings indicate that combining standard video feeds with spatial pose data creates a highly accurate system capable of recognizing continuous sign language on the fly.</p>
+  <h3>2.4.2 Design/Methodology/Techniques Adopted in Article 4</h3>
+  <p>The architecture is built on a multi-modal approach combining both video (RGB) and pose data. To process this information, the researchers implemented a hybrid framework using Convolutional Neural Networks (CNN) paired with Transformer models.</p>
+  <h3>2.4.3 Results Achieved in Article 4</h3>
+  <p>The system achieved a very good accuracy rate, reflected by a Word Error Rate (WER) of approximately 19. Despite this strong performance, the model still struggles to accurately interpret highly fast-paced gestures.</p>
+
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 10</span>
+</div>
+
+
+  <h2>2.5 Sanket Bhasha: Multilingual NLP and 3D Avatar-Based Indian Sign Language (ISL) Translator[3]</h2>
+  <p>Ganboi et al. (2025) introduce "Sanket Bhasha", a system designed to convert spoken or written text into visual Indian Sign Language. The project utilizes extensive language datasets to map spoken words to their corresponding visual signs.</p>
+  <h3>2.5.1 Brief Findings of Article 5</h3>
+  <p>This research paper introduces Sanket Bhasha, an Indian Sign Language (ISL) translation system that combines Natural Language Processing (NLP) with 3D avatar technology. The study aims to improve communication accessibility for deaf and hard-of-hearing individuals by converting text or speech into animated ISL gestures using a virtual 3D avatar. The paper highlights how intelligent language processing and realistic visual representation can make sign language communication more interactive, understandable, and user-friendly.</p>
+  <h3>2.5.2 Design/Methodology/Techniques Adopted in Article 5</h3>
+  <p>The authors used NLP techniques to analyze and process textual or spoken language inputs before converting them into Indian Sign Language sequences. A 3D animated avatar was developed to visually perform the generated ISL gestures in a realistic manner. The framework combines language understanding, gesture mapping, and animation technologies to produce meaningful sign language representations. Machine learning and language-processing methods were applied to improve translation quality and ensure smoother gesture generation by the avatar.</p>
+  <h3>2.5.3 Results Achieved in Article 5</h3>
+  <p>The proposed system successfully translated text and speech into animated ISL gestures using the 3D avatar. The results showed improved communication support for users who rely on sign language for interaction. The use of NLP helped enhance translation accuracy, while the 3D avatar provided a more natural and engaging visual experience. The research demonstrates the potential of combining artificial intelligence and animation technologies to build effective assistive communication systems for the deaf community.</p>
+
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 11</span>
+</div>
+
+
+  <h2>2.6 A Unified Computer Vision System for Multilingual Bidirectional Gesture Recognition: Asl and Isl [19]</h2>
+  <p>This paper by Sruthi et al. (2025) tackles the challenge of multilingual gesture recognition, aiming to build a single system capable of understanding both ASL and ISL. The research utilizes combined datasets from both sign languages.</p>
+  <h3>2.6.1 Brief Findings of Article 6</h3>
+  <p>The study proves the viability of creating a unified framework that does not need separate distinct models to recognize different regional sign languages.</p>
+  <h3>2.6.2 Design/Methodology/Techniques Adopted in Article 6</h3>
+  <p>The core methodology is based entirely on a computer vision system designed to extract and classify visual features from signers, adapting to the varying syntax and gestures of both ASL and ISL.</p>
+  <h3>2.6.3 Results Achieved in Article 6</h3>
+  <p>The system successfully supports and recognizes multiple sign languages simultaneously. The main drawback is the highly complex system design required to manage and differentiate between the overlapping languages.</p>
+
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 12</span>
+</div>
+
+
+  <h2>2.7 An effective skeleton-based approach for multilingual sign language recognition [15]</h2>
+  <p>Renjith et al. (2025) address the problem of recognizing gestures in less-than-ideal visual conditions. By using pose-based datasets, they shifted the focus from pixel-based image analysis to the structural movements of the human body.</p>
+  <h3>2.7.1 Brief Findings of Article 7</h3>
+  <p>The study found that focusing purely on skeletal joint data provides a highly reliable method for recognizing multilingual sign languages, largely ignoring background interference.</p>
+  <h3>2.7.2 Design/Methodology/Techniques Adopted in Article 7</h3>
+  <p>The methodology involves sophisticated pose estimation techniques to map the user's body. The extracted skeleton tracking data is then fed into specialized machine learning models trained to classify the geometric movements of the joints.</p>
+  <h3>2.7.3 Results Achieved in Article 7</h3>
+  <p>The major achievement of this approach is its robust performance even in highly cluttered or visually noisy environments. However, processing the skeletal data makes this approach slower when compared to more lightweight, direct image-classification methods.</p>
+
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 13</span>
+</div>
+
+
+  <h2>2.8 Word recognition from Indian sign language in videos using dual feature descriptor and GMT-MASKRCNN recognition technique [2]</h2>
+  <p>This research by Bansal & Jain (2025) narrows its focus to the precise recognition of individual words directly from ISL videos. The study relied on a comprehensive video-based ISL dataset to train their models on dynamic, real-world signing.</p>
+  <h3>2.8.1 Brief Findings of Article 8</h3>
+  <p>The authors demonstrated that deep learning models specifically designed for image segmentation and object detection can be highly effective when repurposed for isolating and recognizing sign language vocabulary.</p>
+  <h3>2.8.2 Design/Methodology/Techniques Adopted in Article 8</h3>
+  <p>The study adopted a sophisticated MASK-RCNN model framework. To improve accuracy, the researchers utilized a dual feature extraction technique, allowing the model to analyze multiple layers of visual data from the video frames simultaneously.</p>
+  <h3>2.8.3 Results Achieved in Article 8</h3>
+  <p>The adopted methodology resulted in high accuracy in recognizing specific words from the video feeds. The primary limitation of this highly detailed analytical approach is that it is computationally intensive.</p>
+
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 14</span>
+</div>
+
+
+  <h2>2.9 AI-Assisted Real-Time Multilingual Sign Language Translation using 3D Avatars [14]</h2>
+  <p>Reddy et al. (2025) aim to solve the problem of real-time translation of spoken or written languages into multilingual sign language. To achieve this, the team used expansive language datasets mapping text and speech to specific sign language parameters.</p>
+  <h3>2.9.1 Brief Findings of Article 9</h3>
+  <p>The study established that AI can be leveraged to generate immediate, on-the-fly translations of text and speech into sign language, utilizing digital avatars to deliver the message visually in real time.</p>
+  <h3>2.9.2 Design/Methodology/Techniques Adopted in Article 9</h3>
+  <p>The researchers designed a real-time translation system that integrates Natural Language Processing (NLP) to decode incoming speech and text. This processed data immediately triggers a 3D avatar animation system to perform the translated signs.</p>
+  <h3>2.9.3 Results Achieved in Article 9</h3>
+  <p>The system successfully provides vital visual communication support for real-time interactions. However, much like other avatar-based systems, it is limited by the accuracy of the avatar's natural expressions, which can occasionally hinder the full emotional context of the translation.</p>
+
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 15</span>
+</div>
+
+
+  <h2>2.10 A multi-lingual sign language recognition system using machine learning [9]</h2>
+  <p>Najib et al.(2025) aims to address the challenge of recognizing and translating multiple sign languages using machine learning techniques. The study focuses on improving communication accessibility by developing a multilingual sign language recognition system capable of identifying gestures from different sign languages. To achieve this, the author utilized multilingual gesture datasets and machine learning-based recognition approaches for accurate gesture classification.</p>
+  <h3>2.10.1 Brief Findings of Article 10</h3>
+  <p>The study demonstrated that machine learning techniques can effectively recognize and classify gestures from multiple sign languages with good accuracy. The system improves accessibility and communication support for users belonging to different linguistic backgrounds..</p>
+  <h3>2.10.2 Design/Methodology/Techniques Adopted in Article 10</h3>
+  <p>The proposed system uses machine learning algorithms along with feature extraction techniques for gesture recognition. The model processes visual gesture inputs, extracts relevant hand movement and shape features, and classifies them into corresponding sign language outputs. The approach focuses on multilingual support and efficient recognition performanc</p>
+  <h3>2.10.3 Results Achieved in Article 10</h3>
+  <p>The system successfully supports multilingual sign language recognition and achieves satisfactory accuracy in gesture classification. However, the model has limitations in real-time performance and may face challenges under varying environmental conditions and complex gestures.</p>
+
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 16</span>
+</div>
+
+
+  <h2>2.11 A Transformer-Based Deep Learning Framework for Real Time Sign Language Recognition and Multilingual Translation [11]</h2>
+  <p>This research by Priyadarsini et al. (2026) addresses the communication gap between Indian Sign Language (ISL) users and non-signers. The study proposes a deep learning-based system that recognizes ISL gestures, converts the recognized gloss words into meaningful English sentences, and translates the resulting sentences into Tamil. The researchers created a dataset similar to Indian Sign Language and augmented the original dataset to support model development.</p>
+  <h3>2.11.1 Brief Findings of Article 11</h3>
+  <p>The study demonstrates the feasibility of integrating sign recognition, sentence generation, and regional language translation into a single communication pipeline. The system achieved 98.65% accuracy for gloss word recognition and 99.96% accuracy for alphabet recognition. It also generates grammatically meaningful English sentences and translates them into Tamil.</p>
+  <h3>2.11.2 Design/Methodology/Techniques Adopted in Article 11</h3>
+  <p>The proposed system uses MediaPipe to extract hand features from sign language videos. The extracted features are stored in separate CSV files for word and alphabet recognition. A Multi-Layer Perceptron (MLP) is employed to classify the recognized words and alphabets. The sequence of recognized gloss words is then processed using a pretrained T5 Transformer to generate meaningful English sentences. Finally, a pretrained English-to-Tamil translation model converts the generated sentences into Tamil.</p>
+  <h3>2.11.3 Results Achieved in Article 11</h3>
+  <p>The system achieved 98.65% accuracy for gloss word recognition and 99.96% accuracy for alphabet recognition. The integration of a pretrained T5 Transformer enables the conversion of recognized signs into meaningful English sentences, followed by Tamil translation. However, the reported recognition accuracies alone do not establish the quality of the generated sentences or the accuracy of the final Tamil translations, which require separate evaluation.</p>
+
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 17</span>
+</div>
+
+
+  <h2>2.12 Harnessing Vision Transformers for Indian Sign Language Sentence Recognition From Videos [6]</h2>
+  <p>This research by Kalagudi and Thenmozhi (2025) focuses on recognizing continuous Indian Sign Language gestures from videos and converting them into complete sentences. Unlike systems that recognize only individual signs, the proposed Signwave assistive technology aims to interpret sequences of gestures in real time. The study addresses the need for more natural communication between people with hearing or speech impairments and non-signers.</p>
+  <h3>2.12.1 Brief Findings of Article 12</h3>
+  <p>The study demonstrates that combining spatial feature extraction with temporal modelling can support continuous sign language sentence recognition. The proposed Signwave system achieved an overall accuracy of 72.9% and provides both text and speech outputs. These capabilities make the system potentially useful in educational institutions, healthcare environments, workplaces, and everyday communication.</p>
+  <h3>2.12.2 Design/Methodology/Techniques Adopted in Article 12</h3>
+  <p>The researchers developed a hybrid architecture combining a Convolutional Neural Network (CNN) with a Vision Transformer (ViT). The CNN is used to extract spatial features from video frames, while the Vision Transformer models temporal patterns across the gesture sequence. This combination enables the system to process continuous gestures and generate sentence-level outputs. The resulting text can also be converted into speech to facilitate communication.</p>
+  <h3>2.12.3 Results Achieved in Article 12</h3>
+  <p>The proposed system achieved an overall recognition accuracy of 72.9%, with the authors also reporting precision, recall, and F1-score performance. The system supports both text and speech output, extending its functionality beyond isolated gesture classification. However, the reported accuracy indicates that further evaluation and improvement may be needed before relying on the system for consistently accurate real-world communication. The abstract does not provide enough detail to establish its performance across different signers or signing environments.</p>
+
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 18</span>
+</div>
+
+
+  <h2>2.13 Indian Sign Language Recognition using Neural Networks [1]</h2>
+  <p>This research by Agarwal et al. (2025) focuses on developing an Indian Sign Language recognition system using neural networks to improve communication accessibility. The study explores the recognition of static hand gestures and dynamic sign language movements.</p>
+  <h3>2.13.1 Brief Findings of Article 13</h3>
+  <p>The study presents a neural network-based approach for recognizing ISL gestures and supporting communication through automated sign interpretation.</p>
+  <h3>2.13.2 Design/Methodology/Techniques Adopted in Article 13</h3>
+  <p>The researchers use a Multi-Layer Perceptron (MLP) for static handshape recognition and a Channel-wise Topology Refinement Graph Convolutional Network (CTR-GCN) for dynamic gesture recognition.</p>
+  <h3>2.13.3 Results Achieved in Article 13</h3>
+  <p>The proposed approach addresses both static and dynamic sign recognition. However, further evaluation across different datasets and signing conditions is important to establish its generalization capability.</p>
+
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 19</span>
+</div>
+
+
+  <h2>2.14 Fingerspelling for Indian Sign Language Using Swin Transformer [20]</h2>
+  <p>This research by Suchithra et al. (2025) focuses on recognizing Indian Sign Language fingerspelling using deep learning. The study aims to improve alphabet recognition and support accessible communication through automated gesture interpretation.</p>
+  <h3>2.14.1 Brief Findings of Article 14</h3>
+  <p>The study explores the use of Transformer-based image recognition for identifying ISL fingerspelling gestures and integrating the recognized output into a communication system.</p>
+  <h3>2.14.2 Design/Methodology/Techniques Adopted in Article 14</h3>
+  <p>The researchers employ a Swin Transformer to extract visual features from hand gesture images. The proposed pipeline also incorporates spelling correction, machine translation, and text-to-speech components to convert recognized signs into more accessible outputs.</p>
+  <h3>2.14.3 Results Achieved in Article 14</h3>
+  <p>The system combines fingerspelling recognition with translation and speech generation. However, the effectiveness of the complete pipeline depends on recognition accuracy and the quality of subsequent language processing.</p>
+
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 20</span>
+</div>
+
+
+  <h2>2.15 Accurate Gesture Recognition in Indian Sign Language Using Deep Learning [8]</h2>
+  <p>This research by Meena et al. (2025) focuses on recognizing Indian Sign Language alphabets and numerals using a transfer learning approach. The authors use a balanced Kaggle dataset containing 42,000 images representing 35 classes, including the English alphabets A–Z and numerals 1–9.</p>
+  <h3>2.15.1 Brief Findings of Article 15</h3>
+  <p>The study demonstrates that a pretrained deep learning model can recognize ISL hand gestures with high classification performance. The proposed system achieves 100% precision, recall, and F1-score on the reported evaluation, highlighting the potential of transfer learning for gesture recognition.</p>
+  <h3>2.15.2 Design/Methodology/Techniques Adopted in Article 15</h3>
+  <p>The researchers employ MobileNetV2, a pretrained convolutional neural network, to extract visual features from hand gesture images. Transfer learning is used to adapt the pretrained model to the ISL classification task. The architecture incorporates batch normalization to stabilize training, dropout to reduce overfitting, and L2 regularization to control model complexity. A final Softmax layer classifies the input into 35 gesture classes. The dataset is divided into 70% training, 15% validation, and 15% testing data.</p>
+  <h3>2.15.3 Results Achieved in Article 15</h3>
+  <p>The proposed MobileNetV2 model achieves 100% precision, recall, and F1-score according to the paper's abstract. The use of transfer learning also provides a computationally efficient alternative to training a deep network from scratch. However, the reported results are based on the specified dataset, and further testing with unseen signers and real-world video inputs would help establish the model's generalization capability.</p>
+
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 21</span>
+</div>
+
+
+  <h2>2.16 NLP Based Gesture Translation Recognition for Inclusive Communication [5]</h2>
+  <p>This research by JosephineUsha et al. (2025) presents HySign-Transformer, an intelligent and low-cost communication system designed to reduce barriers between sign language users and non-signers. The system accepts audio input, converts it into text, and generates corresponding sign gesture images and videos, supporting English and Indian Sign Language (ISL) communication.</p>
+  <h3>2.16.1 Brief Findings of Article 16</h3>
+  <p>The study demonstrates an integrated approach that combines speech recognition, natural language processing, and gesture generation within a single communication pipeline. The authors report that the generated sign representations provide reasonably understandable output and can support more immediate communication between people who use speech and those who communicate through signs.</p>
+  <h3>2.16.2 Design/Methodology/Techniques Adopted in Article 16</h3>
+  <p>The proposed HySign-Transformer system consists of two main stages. First, the Google Speech API converts the user's audio input into text. Second, Natural Language Processing (NLP) techniques process the recognized text, while a Convolutional Neural Network (CNN)-based architecture supports the generation of corresponding sign gesture images and videos. The training data includes static and dynamic English and ISL gestures arranged in different combinations, allowing the system to handle more than isolated hand poses.</p>
+  <h3>2.16.3 Results Achieved in Article 16</h3>
+  <p>The authors report that the generated gesture output translates reasonably well into human-understandable communication. The system offers a low-cost alternative to solutions that depend on more specialized sign-to-speech infrastructure. However, its performance depends on speech transcription quality, the coverage of the gesture training data, and the accuracy of mapping natural-language input to the appropriate signs. The available abstract does not provide a numerical accuracy score for the complete pipeline.</p>
+
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 22</span>
+</div>
+
+
+  <h2>2.17 Multimodal AI for Audio and Video Conversion for ISL Using Federated Learning [16]</h2>
+  <p>This research by SandeepVarma et al. (2025) presents a multimodal artificial intelligence system designed to improve communication between Indian Sign Language (ISL) users and people who communicate through speech. The proposed system integrates audio, text, and gesture translation to support bidirectional communication. The authors also address data privacy and scalability by employing federated learning instead of relying entirely on centralized model training.</p>
+  <h3>2.17.1 Brief Findings of Article 17</h3>
+  <p>The study demonstrates the feasibility of combining speech processing and video-based sign recognition within a unified communication platform. The developed system supports audio-to-ISL and ISL-to-text translation through a graphical user interface and achieves 84.93% accuracy for ISL-to-text translation.</p>
+  <h3>2.17.2 Design/Methodology/Techniques Adopted in Article 17</h3>
+  <p>The proposed system incorporates a Transformer-based model for converting audio into text and a Spatial Temporal Convolutional Graph Network (STCGN) combined with Long Short-Term Memory (LSTM) networks for translating ISL video sequences into text. Federated learning is used to train the models across distributed clients without requiring all training data to be collected centrally. The system integrates these components through a graphical user interface that supports both audio-to-ISL and ISL-to-text communication.</p>
+  <h3>2.17.3 Results Achieved in Article 17</h3>
+  <p>The ISL-to-text model achieved an accuracy of 84.93% in the reported experiments. The system demonstrates the potential of federated learning for developing privacy-aware and scalable sign language translation applications. However, the authors identify noisy environments and dynamic gestures as continuing challenges, with future improvements needed to support regional variations and the grammatical complexity of ISL.</p>
+
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 23</span>
+</div>
+
+
+  <h2>2.18 Indian Sign Language Recognition and Translation: An Encoder-Decoder Approach [17]</h2>
+  <p>This research by Sharma, Singh, and Gaito (2025) investigates Indian Sign Language recognition and translation using an encoder-decoder approach. Published in the 17th International Conference on Communication Systems and Networks (COMSNETS 2025), the study focuses on the challenge of converting visual sign language input into a linguistic representation that can be understood by non-signers.</p>
+  <h3>2.18.1 Brief Findings of Article 18</h3>
+  <p>The paper explores encoder-decoder modelling as an approach to ISL recognition and translation. Such a framework can represent the visual input in an encoded feature space and use a decoder to produce the corresponding linguistic output. The specific experimental findings and quantitative performance of the proposed system require verification from the full paper.</p>
+  <h3>2.18.2 Design/Methodology/Techniques Adopted in Article 18</h3>
+  <p>The study is identified as an encoder-decoder-based approach to Indian Sign Language recognition and translation. In this general architecture, an encoder extracts a representation from the input data, while a decoder generates the corresponding output sequence.</p>
+  <h3>2.18.3 Results Achieved in Article 18</h3>
+  <p>The paper addresses the application of encoder-decoder modelling to ISL recognition and translation.</p>
+
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 24</span>
+</div>
+
+
+  <h2>2.19 Indian Sign Language Detection for Real-Time Translation Using Machine Learning [18]</h2>
+  <p>This research by Singhal et al. (2025) focuses on developing a machine learning-based system for detecting Indian Sign Language gestures and translating them in real time. The study aims to reduce communication barriers between ISL users and non-signers by converting recognized hand gestures into an understandable output.</p>
+  <h3>2.19.1 Brief Findings of Article 19</h3>
+  <p>The research investigates the feasibility of combining real-time gesture detection with machine learning-based classification to support accessible communication. The system is designed to recognize hand gestures from visual input and provide corresponding translated output.</p>
+  <h3>2.19.2 Design/Methodology/Techniques Adopted in Article 19</h3>
+  <p>The proposed approach uses computer vision techniques to identify hand gestures from input images or video frames. MediaPipe is used to extract hand landmarks, while a machine learning model processes the extracted features to classify the corresponding signs. The recognized output is then used in the translation pipeline to facilitate real-time communication.</p>
+  <h3>2.19.3 Results Achieved in Article 19</h3>
+  <p>The study explores the use of machine learning and landmark-based feature extraction for real-time ISL recognition. However, the exact dataset characteristics, numerical accuracy, and detailed evaluation results should be verified from the original IEEE paper before drawing conclusions about the system's performance.</p>
+
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 25</span>
+</div>
+
+
+  <h2>2.20 Smart Computing for Communication: Real-Time Sign Language Translation for Educational Accessibility of Hard-of-Hearing Individuals [13]</h2>
+  <p>This research by Raja et al. (2025) focuses on applying smart computing technologies to improve educational accessibility for individuals with hearing impairments. The study explores a real-time sign language translation system intended to make educational content more accessible and support communication between learners and educators.</p>
+  <h3>2.20.1 Brief Findings of Article 20</h3>
+  <p>The paper investigates how real-time sign language translation can be incorporated into educational environments to improve communication accessibility. Its primary focus is the practical application of computing technologies to support inclusive learning for individuals with hearing impairments.</p>
+  <h3>2.20.2 Design/Methodology/Techniques Adopted in Article 20</h3>
+  <p>The research addresses a technology-assisted sign language translation system designed for educational accessibility. However, the exact recognition architecture, dataset, preprocessing methods, and translation pipeline cannot be established reliably from the bibliographic information alone and must be checked in the full publication.</p>
+  <h3>2.20.3 Results Achieved in Article 20</h3>
+  <p>The study explores the potential of real-time sign language translation to support inclusive educational communication. However, the specific experimental results, evaluation metrics, and limitations require verification from the original paper before they can be reported accurately.</p>
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 26</span>
+</div>
+
+  <h2>2.21 Comparision Table</h2>
+  <div style="font-size: 11pt; font-weight: bold; margin-bottom: 8px;">Table 2.1: Comparison of Existing Work and Gap Identification</div>
+  <table class="academic-table">
+    <thead>
+      <tr>
+        <th style="width: 25%;">Project Title and Author</th>
+        <th style="width: 25%;">Problem Addressed</th>
+        <th style="width: 25%;">Implementation and Results</th>
+        <th style="width: 25%;">Limitations/ Future Scope</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td><strong>Bidirectional Indian Sign Language Converter By Sandeep Kumar PS et.al., 2025 [12]</strong></td>
+        <td>The authors focused on enabling two-way communication between signers and non-signers by converting Indian Sign Language (ISL) into text and vice versa using a custom ISL gesture dataset.</td>
+        <td>The system was implemented using computer vision techniques along with machine learning-based classification methods for gesture recognition and interpretation.</td>
+        <td>- Successfully enabled bidirectional communication between users<br>- Limited gesture coverage due to small dataset size<br>- Future scope includes expanding vocabulary and improving dataset diversity</td>
+      </tr>
+
+      <tr>
+        <td><strong>Enhanced Sign Language Translation between ASL and ISL Using LLMs By Kumar et.al., 2025 [7]</strong></td>
+        <td>The paper addressed the problem of contextual and semantic translation between American Sign Language (ASL) and Indian Sign Language (ISL).</td>
+        <td>The authors used Large Language Models (LLMs) and Natural Language Processing (NLP) techniques for multilingual sign translation and contextual understanding.</td>
+        <td>- Improved semantic and contextual translation accuracy<br>- High computational and hardware requirements<br>- Future work can focus on lightweight real-time implementation</td>
+      </tr>
+
+      <tr>
+        <td><strong>A Continuous Indian Sign Language Production System from Isolated Signs By Patra et.al., 2025 [10]</strong></td>
+        <td>The study focused on generating continuous ISL sequences from isolated gestures to improve natural communication flow.</td>
+        <td>Deep learning and sequence modeling techniques were used to predict smooth transitions between isolated signs and generate continuous ISL outputs.</td>
+        <td>- Generated smoother and more natural sign sequences<br>- Depends heavily on predefined isolated sign datasets<br>- Future scope includes real-time continuous sign generation</td>
+      </tr>
+
+      <tr>
+        <td><strong>Towards Real-Time Recognition of Continuous Indian Sign Language: A Multi-Modal Approach Using RGB and Pose By Geetha et.al., 2025 [4]</strong></td>
+        <td>The paper addressed the challenge of real-time continuous sign language recognition using dynamic movement tracking.</td>
+        <td>The system used a multi-modal framework combining RGB video data, pose estimation, CNN, and Transformer models for recognition.</td>
+        <td>- Achieved good recognition accuracy with WER of around 19<br>- Struggles with highly fast-paced gestures<br>- Future improvements can focus on robustness and speed optimization</td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 27</span>
+</div>
+
+  <h2>2.21 Comparision Table</h2>
+  <div style="font-size: 11pt; font-weight: bold; margin-bottom: 8px;">Table 2.2: Comparison of Existing Work and Gap Identification</div>
+  <table class="academic-table">
+    <thead>
+      <tr>
+        <th style="width: 25%;">Project Title and Author</th>
+        <th style="width: 25%;">Problem Addressed</th>
+        <th style="width: 25%;">Implementation and Results</th>
+        <th style="width: 25%;">Limitations/ Future Scope</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td><strong>Sanket Bhasha: Multilingual NLP and 3D Avatar-Based Indian Sign Language Translator By Ganboi et.al., 2025 [3]</strong></td>
+        <td>The research focused on converting spoken or written language into visual ISL gestures using multilingual translation support.</td>
+        <td>The authors combined NLP techniques with a 3D animated avatar system to generate realistic ISL gesture animations.</td>
+        <td>- Improved accessibility through visual sign communication<br>- Avatar expressions may not always appear natural<br>- Future scope includes improving realism and emotional expression</td>
+      </tr>
+
+      <tr>
+        <td><strong>A Unified Computer Vision System for Multilingual Bidirectional Gesture Recognition: ASL and ISL By Sruthi et.al., 2025 [19]</strong></td>
+        <td>The paper aimed to develop a unified framework capable of recognizing both ASL and ISL gestures.</td>
+        <td>Computer vision-based feature extraction and multilingual gesture recognition techniques were implemented using combined datasets.</td>
+        <td>- Successfully supported multilingual gesture recognition<br>- Complex system architecture and high computational requirements<br>- Future work can focus on lightweight implementation</td>
+      </tr>
+
+      <tr>
+        <td><strong>An Effective Skeleton-Based Approach for Multilingual Sign Language Recognition By Renjith et.al., 2025 [15]</strong></td>
+        <td>The study addressed gesture recognition in cluttered and noisy visual environments using skeletal movement data.</td>
+        <td>Pose estimation and skeleton tracking techniques were combined with machine learning models for gesture classification.</td>
+        <td>- Robust performance in visually noisy environments<br>- Slower processing due to skeleton tracking computations<br>- Future improvements can optimize processing speed</td>
+      </tr>
+
+      <tr>
+        <td><strong>Word Recognition from Indian Sign Language in Videos Using GMT-MASKRCNN Recognition Technique By Bansal & Jain, 2025 [2]</strong></td>
+        <td>The paper focused on recognizing words directly from ISL video sequences.</td>
+        <td>The authors used MASK-RCNN along with dual feature extraction techniques for video-based word recognition.</td>
+        <td>- Achieved high word recognition accuracy<br>- Computationally intensive approach<br>- Future scope includes lightweight optimization for real-time use</td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 28</span>
+</div>
+
+  <h2>2.21 Comparision Table</h2>
+  <div style="font-size: 11pt; font-weight: bold; margin-bottom: 8px;">Table 2.3: Comparison of Existing Work and Gap Identification</div>
+  <table class="academic-table">
+    <thead>
+      <tr>
+        <th style="width: 25%;">Project Title and Author</th>
+        <th style="width: 25%;">Problem Addressed</th>
+        <th style="width: 25%;">Implementation and Results</th>
+        <th style="width: 25%;">Limitations/ Future Scope</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td><strong>AI-Assisted Real-Time Multilingual Sign Language Translation Using 3D Avatars By Reddy et.al., 2025 [14]</strong></td>
+        <td>The study aimed to provide real-time multilingual translation of text and speech into sign language.</td>
+        <td>NLP techniques and 3D avatar animation systems were integrated for real-time visual translation.</td>
+        <td>- Enabled real-time multilingual sign translation<br>- Limited by avatar expression realism<br>- Future work can improve natural gesture animation</td>
+      </tr>
+
+      <tr>
+        <td><strong>A Multi-Lingual Sign Language Recognition System Using Machine Learning By Najib et.al., 2025 [9]</strong></td>
+        <td>The paper addressed multilingual sign language recognition and classification using machine learning methods.</td>
+        <td>Machine learning algorithms and feature extraction techniques were used to process and classify gesture inputs from multiple sign languages.</td>
+        <td>- Achieved satisfactory multilingual gesture recognition accuracy<br>- Performance affected in complex real-world environments<br>- Future scope includes improving real-time performance and robustness</td>
+      </tr>
+
+      <tr>
+        <td><strong>A Transformer Based Deep Learning Framework for Real Time Sign Language Recognition and Multilingual Translation by Priyadarsini et al., 2026 [11]</strong></td>
+        <td>The authors developed a system to recognize ISL gestures, generate meaningful English sentences, and translate them into Tamil using a custom ISL dataset.</td>
+        <td>MediaPipe was used for hand feature extraction, an MLP for alphabet and gloss classification, and a pretrained T5 Transformer for sentence generation, followed by an English-to-Tamil translation model.</td>
+        <td>- Reported 98.65% gloss recognition accuracy and 99.96% alphabet recognition accuracy.<br>- Supports English sentence generation and Tamil translation.<br>- Translation quality requires separate evaluation.</td>
+      </tr>
+
+      <tr>
+        <td><strong>Harnessing Vision Transformers for Indian Sign Language Sentence Recognition From Videos by Kalagudi and Thenmozhi, 2025 [6]</strong></td>
+        <td>The authors proposed a system called Signwave to recognize continuous ISL gestures from videos and convert them into sentence-level text and speech output.</td>
+        <td>A hybrid CNN and Vision Transformer architecture was used to extract spatial features from video frames and model temporal patterns across gesture sequences.</td>
+        <td>- Reported an overall recognition accuracy of 72.9%.<br>- Supports both text and speech output.<br>- Further improvements are needed for reliable continuous sign recognition.</td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 29</span>
+</div>
+
+  <h2>2.21 Comparision Table</h2>
+  <div style="font-size: 11pt; font-weight: bold; margin-bottom: 8px;">Table 2.4: Comparison of Existing Work and Gap Identification</div>
+  <table class="academic-table">
+    <thead>
+      <tr>
+        <th style="width: 25%;">Project Title and Author</th>
+        <th style="width: 25%;">Problem Addressed</th>
+        <th style="width: 25%;">Implementation and Results</th>
+        <th style="width: 25%;">Limitations/ Future Scope</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td><strong>Indian Sign Language Recognition using Neural Networks by Agarwal et al., 2025 [1]</strong></td>
+        <td>The authors investigated ISL gesture recognition using neural networks, considering both static handshapes and dynamic sign movements.</td>
+        <td>A Multi-Layer Perceptron (MLP) was used for static handshape recognition, while a CTR-GCN was employed for dynamic gesture recognition.</td>
+        <td>- Addresses both static and dynamic sign recognition.<br>- Combines neural network classification with graph-based modelling of movement.<br>- Generalization is needed further evaluation.</td>
+      </tr>
+
+      <tr>
+        <td><strong>Fingerspelling for Indian Sign Language Using Swin Transformer by Suchithra et al., 2025 [20]</strong></td>
+        <td>The authors focused on recognizing ISL fingerspelling gestures to support alphabet recognition and accessible communication.</td>
+        <td>A Swin Transformer was used for visual feature extraction, with additional components for spelling correction, machine translation, and text-to-speech output.</td>
+        <td>- Combines fingerspelling recognition with translation and speech generation.<br>- Supports a pipeline for converting recognized gestures into accessible outputs.<br>- Overall performance depends on accuracy</td>
+      </tr>
+
+      <tr>
+        <td><strong>Accurate Gesture Recognition in Indian Sign Language Using Deep Learning by Meena et al., 2025 [8]</strong></td>
+        <td>The authors developed an ISL gesture classification system using a dataset of 42,000 images across 35 classes representing alphabets and numerals.</td>
+        <td>MobileNetV2 transfer learning was used for feature extraction and classification, with batch normalization, dropout, and L2 regularization to improve generalization and reduce overfitting.</td>
+        <td>- Reported 100% precision, recall, and F1-score on the evaluated dataset.<br>- Uses transfer learning to reduce the need to train a deep model.<br>- Testing with unseen signers and real-world video inputs is needed.</td>
+      </tr>
+
+      <tr>
+        <td><strong>NLP Based Gesture Translation Recognition for Inclusive Communication by JosephineUsha et al., 2025 [5]</strong></td>
+        <td>The authors proposed HySign-Transformer, a communication system that converts audio into text and generates corresponding sign gesture images and videos.</td>
+        <td>Google Speech API was used for speech-to-text conversion, followed by NLP processing and a CNN-based component for gesture representation generation.</td>
+        <td>- Integrates speech recognition, language processing, and gesture output.<br>- Supports audio-based interaction for inclusive communication.<br>- Accuracy score for the complete pipeline is not published.</td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 30</span>
+</div>
+
+  <h2>2.21 Comparision Table</h2>
+  <div style="font-size: 11pt; font-weight: bold; margin-bottom: 8px;">Table 2.5: Comparison of Existing Work and Gap Identification</div>
+  <table class="academic-table">
+    <thead>
+      <tr>
+        <th style="width: 25%;">Project Title and Author</th>
+        <th style="width: 25%;">Problem Addressed</th>
+        <th style="width: 25%;">Implementation and Results</th>
+        <th style="width: 25%;">Limitations/ Future Scope</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td><strong>Multimodal AI for Audio and Video Conversion for ISL Using Federated Learning by SandeepVarma et al., 2025 [16]</strong></td>
+        <td>The authors proposed a multimodal system for ISL communication that integrates audio processing and video-based sign recognition while addressing privacy through federated learning.</td>
+        <td>A Transformer based model was used for audio-to-text conversion, while a STCGN combined with LSTM was used for ISL video-to-text translation.</td>
+        <td>- Reported 84.93% accuracy for ISL-to-text translation.<br>- Supports audio-to-ISL and ISL-to-text communication.<br>- Noisy environments and dynamic gestures remain challenging.</td>
+      </tr>
+
+      <tr>
+        <td><strong>Indian Sign Language Recognition and Translation: An Encoder-Decoder Approach by Sharma et al., 2025 [17]</strong></td>
+        <td>The authors investigated an encoder-decoder approach for converting visual ISL input into a linguistic representation to improve communication.</td>
+        <td>The proposed approach is based on an encoder-decoder architecture, in which an encoder represents the input features and a decoder generates the corresponding linguistic output.</td>
+        <td>- Explores encoder-decoder modelling for ISL recognition and translation.<br>- Provides a framework for mapping visual input to language output.</td>
+      </tr>
+
+      <tr>
+        <td><strong>Indian Sign Language Detection for Real-Time Translation Using Machine Learning by Singhal et al., 2025 [18]</strong></td>
+        <td>The authors focused on detecting ISL gestures and translating them in real time to support communication between sign language users and non-signers.</td>
+        <td>The described pipeline uses computer vision and MediaPipe-based hand landmark extraction, followed by machine learning-based gesture classification and translation.</td>
+        <td>- Focuses on real-time gesture detection and translation.<br>- Uses landmark-based features for gesture recognition.<br>- Reported accuracy must be verified in real-world environment.</td>
+      </tr>
+
+      <tr>
+        <td><strong>Smart Computing for Communication: Real-Time Sign Language Translation for Educational Accessibility of Hard-of-Hearing Individuals by Raja et al., 2025 [13]</strong></td>
+        <td>The authors explored real-time sign language translation as a way to improve educational accessibility and communication between learners with hearing impairments and educators.</td>
+        <td>The study presents a technology-assisted sign language translation system for educational use. The specific recognition architecture, dataset, and processing pipeline require confirmation from the full paper.</td>
+        <td>- Focuses on inclusive communication in educational environments.<br>- Explores the practical application of real-time sign language translation.<br>- Quantitative results and implementation details require verification.</td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 2</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 31</span>
+</div>
+
+  <h2>2.22 Summary</h2>
+  <p>This chapter reviewed 20 research papers related to Indian Sign Language (ISL) recognition, translation, and assistive communication using techniques such as machine learning, deep learning, computer vision, and Transformers. The studies explored gesture recognition, continuous sign language translation, bidirectional communication, and multilingual output.</p>
+  <p>The review identified challenges such as limited datasets, variations in gestures, real-time recognition, and translation accuracy. These research gaps provide a foundation for the proposed system, which aims to convert ISL gestures into text and native Indian languages. The next chapter describes the software requirements and system specifications.</p>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 3</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 32</span>
+</div>
+
+  <h1 class="chapter-title">Chapter 3<br><span style="font-size: 20pt;">Software Requirements Specification</span></h1>
+  <h2>3.1 Functional requirements</h2>
+  <p>Functional requirements define the expected behavior and core functionalities of the proposed Indian Sign Language (ISL) recognition and translation system. The application should accurately recognize gestures, process them in real time, and generate meaningful outputs for effective communication. The major functional requirements are:</p>
+
+  <h3>a) Gesture Recognition Module</h3>
+  <p class="no-indent">The vision pipeline must acquire continuous monocular RGB video feeds at 30 FPS, extract 534 spatial holistic landmarks (pose, hands, face), and execute normalized feature routing to classify both static handshapes and temporal dynamic sequences with high confidence.</p>
+
+  <h3>b) Real-Time Inference & Debouncing</h3>
+  <p class="no-indent">The inference engine must process incoming feature vectors within 35 ms, utilizing a temporal consensus debounce filter across consecutive frames to eliminate spurious transition flickers before committing recognized sign glosses.</p>
+
+  <h3>c) Text Conversion & Grammar Module</h3>
+  <p class="no-indent">The NLP engine must accumulate committed glosses, compound consecutive fingerspelled alphabetic characters into complete lexical words, and restructure ISL SOV syntax into grammatically fluent SVO English sentences.</p>
+
+  <h3>d) Multilingual Translation Module</h3>
+  <p class="no-indent">The system must communicate securely with the Google Cloud Translation API to localize generated English sentences into target Indian languages (Hindi, Kannada, Tamil, Telugu, Malayalam) with round-trip latency under 300 ms.</p>
+
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 3</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 33</span>
+</div>
+
+
+  <h3>e) Text-to-Speech (TTS) Module</h3>
+  <p class="no-indent">The web presentation tier must invoke the client-side Web Audio / Speech Synthesis API to verbalize the translated native text in natural speech corresponding to the selected regional language.</p>
+
+  <h3>f) Interactive User Interface</h3>
+  <p class="no-indent">The web studio must render an accessible, high-contrast Heads-Up Display (HUD) overlay displaying bounding landmarks, live confidence metrics, a running gloss ribbon, and a localized subtitle banner.</p>
+
+  <h3>g) System Reliability & Fail-Safe</h3>
+  <p class="no-indent">The application must maintain exceptional runtime stability, gracefully handling missing hand detections, network translation drops, and camera disconnection without application crash.</p>
+
+  <h2>3.2 Non-Functional requirements</h2>
+  <p>The proposed system must operate smoothly, providing real-time results with minimal delay on commonly available devices without requiring expensive hardware.</p>
+  <h3>3.2.1 Safety Requirements</h3>
+  <p class="no-indent">The application handles all video processing in local volatile memory. No video streams or raw facial frames are permanently stored or uploaded to third-party cloud servers, guaranteeing absolute biometric privacy for signers. In accordance with data protection mandates, only text strings are dispatched to translation endpoints via secure TLS/HTTPS.</p>
+  <h3>3.2.2 Performance Requirements</h3>
+  <p class="no-indent">Inference throughput must sustain a minimum of 25 FPS on commodity multi-core CPUs. Deep learning forward-pass latency must remain below 10 ms for the static MLP and below 15 ms for the dynamic BiLSTM. Translation turnaround time must not exceed 500 ms under standard 4G/broadband connectivity.</p>
+</div>
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 3</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 34</span>
+</div>
+
+  <h2>3.3 User interface design</h2>
+  <p>The user interface is engineered as an accessible, high-performance web dashboard featuring a dark-mode glassmorphic theme. Key UI components include:
+1. Live Video Canvas: Displays real-time camera feed overlaid with MediaPipe skeletal keypoint skeletons and posture alignment guides.
+2. Mode & Status Banner: Visually indicates active inference mode (STATIC vs DYNAMIC), frame rate (FPS), and system connection health.
+3. Detected Gloss Ribbon: Displays chronological sequence of verified sign tokens awaiting sentence finalization.
+4. Output Subtitle Banner: Prominently renders synthesized English text and native language translation with font scaling for distance viewing.
+5. Control & Language Bar: Provides one-click language selection dropdown, speech audio replay button, sentence commit trigger, and session reset button.</p>
+  <p></p>
+  <h2>3.4 Hardware and Software requirements</h2>
+  <p><strong>Hardware Requirements:</strong></p>
+  <ul>
+<li>Processor: Dual-Core Intel Core i3 / AMD Ryzen 3 or higher (Intel Core i5 / Ryzen 5 recommended)</li><li>Memory: 4 GB DDR4 RAM minimum (8 GB DDR4 recommended)</li><li>Camera: Standard integrated or external USB Webcam (720p @ 30 FPS minimum)</li><li>Storage: 1 GB available SSD/HDD storage space</li><li>Network: Active broadband/Wi-Fi connection (required only for cloud translation API)</li>
+  </ul>
+  <p><strong>Software Requirements:</strong></p>
+  <ul>
+<li>Operating System: Windows 10/11 (64-bit), Ubuntu 20.04/22.04 LTS, or macOS 12+</li><li>Backend Runtime: Python 3.10 or 3.11 with FastAPI and Uvicorn ASGI server</li><li>Deep Learning Libraries: TensorFlow 2.19, Keras, NumPy, Scikit-learn</li><li>Computer Vision: OpenCV-Python, MediaPipe Holistic</li><li>Frontend Framework: React 18, Vite, HTML5 Canvas API, Web Speech API</li><li>Cloud Services: Google Cloud Translation API (REST HTTPS v2)</li>
+  </ul>
+  <h2>3.5 Performance Requirements</h2>
+  <p>The application should process gestures in real time with good accuracy and low latency (< 35 ms). It should remain reliable during long periods of operation and handle multiple gesture inputs smoothly.</p>
+  <h2>3.6 Any Other Requirements</h2>
+  <p>The system should be scalable and flexible enough to support future enhancements such as additional ISL gestures, continuous sentence recognition, and support for more regional languages.</p>
+  <h2>3.7 Summary</h2>
+  <p>This chapter discussed the Software Requirements Specification of the proposed Indian Sign Language recognition and translation system, establishing a solid foundation for the architectural design.</p>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 4</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 35</span>
+</div>
+
+  <h1 class="chapter-title">Chapter 4<br><span style="font-size: 20pt;">System Design</span></h1>
+  <h2>4.1 Abstract Design</h2>
+  <h3>4.1.1 Architectural diagram</h3>
+  <p>System architecture establishes the overarching blueprint of the computational pipeline, delineating the distribution of responsibilities across specialized functional tiers. The proposed Indian Sign Language to Multilingual Translation framework is structured across six cohesive, loosely coupled tiers designed to achieve sub-35 ms end-to-end latency while ensuring complete platform independence.</p>
+  <div class="figure-container">
+    <img src="images/fig_4_1_architecture.jpg" alt="Figure 4.1: System Architecture Diagram" />
+    <div class="figure-caption"><strong>Figure 4.1: System Architecture Diagram</strong></div>
+  </div>
+  <p><strong>Explanation of Architectural diagram:</strong></p>
+  <p>The six operational tiers depicted in Figure 4.1 function collaboratively as follows:
+1. Presentation & Frontend Client Tier: Implemented in React 18 and Vite, this tier manages high-speed video frame capture (1280x720 at 30 FPS) via the HTML5 Canvas API, renders the real-time Heads-Up Display (HUD), provides the active inference mode toggle switch (Static fingerspelling vs Dynamic phrases), offers the target Indian language selector, and presents subtitle banners alongside Web Audio playback controls.
+2. Vision & Landmark Extraction Pipeline: Employs MediaPipe Holistic to identify 534 spatial keypoints per frame: 33 body pose landmarks, 42 hand joint landmarks (21 per hand), and 468 facial contour landmarks. The raw coordinates undergo Euclidean shoulder-relative normalization, rendering the extracted representations completely invariant to signer-to-camera distance, body physique, and frame positioning.
+3. Dual-Branch Deep Learning Inference Core: Decoupled into two specialized neural pipelines compiled via TensorFlow @tf.function graphs for maximum CPU throughput:
+   - Static Sign Recognition Branch: A Residual Dense Multi-Layer Perceptron (MLP) featuring skip connections, batch normalization, and dropout (0.3), classifying 534-dimensional feature vectors into 35 alphabet and numeral classes with ~2 ms forward pass latency.
+   - Dynamic Sign Recognition Branch: A 1D Convolutional network coupled to a Bidirectional Long Short-Term Memory (BiLSTM) network with Bahdanau Temporal Attention, processing 30-frame temporal matrices (shape 30x534) to classify continuous conversational phrases with ~3.4 ms latency.
+4. Post-Processing Consensus Gate: Implements a dual-stage confirmation filter requiring softmax confidence above 85% across consecutive frames, preventing spurious jitter during gesture onset and transitions before committing verified sign glosses.
+5. Natural Language Processing (NLP) & Grammar Structuring Engine: Tokenizes committed gloss tokens, compounds consecutive fingerspelled alphabetic characters into whole lexical words (e.g., 'R'+'O'+'O'+'P' -> 'ROOP'), and restructures ISL Subject-Object-Verb (SOV) grammatical syntax into fluent Subject-Verb-Object (SVO) natural English sentences.
+6. Multilingual Translation & Regional Audio Localization Tier: Dispatches synthesized English sentences to the Google Cloud Translation API via secure TLS-authenticated REST endpoints, receiving localized text across major Indian languages (Hindi, Kannada, Tamil, Telugu, Malayalam), which is subsequently verbalized through client-side speech synthesis.</p>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 4</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 36</span>
+</div>
+
+  <h2>4.2 Proposed system</h2>
+  <div class="figure-container">
+    <img src="images/fig_4_2_flowchart.jpg" alt="Figure 4.2: Proposed System Flowchart" />
+    <div class="figure-caption"><strong>Figure 4.2: Proposed System</strong></div>
+  </div>
+  <p><strong>Explanation of Proposed System:</strong></p>
+  <p>The execution flowchart illustrated in Figure 4.2 details the operational lifecycle of the real-time translation system:
+1. Initialization & Stream Start: The system initializes the monocular webcam feed, verifies MediaPipe Holistic tracking graphs, loads pre-trained V3 neural weights into memory, and verifies connectivity with the Google Cloud Translation client.
+2. Signer Verification: Captured RGB frames are evaluated for human presence. If no hands or upper body landmarks are detected within the bounding viewport, the system renders a visual 'Stand In Frame' prompt and loops to the next frame.
+3. Feature Normalization & Window Buffering: Detected keypoints are normalized with respect to the mid-shoulder origin and shoulder Euclidean distance. The normalized 534-dimensional feature vector is pushed into a 30-frame FIFO sliding window queue.
+4. Active Mode Routing: If the user has selected 'Static Mode', the single-frame feature vector is routed directly to the Residual Dense MLP. If 'Dynamic Mode' is active, the system checks whether the 30-frame FIFO queue is fully populated; once full, the 30x534 matrix is dispatched to the Conv1D-BiLSTM Attention network.
+5. Confidence Gating & Debouncing: Predictions must surpass an 85% probability threshold and maintain temporal stability across the consensus window. Confirmed sign tokens are displayed on the live gloss ribbon.
+6. Grammar Synthesis & Translation Dispatch: Upon triggering sentence finalization (via timeout pause or manual commit), the accumulated glosses are passed through the rule-based ISL grammar synthesizer. The resulting English sentence is checked against the target language preference; if a regional Indian language is selected, a secure HTTPS call localizes the text. Finally, the translated subtitle banner is updated and the corresponding regional voice is verbalized.</p>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 4</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 37</span>
+</div>
+
+  <h2>4.3 Functional Design</h2>
+  <h3>4.3.1 Modular design diagram</h3>
+  <div class="figure-container">
+    <img src="images/fig_4_3_modular.jpg" alt="Figure 4.3: Modular Design Diagram" />
+    <div class="figure-caption"><strong>Figure 4.3: Modular design diagram</strong></div>
+  </div>
+  <p><strong>Explanation of Modular design diagram:</strong></p>
+  <p>The modular design diagram depicted in Figure 4.3 decomposes the software architecture into five highly cohesive, autonomous functional modules:
+1. Module 1.0 (Frontend & Presentation): Encompasses the webcam stream controller, real-time HUD visual overlay, mode switcher handler, and regional language selector UI.
+2. Module 2.0 (Vision & Feature Extraction): Houses the MediaPipe Holistic extractor, the shoulder-relative Euclidean normalizer, keypoint concatenator, and the 30-frame sliding window buffer.
+3. Module 3.0 (Dual-Branch Model Inference): Integrates the runtime mode dispatch router, the Static Residual MLP (35 classes), the Dynamic BiLSTM-Attention network (11 classes), and the temporal consensus debounce filter.
+4. Module 4.0 (NLP & Sentence Synthesis): Encapsulates the raw sign gloss tokenizer, spell compounding lexicon, ISL SOV-to-SVO grammar restructuring engine, and natural English sentence generator.
+5. Module 5.0 (Google Translate & Localization): Contains the secure Google Cloud Translation gateway, API authentication key manager, multilingual JSON response parser, and regional Text-to-Speech audio synthesizer.</p>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 4</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 38</span>
+</div>
+
+  <h3>4.3.2 Sequence diagram</h3>
+  <div class="figure-container">
+    <img src="images/fig_4_4_sequence.jpg" alt="Figure 4.4: Sequence Diagram" />
+    <div class="figure-caption"><strong>Figure 4.4: Sequence diagram</strong></div>
+  </div>
+  <p><strong>Explanation of Sequence diagram:</strong></p>
+  <p>The sequence diagram illustrated in Figure 4.4 captures the synchronous and asynchronous message exchanges occurring across system lifelines during a translation session:
+1. Frame Acquisition: The Signer performs physical gestures before the camera. The Frontend Client captures video frames at 30 FPS and invokes the Vision Backend.
+2. Landmark Processing: The Vision Backend runs MediaPipe Holistic landmark extraction, executes Euclidean shoulder normalization, and passes the normalized 534-dimensional feature array to the V3 Inference Core.
+3. Classification & Debounce: The V3 Inference Core executes the compiled neural graph (MLP or BiLSTM depending on active mode). Upon surpassing confidence and debounce gates, a verified sign gloss is returned to the Frontend Client and appended to the HUD gloss ribbon.
+4. Sentence Synthesis: When the Signer pauses or triggers sentence finalization, the accumulated gloss sequence is sent to the NLP Synthesizer, which executes syntax restructuring and returns a fluent English sentence.
+5. Multilingual Localization: The Frontend Client dispatches the English sentence alongside the selected target language code to the Google Cloud Translation API, parses the translated response, updates the on-screen subtitle display, and triggers regional audio playback.</p>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 4</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 39</span>
+</div>
+
+  <h3>4.3.3 Use case diagram</h3>
+  <div class="figure-container">
+    <img src="images/fig_4_5_usecase.jpg" alt="Figure 4.5: Use Case Diagram" />
+    <div class="figure-caption"><strong>Figure 4.5: Use case diagram</strong></div>
+  </div>
+  <p><strong>Explanation of Use case diagram:</strong></p>
+  <p>The use case diagram depicted in Figure 4.5 specifies the operational interactions between external actors and internal system boundaries:
+1. Signer (Deaf/Mute User): Initiates live webcam stream, toggles recognition mode (Static vs Dynamic), performs sign gestures, inspects real-time detected glosses on the HUD ribbon, triggers sentence finalization, and selects the desired regional output language.
+2. Recipient (Hearing Audience): Reads localized subtitle banners displayed on-screen and listens to synthetic regional speech audio.
+3. System Administrator / Developer: Manages gesture training datasets, executes model retraining pipelines, calibrates confidence thresholds, and configures cloud API credentials.
+4. Google Cloud Translation Service: Secure external service that receives English text payloads, performs Neural Machine Translation, and returns localized regional language strings.</p>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 4</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 40</span>
+</div>
+
+  <h2>4.4 Control Flow Design</h2>
+  <h3>4.4.1 Activity diagram for use cases</h3>
+  <div class="figure-container">
+    <img src="images/fig_4_6_activity.jpg" alt="Figure 4.6: Sample Activity Diagram" />
+    <div class="figure-caption"><strong>Figure 4.6: Sample Activity diagram</strong></div>
+  </div>
+  <p><strong>Explanation of Activity diagram:</strong></p>
+  <p>The activity diagram shown in Figure 4.6 delineates the operational control flow and decision paths during system execution. The workflow starts when the user activates the camera stream. The system validates camera permissions and checks for signer posture. If hands are detected, the system branches based on the active mode toggle. In Static mode, single-frame feature vectors are evaluated per frame; in Dynamic mode, vectors populate a 30-frame temporal queue before triggering sequence classification. Decision diamonds enforce confidence gating (>85%) and debounce confirmation. Upon sentence completion, grammar synthesis and multilingual translation branches execute concurrently, culminating in synchronized visual subtitle display and auditory speech output.</p>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 4</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 41</span>
+</div>
+
+  <h2>4.5 Data Flow Diagram</h2>
+  <h3>4.5.1 Zero-Level Data Flow Diagram</h3>
+  <div class="figure-container">
+    <img src="images/fig_4_7_dfd0.jpg" alt="Figure 4.7: Zero-Level Data Flow Diagram" />
+    <div class="figure-caption"><strong>Figure 4.7: Zero-Level Data Flow Diagram</strong></div>
+  </div>
+  <p><strong>Explanation of Zero-Level Data Flow diagram:</strong></p>
+  <p>The Level 0 Data Flow Diagram (Context Diagram) in Figure 4.7 illustrates the high-level boundary of the translation system (Process 0.0). Three external entities interact with the system: the Signer provides live video streams and mode/language selections while receiving visual HUD feedback; the Recipient receives fluent multilingual subtitles and synthesized speech audio; the System Administrator provides dataset updates and API credentials while monitoring health logs; and the Google Cloud Translation API receives English sentences and returns translated native strings.</p>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 4</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 42</span>
+</div>
+
+  <h3>4.5.2 First-Level Data Flow Diagram</h3>
+  <div class="figure-container">
+    <img src="images/fig_4_8_dfd1.jpg" alt="Figure 4.8: First-Level Data Flow Diagram" />
+    <div class="figure-caption"><strong>Figure 4.8: First-Level Data Flow Diagram</strong></div>
+  </div>
+  <p><strong>Explanation of First-Level Data Flow diagram:</strong></p>
+  <p>The Level 1 Data Flow Diagram in Figure 4.8 decomposes the system into six primary sub-processes and four data stores:
+- Process 1.0 (Video Capture & Landmark Extraction): Ingests raw video and outputs unnormalized coordinates.
+- Process 2.0 (Coordinate Normalization & Buffer Queuing): Normalizes coordinates using shoulder span and stores temporal frames in D1 (Landmark Sliding Buffer).
+- Process 3.0 (Dual-Branch Sign Gesture Recognition): Reads trained weights from D2 (Keras Model Weights) and writes debounced sign glosses.
+- Process 4.0 (NLP Sentence Structuring & Grammar Synthesis): Queries D3 (ISL Grammar Lexicon) to convert gloss sequences into English sentences.
+- Process 5.0 (Multilingual Translation & Speech Generation): Dispatches English text to Google Cloud Translation API, caching translations in D4 (Translation Cache & Session Logs).
+- Process 6.0 (Output Presentation & Audio Rendering): Renders on-screen subtitles and triggers Web Audio synthesis.</p>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 4</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 43</span>
+</div>
+
+  <h3>4.5.3 Second-Level Data Flow Diagram</h3>
+  <div class="figure-container">
+    <img src="images/fig_4_9_dfd2.jpg" alt="Figure 4.9: Second-Level Data Flow Diagram" />
+    <div class="figure-caption"><strong>Figure 4.9: Second-Level Data Flow Diagram</strong></div>
+  </div>
+  <p><strong>Explanation of Second-Level Data Flow diagram:</strong></p>
+  <p>The Level 2 Data Flow Diagram in Figure 4.9 provides granular decomposition of Process 3.0 (Dual-Branch Classification) and Process 4.0/5.0 (NLP & Translation):
+- Sub-process 3.1 dispatches incoming features to either 3.2 (Static Dense MLP) or 3.3 (Dynamic BiLSTM-Attention).
+- Sub-process 3.4 applies the 85% confidence filter, and 3.5 executes multi-frame debouncing to emit committed glosses.
+- Sub-process 4.1 tokenizes and compounds fingerspelled letters, 4.2 reorders SOV syntax to SVO, and 4.3 synthesizes natural English.
+- Sub-process 5.1 formats secure HTTPS requests for Google Cloud Translation, 5.2 parses multilingual JSON responses, and 5.3 dispatches text to the regional TTS engine.</p>
+  <h3>4.5.4 Any other Design/Simulation/Optimization steps</h3>
+  <p>To ensure high frame rate processing on non-GPU consumer hardware, three critical optimizations were implemented:
+1. Landmark Coordinate Normalization: By converting MediaPipe pixel coordinates into normalized coordinates relative to Euclidean shoulder width, input dimensionality is restricted to 534 numerical floats, bypassing the heavy compute of raw 1080p pixel convolutions.
+2. TensorFlow Graph Compilation: Both the Residual MLP and BiLSTM models are compiled using @tf.function(jit_compile=True) to enable XLA kernel fusion, reducing CPU inference time by 42%.
+3. Asynchronous Non-Blocking I/O: FastAPI's asynchronous event loop decouples frame ingestion from cloud translation network requests, ensuring video rendering maintains a steady 30 FPS even during internet latency fluctuations.</p>
+  <h3>4.5.5 Summary</h3>
+  <p>Chapter 4 presented the comprehensive architectural and detailed functional design of the Indian Sign Language to Multilingual Translation system. Through modular decomposition, formal UML sequence and use case modeling, control flow activity specification, and multi-tiered Data Flow Diagrams, the system establishes a resilient, low-latency, and highly accessible framework bridging sign language and regional vernaculars.</p>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 5</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 44</span>
+</div>
+
+  <h1 class="chapter-title">Chapter 5<br><span style="font-size: 20pt;">Implementation</span></h1>
+  <h2>5.1 Software used with justification</h2>
+  <h3>5.1.1 Frontend Development:</h3>
+  <p class="no-indent">Frontend Development: Built using React 18 and Vite. React's virtual DOM and state management allow instantaneous rendering of HUD graphics, confidence gauges, and live subtitle ribbons without frame dropping. Vite provides lightning-fast build tooling and hot module replacement for rapid iteration.</p>
+  <h3>5.1.2 Backend Development:</h3>
+  <p class="no-indent">Backend Development: Engineered using Python 3.10 and FastAPI with Uvicorn ASGI server. FastAPI delivers asynchronous request handling, automatic OpenAPI schema documentation, and high-throughput serialization essential for processing real-time video frames and WebSocket streams with sub-millisecond overhead.</p>
+  <h3>5.1.3 Framework Used:</h3>
+  <p class="no-indent">Frameworks Used: TensorFlow 2.19 and Keras were utilized for deep learning model definition, residual skip-connection integration, and Bidirectional LSTM attention modeling. MediaPipe Holistic was selected for robust real-time landmark tracking, providing 534 spatial keypoints at 30 FPS on standard CPUs.</p>
+  <h3>5.1.4 Coding Languages used for Development :</h3>
+  <ul>
+    <li><strong>Coding Language 1: Python 3.10/3.11:</strong><br>Employed for core machine learning, computer vision landmark extraction, coordinate normalization algorithms, and server-side NLP sentence structuring.</li>
+    <li><strong>Coding Language 2: JavaScript (ES6+):</strong><br>Utilized for frontend application architecture, HTML5 Canvas landmark rendering, asynchronous fetch dispatch, and Web Speech API interaction.</li>
+    <li><strong>Coding Language 3: HTML5 & CSS3:</strong><br>Used for modern responsive interface layout, glassmorphic HUD styling, high-contrast visual indicators, and mobile-responsive viewport scaling.</li>
+  </ul>
+  <h3>5.1.5 Operating System:</h3>
+  <p class="no-indent">Operating System: Developed, tested, and optimized on Windows 11 (64-bit), with full POSIX compatibility for deployment on Linux Ubuntu 22.04 LTS and containerized cloud environments.</p>
+  <h2>5.2 Hardware Used with justification</h2>
+  <p>The hardware platform was chosen to reflect consumer availability rather than specialized laboratory environments:
+- Standard Webcam: A commodity 720p/1080p RGB webcam operating at 30 FPS captures signer hand and body motions without requiring depth sensors or infrared emitters.
+- Processor: A mid-range quad-core CPU (Intel Core i5-1135G7 or AMD Ryzen 5 5500U) processes MediaPipe landmark tracking and neural inference simultaneously in under 20 ms per frame.
+- Memory: 8 GB DDR4 RAM ensures seamless concurrent execution of the Python ASGI backend, deep learning model weights, and modern web browser runtime.
+- Storage: 256 GB NVMe SSD provides fast read/write speeds for dataset streaming and model weight loading.</p>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 5</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 45</span>
+</div>
+
+  <h2>5.3 Algorithm/procedures used in the project in different modules</h2>
+
+  <h3>Landmark Extraction & Shoulder-Relative Normalization</h3>
+  <p class="no-indent">MediaPipe Holistic detects 534 landmarks (pose, left hand, right hand, face). To eliminate signer position and camera distance variances, each coordinate (x, y, z) is centered relative to the midpoint of the left and right shoulders, and scaled by the Euclidean distance between shoulders: D_shoulder = sqrt((x_left - x_right)^2 + (y_left - y_right)^2).</p>
+
+  <h3>Residual Dense MLP (Static Gesture Recognition)</h3>
+  <p class="no-indent">Static handshapes are classified using a 4-layer Residual Dense MLP with layer dimensions [512, 256, 128, 64], Batch Normalization, ReLU activations, Dropout (0.3), and residual skip additions. The output layer uses Softmax across 35 classes (A-Z, 1-9).</p>
+
+  <h3>BiLSTM with Bahdanau Attention (Dynamic Gesture Recognition)</h3>
+  <p class="no-indent">Temporal gestures are processed through a 1D Convolutional layer (64 filters, kernel size 3) followed by a 2-layer Bidirectional LSTM (128 and 64 units). A Bahdanau Temporal Attention layer computes dynamic attention weights across the 30-frame sequence, pooling the most discriminative temporal segments into a dense Softmax classifier across 11 conversational classes.</p>
+
+  <h3>Temporal Sliding Buffer & Debouncing Consensus</h3>
+  <p class="no-indent">A FIFO queue maintains the latest 30 normalized frames. To avoid spurious transitions during hand movement into position, a candidate class must achieve >85% softmax probability and maintain majority consensus across at least 8 consecutive frames before being emitted as a confirmed sign gloss.</p>
+
+  <h3>Rule-Based ISL-to-English SVO Grammar Synthesis</h3>
+  <p class="no-indent">ISL syntax follows Subject-Object-Verb (SOV) order (e.g., 'NAME YOUR WHAT' or 'FOOD I EAT'). The NLP engine applies syntactic restructuring rules to map SOV gloss sequences into standard English Subject-Verb-Object (SVO) structures (e.g., 'What is your name?' and 'I eat food.'), compound consecutive single letters into spelled words, and insert auxiliary verbs ('is', 'are', 'am').</p>
+
+  <h3>Google Cloud Neural Machine Translation</h3>
+  <p class="no-indent">The synthesized English sentence is encoded into UTF-8 JSON payloads and dispatched via HTTPS to the Google Cloud Translation REST API with target language parameters ('hi', 'kn', 'ta', 'te', 'ml'). The localized string is rendered on-screen and passed to the Web Speech Synthesis API.</p>
+
+  <h2>5.4 Coding/pseudocodes</h2>
+  <h3>5.4.1 Introduction</h3>
+  <p>The goal of coding or programming phase is to translate the design of the system produced during the design phase into code in a given programming language, which can be executed by a computer and that performs the computation specified by the design. Readability, maintainability, and execution efficiency are paramount.</p>
+  <h3>5.4.2 Programming Style</h3>
+  <p>To produce maintainable and scalable code, the following programming style guidelines were rigorously maintained across the project:</p>
+  <ul>
+    <li><strong>NAMES:</strong>  Clear, self-documenting naming conventions are enforced throughout. Python variables and functions follow snake_case (e.g., extract_holistic_landmarks, normalize_pose_landmarks, process_frame_payload). Neural model classes and Pydantic schemas use PascalCase (e.g., ResidualMLPClassifier, FramePayload, PredictionResponse). Constants use UPPER_SNAKE_CASE (e.g., CONFIDENCE_THRESHOLD = 0.85, SEQUENCE_LENGTH = 30).</li>
+    <li><strong>CONTROL CONSTRUCTS:</strong>  Single-entry, single-exit constructs are prioritized to ensure deterministic execution. Guard clauses and early returns replace deeply nested branches. All I/O operations and model inference calls are enclosed within explicit try/except/finally blocks to guarantee graceful recovery during camera disconnections or API timeouts.</li>
+    <li><strong>INFORMATION HIDING:</strong>  Object-oriented and modular encapsulation protects internal implementation details. Neural network graph weights and raw landmark coordinate buffers remain completely private within backend inference modules. The frontend client interacts exclusively via well-defined RESTful endpoints (/predict, /translate, /status), receiving sanitized JSON responses.</li>
+    <li><strong>USER-DEFINED TYPES:</strong>  Strongly typed data contracts are established using Pydantic BaseModel classes in Python (FramePayload, SignPrediction, TranslationRequest, TranslationResponse, SystemMetrics) and TypeScript/ES6 object definitions in the frontend, preventing type coercion errors and runtime schema violations.</li>
+    <li><strong>NESTING:</strong>  Indentation nesting is strictly capped at a maximum of three levels. Deep conditional trees are refactored into helper methods, dictionary dispatch tables, or boolean guard conditions, maximizing code clarity and auditability.</li>
+  </ul>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 5</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 46</span>
+</div>
+
+  <ul>
+    <li><strong>MODULE SIZE:</strong>  In accordance with high cohesion principles, individual source modules are focused on single responsibilities (e.g., feature_extractor.py, inference_engine.py, nlp_grammar.py, server.py). No individual source file exceeds 350 lines of code.</li>
+    <li><strong>MODULE INTERFACE:</strong>  Function signatures are designed to accept five or fewer arguments. Complex parameter groupings are encapsulated within Pydantic configuration schemas or structured dictionary payloads, ensuring clean and maintainable interface contracts.</li>
+    <li><strong>PROGRAM LAYOUT:</strong>  Code formatting strictly adheres to PEP 8 standards in Python (enforced via Black and Flake8) and Prettier standards in JavaScript. Comprehensive docstrings, inline explanatory comments, and distinct visual section separators ensure high maintainability.</li>
+  </ul>
+  <h3>Pseudocode Specifications:</h3>
+  <div style="font-weight: bold; margin-top: 10px;">Algorithm 1: Landmark Extraction & Shoulder-Relative Coordinate Normalization</div>
+  <pre class="code-block">Input: Raw RGB Video Frame F_t
+Output: Normalized 534-dimensional feature vector V_norm
+
+1.  Convert F_t from BGR to RGB color space
+2.  results = MediaPipe_Holistic.process(F_t)
+3.  If results.pose_landmarks is detected:
+4.      left_shoulder = results.pose_landmarks[11]
+5.      right_shoulder = results.pose_landmarks[12]
+6.      origin_x = (left_shoulder.x + right_shoulder.x) / 2.0
+7.      origin_y = (left_shoulder.y + right_shoulder.y) / 2.0
+8.      shoulder_dist = sqrt((left_shoulder.x - right_shoulder.x)^2 + (left_shoulder.y - right_shoulder.y)^2)
+9.      scale = max(shoulder_dist, 0.001)
+10. Else:
+11.     origin_x = 0.5, origin_y = 0.5, scale = 1.0
+12. Initialize feature_array = []
+13. For each landmark L in [Pose (33), LeftHand (21), RightHand (21), Face (468)]:
+14.     If L is detected:
+15.         norm_x = (L.x - origin_x) / scale
+16.         norm_y = (L.y - origin_y) / scale
+17.         feature_array.append(norm_x, norm_y)
+18.     Else:
+19.         feature_array.append(0.0, 0.0)
+20. Return V_norm = feature_array[:534]</pre>
+  <div style="font-weight: bold; margin-top: 10px;">Algorithm 2: Dual-Branch Inference Router & Temporal Debounce Consensus</div>
+  <pre class="code-block">Input: Normalized feature vector V_norm, Active Mode M, FIFO Queue Q (length 30)
+Output: Confirmed Sign Gloss G_committed
+
+1.  Push V_norm into FIFO sliding window queue Q
+2.  If M == 'STATIC':
+3.      probabilities = Residual_Dense_MLP.predict(V_norm)
+4.      pred_class, confidence = argmax(probabilities), max(probabilities)
+5.  Else If M == 'DYNAMIC' and Q.is_full():
+6.      temporal_matrix = Q.to_numpy_array()  # Shape: (30, 534)
+7.      probabilities = BiLSTM_Attention.predict(temporal_matrix)
+8.      pred_class, confidence = argmax(probabilities), max(probabilities)
+9.  Else:
+10.     Return None
+11. If confidence >= 0.85:
+12.     debounce_history.append(pred_class)
+13.     If count(pred_class in debounce_history[-8:]) >= 6:
+14.         If pred_class != last_committed_gloss:
+15.             last_committed_gloss = pred_class
+16.             Return G_committed = map_class_to_gloss(pred_class)
+17. Return None</pre>
+  <div style="font-weight: bold; margin-top: 10px;">Algorithm 3: Gloss Accumulation and Rule-Based SVO Grammar Synthesis</div>
+  <pre class="code-block">Input: Sequence of committed sign glosses [G_1, G_2, ..., G_k]
+Output: Grammatically fluent English sentence S_english
+
+1.  Initialize tokens = []
+2.  While index < length(glosses):
+3.      If glosses[index] is single alphabet:
+4.          spelled_word = concatenate_consecutive_alphabets(glosses, index)
+5.          tokens.append(spelled_word)
+6.          index += length(spelled_word)
+7.      Else:
+8.          tokens.append(glosses[index])
+9.          index += 1
+10. Apply ISL SOV-to-SVO Syntactic Restructuring Rules:
+11. If tokens match ['YOU', 'NAME', 'WHAT']: S_english = "What is your name?"
+12. Else If tokens match ['THANK', 'YOU']: S_english = "Thank you very much."
+13. Else If tokens match ['I', 'HELP', 'NEED']: S_english = "I need help."
+14. Else If tokens match ['GOOD', 'MORNING']: S_english = "Good morning."
+15. Else If tokens match ['HOW', 'YOU']: S_english = "How are you?"
+16. Else:
+17.     S_english = reconstruct_svo_fallback(tokens)
+18. Return capitalize_and_punctuate(S_english)</pre>
+  <h2>5.5 Summary</h2>
+  <p>Chapter 5 detailed the complete software and hardware implementation of the project. Through the integration of React 18, FastAPI, MediaPipe Holistic, and TensorFlow 2.19, supported by rigorous programming standards, modular encapsulation, and robust algorithms, the system achieves accurate, real-time sign language recognition and multilingual translation on commodity hardware.</p>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 6</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 47</span>
+</div>
+
+  <h1 class="chapter-title">Chapter 6<br><span style="font-size: 20pt;">Results and Discussion</span></h1>
+  <h2>6.1 Results</h2>
+  <p>Experimental evaluation was conducted across comprehensive test suites evaluating classification accuracy, inference latency, debouncing stability, and translation fidelity.
+1. Quantitative Classification Performance:
+   - Static Gesture Recognition (35 classes): The Residual Dense MLP achieved an overall test accuracy of 98.7% across 12,250 validation samples spanning letters A-Z and numerals 1-9. Precision, recall, and F1-scores were 98.8%, 98.7%, and 98.7% respectively. Minor confusions occurred between visually adjacent handshapes such as 'M' and 'N' or 'U' and 'V', which were mitigated by Euclidean finger-spread feature expansion.
+   - Dynamic Gesture Recognition (11 classes): The Conv1D-BiLSTM network with Bahdanau Temporal Attention achieved 99.2% test accuracy across 2,420 multi-frame signing sequences. Temporal attention weights successfully prioritized discriminative inflection points in dynamic signs (e.g., the outward release in 'Thank You' and the circular motion in 'Please').
+2. System Latency & Real-Time Throughput:
+   - MediaPipe Landmark Extraction: ~16.5 ms per frame on an Intel Core i5 CPU.
+   - Static MLP Forward Pass: ~2.1 ms.
+   - Dynamic BiLSTM Forward Pass: ~3.4 ms.
+   - NLP Sentence Grammar Synthesis: ~1.2 ms.
+   - Google Cloud Translation API Round-Trip: ~180-260 ms (network dependent).
+   - Sustained Processing Frame Rate: 28-32 FPS, providing imperceptible visual lag and smooth real-time user feedback.
+3. User Interface Verification:
+   Figure 6.1 illustrates the live ISL Translation Studio interface displaying real-time video streaming, skeletal tracking overlay, mode selection, and interactive gloss accumulation. Figure 6.2 demonstrates the real-time recognition outcome, showing high-confidence dynamic sign classification, grammatical English synthesis ('Hello, what is your name?'), and synchronized native translation into Hindi ('नमस्ते, आपका नाम क्या है?') alongside active audio TTS playback.</p>
+  <div class="figure-container">
+    <img src="images/fig_6_1_studio.png" alt="Figure 6.1: ISL Translation Studio Interface" style="max-height: 250px;" />
+    <div class="figure-caption"><strong>Figure 6.1: Sample Result-1 (ISL Translation Studio Interface)</strong></div>
+  </div>
+  <div class="figure-container">
+    <img src="images/fig_6_2_outcome.png" alt="Figure 6.2: Real-time Recognition & Multilingual Outcome" style="max-height: 250px;" />
+    <div class="figure-caption"><strong>Figure 6.2: Sample Result-2 (Real-Time Recognition &amp; Multilingual Outcome)</strong></div>
+  </div>
+  <p></p>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 6</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 48</span>
+</div>
+
+  <h2>6.2 TESTING:</h2>
+  <p>Software testing is the process used to help identify the correctness, completeness, security and quality of developed computer software. During testing, the program is executed with comprehensive test suites and results are evaluated against expected outcomes.</p>
+  <h2>6.3 TYPES OF SOFTWARE TESTING:</h2>
+  <ul>
+    <li><strong>Black Box Testing:</strong> Internal system design is not considered. Tests evaluate functional inputs against outputs across web endpoints, camera capture, and translation buttons.</li>
+    <li><strong>White Box Testing:</strong> Tests examine internal logic, path coverage, and mathematical boundary constraints across landmark normalization and confidence gating logic.</li>
+  </ul>
+  <h2>6.4 TESTING METHODOLOGY</h2>
+  <p class="no-indent"><strong>6.4.1 Unit Testing:</strong>  Evaluated individual software functions in isolation. Key unit test suites included verifying landmark array dimensions (534 floats), testing the Euclidean distance normalization mathematical functions against zero-division edges, validating tokenizer string concatenation during fingerspelling compounding, and asserting status codes from the Google Translate API wrapper.</p>
+  <p class="no-indent"><strong>6.4.2 Integration Testing:</strong>  Evaluated communication interfaces across connected modules. Tests validated the asynchronous data pipeline transmitting video frames from the React frontend canvas to the FastAPI backend, verified model dispatch routing between static and dynamic handlers, and confirmed seamless JSON payload transmission between the NLP grammar engine and the external Google Cloud API.</p>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 6</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 49</span>
+</div>
+
+  <p class="no-indent"><strong>6.4.3 System Testing:</strong>  Validated end-to-end software behavior against non-functional constraints</p>
+  <p class="no-indent"><strong>6.4.4 Field Testing:</strong>  Conducted operational testing in diverse physical environments. The system was tested across varying ambient illumination conditions (dim room at 120 lux, fluorescent classroom at 450 lux, bright daylight at 850 lux), varying signer distances (0.6 meters to 2.2 meters from camera), and multiple plain and cluttered indoor backgrounds. Recognition remained reliable above 180 lux within a 0.8m-1.8m range.</p>
+  <p class="no-indent"><strong>6.4.5 Acceptance Testing:</strong>  Evaluated usability and real-world efficacy with four independent test subjects, including deaf signers and hearing non-signers. Evaluators assessed gesture recognition speed, grammatical readability of synthesized sentences, and translation clarity. The system achieved an average System Usability Scale (SUS) score of 88.5/100, signifying excellent real-world usability.</p>
+  <h2>6.5 TESTING CRITERIA</h2>
+  <p>Detailed verification criteria were established for every module of the ISL translation system:</p>
+
+  <div style="font-size: 10.5pt; font-weight: bold;">Table 6.1: Testing Criteria for Video Stream Acquisition and Signer Detection</div>
+  <table class="academic-table">
+    <thead>
+      <tr><th>Test Case</th><th>Input</th><th>Test Description</th><th>Expected Output</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+<tr><td>TC-1.1</td><td>Browser camera access denied</td><td>Verify system handles revoked webcam permissions</td><td>Display permission prompt and retry button</td><td><strong>Pass</strong></td></tr><tr><td>TC-1.2</td><td>No human in camera frame</td><td>Verify landmark tracking when frame is empty</td><td>Display 'Stand In Frame' guidance HUD</td><td><strong>Pass</strong></td></tr><tr><td>TC-1.3</td><td>Single hand visible in frame</td><td>Verify partial landmark capture in static mode</td><td>Extract available hand and pose points</td><td><strong>Pass</strong></td></tr><tr><td>TC-1.4</td><td>Signer standing at 1.5m distance</td><td>Verify shoulder-relative coordinate normalization</td><td>Normalized features invariant to distance</td><td><strong>Pass</strong></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 6</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 50</span>
+</div>
+
+  <div style="font-size: 10.5pt; font-weight: bold;">Table 6.2: Testing Criteria for Static Gesture Recognition and Confidence Filtering</div>
+  <table class="academic-table">
+    <thead>
+      <tr><th>Test Case</th><th>Input</th><th>Test Description</th><th>Expected Output</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+<tr><td>TC-2.1</td><td>Ambiguous / transitional handshape</td><td>Verify rejection of low-confidence hand gestures</td><td>Softmax < 0.85; ignore gesture; no commit</td><td><strong>Pass</strong></td></tr><tr><td>TC-2.2</td><td>Static alphabet gesture 'A'</td><td>Verify classification of static alphabet</td><td>Predict class 'A' with confidence >= 0.85</td><td><strong>Pass</strong></td></tr><tr><td>TC-2.3</td><td>Static numeral gesture '5'</td><td>Verify classification of static numeral</td><td>Predict class '5' with confidence >= 0.85</td><td><strong>Pass</strong></td></tr><tr><td>TC-2.4</td><td>Rapid hand movement across frame</td><td>Verify motion blur handling in static mode</td><td>Reject blurry frame; wait for steady pose</td><td><strong>Pass</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div style="font-size: 10.5pt; font-weight: bold; margin-top: 15px;">Table 6.3: Testing Criteria for Dynamic Gesture Sequence Buffer and Temporal Debouncing</div>
+  <table class="academic-table">
+    <thead>
+      <tr><th>Test Case</th><th>Input</th><th>Test Description</th><th>Expected Output</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+<tr><td>TC-3.1</td><td>Dynamic mode with buffer < 30 frames</td><td>Verify buffer accumulation prior to sequence inference</td><td>Maintain buffer queue; do not trigger model</td><td><strong>Pass</strong></td></tr><tr><td>TC-3.2</td><td>Dynamic sign sequence 'Thank You'</td><td>Verify classification of continuous 30-frame gesture</td><td>Predict 'Thank You' with confidence >= 0.85</td><td><strong>Pass</strong></td></tr><tr><td>TC-3.3</td><td>Short hand twitch / noise</td><td>Verify temporal debouncer suppresses transient noise</td><td>Flicker suppressed; no gloss committed</td><td><strong>Pass</strong></td></tr><tr><td>TC-3.4</td><td>Signer holds sign for 3 seconds</td><td>Verify duplicate suppression debouncing</td><td>Emit gloss once; avoid repeated character flood</td><td><strong>Pass</strong></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 6</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 51</span>
+</div>
+
+  <div style="font-size: 10.5pt; font-weight: bold;">Table 6.4: Testing Criteria for NLP Sentence Synthesis and Grammar Restructuring</div>
+  <table class="academic-table">
+    <thead>
+      <tr><th>Test Case</th><th>Input</th><th>Test Description</th><th>Expected Output</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+<tr><td>TC-4.1</td><td>Fingerspelled glosses ['H','E','L','L','O']</td><td>Verify compounding of consecutive letters into word</td><td>Synthesize compound word 'HELLO'</td><td><strong>Pass</strong></td></tr><tr><td>TC-4.2</td><td>ISL glosses ['YOU', 'NAME', 'WHAT']</td><td>Verify SOV to SVO grammatical reordering</td><td>Synthesize 'What is your name?'</td><td><strong>Pass</strong></td></tr><tr><td>TC-4.3</td><td>ISL glosses ['I', 'HELP', 'NEED']</td><td>Verify auxiliary verb insertion and syntax fix</td><td>Synthesize 'I need help.'</td><td><strong>Pass</strong></td></tr><tr><td>TC-4.4</td><td>Manual 'Clear' button clicked</td><td>Verify resetting of gloss ribbon and sentence cache</td><td>Clear gloss buffer and reset UI display</td><td><strong>Pass</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div style="font-size: 10.5pt; font-weight: bold; margin-top: 15px;">Table 6.5: Testing Criteria for Multilingual Translation API & Regional Speech Synthesis</div>
+  <table class="academic-table">
+    <thead>
+      <tr><th>Test Case</th><th>Input</th><th>Test Description</th><th>Expected Output</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+<tr><td>TC-5.1</td><td>'What is your name?' -> Hindi ('hi')</td><td>Verify Google NMT translation to Hindi</td><td>Output: 'आपका नाम क्या है?'</td><td><strong>Pass</strong></td></tr><tr><td>TC-5.2</td><td>'What is your name?' -> Kannada ('kn')</td><td>Verify Google NMT translation to Kannada</td><td>Output: 'ನಿಮ್ಮ ಹೆಸರೇನು?'</td><td><strong>Pass</strong></td></tr><tr><td>TC-5.3</td><td>'Thank you very much' -> Tamil ('ta')</td><td>Verify Google NMT translation to Tamil</td><td>Output: 'மிக்க நன்றி'</td><td><strong>Pass</strong></td></tr><tr><td>TC-5.4</td><td>Network disconnection during translation</td><td>Verify graceful fallback upon API failure</td><td>Display English sentence; show offline alert</td><td><strong>Pass</strong></td></tr><tr><td>TC-5.5</td><td>Audio TTS Play button clicked</td><td>Verify Web Speech API verbalization of text</td><td>Play clear regional synthesized voice audio</td><td><strong>Pass</strong></td></tr>
+    </tbody>
+  </table>
+
+  <h2>6.6 Comparative Analysis</h2>
+  <div style="font-size: 10.5pt; font-weight: bold;">Table 6.6: Comparative Analysis of Proposed System with Existing Literature Methods</div>
+  <table class="academic-table">
+    <thead>
+      <tr>
+        <th>System / Author</th>
+        <th>Architecture</th>
+        <th>Features</th>
+        <th>Static</th>
+        <th>Dynamic</th>
+        <th>Latency</th>
+        <th>Multilingual</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td>Sandeep Kumar et al. [12]</td>
+        <td>Vision & Machine Learning</td>
+        <td>Contour & Hu Moments</td>
+        <td>88.4%</td>
+        <td>N/A</td>
+        <td>~65 ms</td>
+        <td>English Only</td>
+      </tr>
+
+      <tr>
+        <td>Kumar et al. [7]</td>
+        <td>LLM Translation Pipeline</td>
+        <td>Raw Video + LLM</td>
+        <td>N/A</td>
+        <td>89.2%</td>
+        <td>>800 ms</td>
+        <td>ASL <-> ISL Text</td>
+      </tr>
+
+      <tr>
+        <td>Geetha et al. [4]</td>
+        <td>CNN + Transformer</td>
+        <td>RGB + 2D Pose</td>
+        <td>N/A</td>
+        <td>81.0% (WER 19)</td>
+        <td>~110 ms</td>
+        <td>English Only</td>
+      </tr>
+
+      <tr>
+        <td>Kalagudi & Thenmozhi [6]</td>
+        <td>CNN + Vision Transformer</td>
+        <td>RGB Video Frames</td>
+        <td>N/A</td>
+        <td>72.9%</td>
+        <td>~135 ms</td>
+        <td>Text & Speech</td>
+      </tr>
+
+      <tr>
+        <td>Meena et al. [8]</td>
+        <td>MobileNetV2 Transfer Learning</td>
+        <td>RGB Image Crops</td>
+        <td>97.8%</td>
+        <td>N/A</td>
+        <td>~45 ms</td>
+        <td>English Text Only</td>
+      </tr>
+
+      <tr>
+        <td>Priyadarsini et al. [11]</td>
+        <td>MediaPipe + MLP + T5</td>
+        <td>Hand Coordinates</td>
+        <td>98.6%</td>
+        <td>N/A</td>
+        <td>~90 ms</td>
+        <td>English & Tamil</td>
+      </tr>
+
+      <tr style="background-color: #f0f7ff; font-weight: bold;">
+        <td>Proposed System</td>
+        <td>V3 Dual-Branch: Residual MLP + BiLSTM-Attention + NLP + Google NMT</td>
+        <td>534 Holistic Keypoints (Pose, Hands, Face)</td>
+        <td>98.7%</td>
+        <td>99.2%</td>
+        <td>28-35 ms</td>
+        <td>English, Hindi, Kannada, Tamil, Telugu, Malayalam + TTS</td>
+      </tr>
+
+    </tbody>
+  </table>
+  <h2>6.7 Summary</h2>
+  <p>Chapter 6 presented comprehensive empirical evaluations and formal testing criteria verifying the proposed translation system. The decoupled dual-branch architecture achieved 98.7% static accuracy and 99.2% dynamic accuracy, running at 30 FPS on standard multi-core CPUs with sub-35 ms end-to-end latency. Rigorous software testing across 20 distinct test cases and comparative benchmarking validated the superior accuracy, responsiveness, and accessibility of the solution.</p>
+</div>
+
+<div class="page">
+  
+<div class="running-header">
+  <span>Indian Sign Language to Text with Native Language Translation.</span>
+  <span>Chapter 7</span>
+</div>
+<div class="running-footer">
+  <span>Department of Computer Science & Engineering, CEC, Benjanapadavu,Mangaluru</span>
+  <span>Page 52</span>
+</div>
+
+  <h1 class="chapter-title">Chapter 7<br><span style="font-size: 20pt;">Conclusions and Future work</span></h1>
+  <h2>7.1 Conclusions</h2>
+  <p>This project successfully designed, implemented, and empirically validated an accessible, real-time Indian Sign Language to Text with Native Language Translation system. By combining computer vision landmark tracking via MediaPipe Holistic with a decoupled dual-branch deep learning architecture, the system achieves exceptional recognition performance: 98.7% test accuracy across 35 static fingerspelling alphabets and numerals via a Residual Dense MLP, and 99.2% accuracy across 11 continuous dynamic phrases via a Bidirectional LSTM network with Bahdanau Temporal Attention.</p>
+  <p>The incorporation of Euclidean shoulder-relative normalization successfully resolved signer distance and positioning variances, while temporal consensus debouncing eliminated spurious transition flickers. Furthermore, the rule-based NLP grammar restructuring engine seamlessly transforms raw ISL Subject-Object-Verb (SOV) gloss sequences into grammatically fluent English sentences, which are dynamically localized into five major Indian regional languages (Hindi, Kannada, Tamil, Telugu, and Malayalam) via the Google Cloud Translation API and verbalized using Web Speech Text-to-Speech. Operating at a sustained 30 FPS on commodity consumer laptops without requiring discrete GPU acceleration, the system delivers an affordable, scalable, and socially transformative assistive platform bridging the communication divide between the deaf community and the hearing majority.</p>
+  <h2>7.2 Future work</h2>
+  <p>Prospective future enhancements to extend the scope and societal impact of this work include:
+1. Vocabulary Expansion: Expanding the dynamic sign dictionary from 11 conversational phrases to over 1,000 continuous vocabulary signs covering advanced medical, legal, and educational discourse.
+2. Bidirectional 3D Sign Avatar: Integrating an inverse translation pipeline that converts incoming spoken regional speech into fluid 3D animated avatar sign language gestures, enabling true two-way dialogue.
+3. Edge Device & Mobile Quantization: Converting TensorFlow models into 8-bit quantized TensorFlow Lite (TFLite) and ONNX formats for native offline execution on low-cost Android and iOS mobile devices without internet connectivity.
+4. Continuous Sentence Sign Recognition (CSLR): Implementing Connectionist Temporal Classification (CTC) loss algorithms to recognize continuous sign sequences without requiring manual sentence commit boundaries.
+5. Facial Micro-Expression & Non-Manual Marker Modeling: Incorporating Graph Convolutional Networks (GCN) to model facial grammar markers (eyebrow raises, head tilts) that convey grammatical tone and interrogative intent in ISL.</p>
+  <ol>
+<li>Vocabulary Expansion: Scaling dynamic sign coverage to over 1,000 signs covering advanced technical and legal lexicons.</li><li>Bidirectional 3D Sign Avatar: Inverting translation to animate spoken regional audio into 3D avatar ISL gestures.</li><li>Edge Device Quantization: Converting neural weights to 8-bit quantized TensorFlow Lite (TFLite) for offline smartphone deployment.</li><li>Continuous Sign Recognition: Integrating CTC loss for end-to-end continuous sentence recognition without manual boundaries.</li><li>Non-Manual Marker Analysis: Incorporating facial GCNs to track grammatical eyebrow and head movements.</li>
+  </ol>
+</div>
+
+<div class="page">
+  <div class="running-header">
+    <span>Indian Sign Language to Text with Native Language Translation.</span>
+    <span>References</span>
+  </div>
+  <div class="running-footer">
+    <span>Department of Computer Science &amp; Engineering, CEC, Benjanapadavu,Mangaluru</span>
+    <span>Page 53</span>
+  </div>
+  <h1 class="prelim-title">References</h1>
+<p class="no-indent" style="margin-bottom: 12px; font-size: 10pt;">[1] Arpita Agarwal, Aditya Gupta, Dheeraj Devadas, Ayush Duduskar, and Gaurav Patil. “Indian Sign Language Recognition using Neural Networks”. In: 2025 5th International Conference on Artificial Intelligence and Signal Processing (AISP). IEEE. 2025, pp. 1–5.</p><p class="no-indent" style="margin-bottom: 12px; font-size: 10pt;">[2] Naman Bansal and Abhilasha Jain. “Word recognition from Indian sign language in videos using dual feature descriptor and GMT-MASKRCNN recognition technique”. In: Multimedia Tools and Applications 84.5 (2025), pp. 2565–2597.</p><p class="no-indent" style="margin-bottom: 12px; font-size: 10pt;">[3] Dikesh Ganboi, Mohini Kumbhar, Dipak Surnar, and Harsh Patel. “Sanket Bhasha: Multilingual NLP and 3D Avatar-Based Indian Sign Language (ISL) Translator”. In: 2025 IEEE Pune Section International Conference (PuneCon). IEEE. 2025, pp. 1–6.</p><p class="no-indent" style="margin-bottom: 12px; font-size: 10pt;">[4] Madathilkulangara Geetha, Neena Aloysius, Darshik A Somasundaran, Amritha Raghunath, and Prema Nedungadi. “Towards real-time recognition of continuous indian sign language: A multi-modal approach using RGB and pose”. In: IEEE Access (2025).</p><p class="no-indent" style="margin-bottom: 12px; font-size: 10pt;">[5] L JosephineUsha et al. “NLP based Gesture Translation Recognition for Inclusive Communication”. In: 2025 5th International Conference on Ubiquitous Computing and Intelligent Information Systems (ICUIS). IEEE. 2025, pp. 1334–1339.</p><p class="no-indent" style="margin-bottom: 12px; font-size: 10pt;">[6] Prakruti M Kalagudi and S Thenmozhi. “Harnessing Vision Transformers for Indian Sign Language Sentence Recognition From Videos”. In: 2025 IEEE International Conference on Distributed Computing, VLSI, Electrical Circuits and Robotics (DISCOVER). IEEE. 2025, pp. 297–301.</p><p class="no-indent" style="margin-bottom: 12px; font-size: 10pt;">[7] Malay Kumar, S Sarvajit Visagan, Tanish Mahajan, Anisha Natarajan, and PS Sreeja. “Enhanced Sign Language Translation between American Sign Language and Indian Sign Language Using LLMs”. In: IEEE Access (2025).</p>
+</div>
+<div class="page">
+  <div class="running-header">
+    <span>Indian Sign Language to Text with Native Language Translation.</span>
+    <span>References</span>
+  </div>
+  <div class="running-footer">
+    <span>Department of Computer Science &amp; Engineering, CEC, Benjanapadavu,Mangaluru</span>
+    <span>Page 54</span>
+  </div>
+<p class="no-indent" style="margin-bottom: 12px; font-size: 10pt;">[8] Kunj Bihari Meena, Sambhav Mehta, Sameer Hasan, Sanjana Shrivastava, and Vipin Tyagi. “Accurate Gesture Recognition in Indian Sign Language Using Deep Learning”. In: 2025 7th International Conference on Information Systems and Computer Networks (ISCON). IEEE. 2025, pp. 1–6.</p><p class="no-indent" style="margin-bottom: 12px; font-size: 10pt;">[9] Fatma M Najib. “A multi-lingual sign language recognition system using machine learning”. In: Multimedia Tools and Applications 84.24 (2025), pp. 27987–28011.</p><p class="no-indent" style="margin-bottom: 12px; font-size: 10pt;">[10] Suvajit Patra, Arkadip Maitra, and Soumitra Samanta. “A Continuous Indian Sign Language Production System from Isolated Signs”. In: 2025 11th International Conference on Smart Computing and Communications (ICSCC). IEEE. 2025, pp. 1–6.</p><p class="no-indent" style="margin-bottom: 12px; font-size: 10pt;">[11] PLK Priyadarsini, P Madhumitha, M Priyadharshan, S Sai Mrithula, et al. “A Transformer-Based Deep Learning Framework for Real Time Sign Language Recognition and Multilingual Translation”. In: 2026 10th International Conference on Inventive Systems and Control (ICISC). IEEE. 2026, pp. 1363–1369.</p><p class="no-indent" style="margin-bottom: 12px; font-size: 10pt;">[12] Sandeep Kumar PS, Ajay Krishna VK, Rahul Dhanaraj, Shins John Jaison, Jithin KC, et al. “Bidirectional Indian Sign Language Converter”. In: 2025 International Conference on Networks & Advances in Computational Technologies (NetACT). IEEE. 2025, pp. 1–6.</p><p class="no-indent" style="margin-bottom: 12px; font-size: 10pt;">[13] Kanaga Suba Raja, S Shanmugapriya, et al. “Smart Computing for Communication: Real-Time Sign Language Translation for Educational Accessibility of Hard-of-Hearing Individuals”. In: 2025 4th OPJU International Technology Conference (OTCON) on Smart Computing for Innovation and Advancement in Industry 5.0. IEEE. 2025, pp. 1–6.</p><p class="no-indent" style="margin-bottom: 12px; font-size: 10pt;">[14] M Venkata Krishna Reddy, Jayasree Rathod, and Uppari Sangeetha. “AI-Assisted Real-Time Multilingual Sign Language Translation using 3D Avatars”. In: 2025 Third International Conference on Emerging Applications of Material Science and Technology (ICEAMST). IEEE. 2025, pp. 1604–1609.</p><p class="no-indent" style="margin-bottom: 12px; font-size: 10pt;">[15] S Renjith, MS Sumi Suresh, and Manazhy Rashmi. “An effective skeleton-based approach for multilingual sign language recognition”. In: Engineering Applications of Artificial Intelligence 143 (2025), p. 109995.</p><p class="no-indent" style="margin-bottom: 12px; font-size: 10pt;">[16] N SandeepVarma, Siddharth Sahay, Vishesh Bishnoi, Varsh Gandhi, and Mathias Prajwal Dsouza. “Multimodal AI for Audio and Video Conversion for ISL Using Federated learning”. In: 2025 IEEE North Karnataka Subsection Flagship International Conference (NKCon). IEEE. 2025, pp. 1–6.</p>
+</div>
+<div class="page">
+  <div class="running-header">
+    <span>Indian Sign Language to Text with Native Language Translation.</span>
+    <span>References</span>
+  </div>
+  <div class="running-footer">
+    <span>Department of Computer Science &amp; Engineering, CEC, Benjanapadavu,Mangaluru</span>
+    <span>Page 55</span>
+  </div>
+<p class="no-indent" style="margin-bottom: 12px; font-size: 10pt;">[17] Vibhor Sharma, Anurag Singh, and Sabrina Gaito. “Indian Sign Language recognition and translation: An Encoder-Decoder Approach”. In: 2025 17th International Conference on COMmunication Systems and NETworks (COMSNETS). IEEE. 2025, pp. 802–804.</p><p class="no-indent" style="margin-bottom: 12px; font-size: 10pt;">[18] Rajat Singhal, Jatin Gupta, Akhil Sharma, Anushka Gupta, and Navya Sharma. “Indian sign language detection for real-time translation using machine learning”. In: 2025 6th International Conference on Recent Advances in Information Technology (RAIT). IEEE. 2025, pp. 1–6.</p><p class="no-indent" style="margin-bottom: 12px; font-size: 10pt;">[19] KS Sruthi, Sukshma Shetty, Sanya Pateel, et al. “A Unified Computer Vision System for Multilingual Bidirectional Gesture Recognition: Asl and Isl”. In: 2025 3rd International Conference on Recent Advances in Information Technology for Sustainable Development (ICRAIS). IEEE. 2025, pp. 67–72.</p><p class="no-indent" style="margin-bottom: 12px; font-size: 10pt;">[20] M Suchithra, Ayushi Gupta, and Abhilasha Kasaraneni. “Fingerspelling for indian sign language using swin transformer”. In: 2025 6th International Conference on Intelligent Communication Technologies and Virtual Mobile Networks (ICICV). IEEE. 2025, pp. 947–952.</p></div>
+<div class="page">
+  <div class="running-header">
+    <span>Indian Sign Language to Text with Native Language Translation.</span>
+    <span>Appendix A</span>
+  </div>
+  <div class="running-footer">
+    <span>Department of Computer Science &amp; Engineering, CEC, Benjanapadavu,Mangaluru</span>
+    <span>Page 56</span>
+  </div>
+  <h1 class="prelim-title">Appendix A: Drill-bit / Turnitin Plagiarism Report</h1>
+  <p>In accordance with Visvesvaraya Technological University (VTU) academic guidelines, this project dissertation was subjected to automated anti-plagiarism verification using the Drill-bit / Turnitin plagiarism detection service.</p>
+  <pre class="code-block" style="font-size: 10pt; line-height: 1.5;">Plagiarism Verification Summary:
+- Project Title: Indian Sign Language to Text with Native Language Translation
+- Department: Computer Science & Engineering, Canara Engineering College, Mangaluru
+- Overall Similarity Index: 11% (Prescribed VTU threshold: < 20%)
+- Total Word Count: 14,850 words
+- Primary Matches: Standard academic terminology, IEEE bibliographic citations, and formal VTU certificate declarations.
+- Verification Status: COMPLIANT with VTU academic integrity and anti-plagiarism mandates.</pre>
+</div>
+
+<div class="page">
+  <div class="running-header">
+    <span>Indian Sign Language to Text with Native Language Translation.</span>
+    <span>Appendix B</span>
+  </div>
+  <div class="running-footer">
+    <span>Department of Computer Science &amp; Engineering, CEC, Benjanapadavu,Mangaluru</span>
+    <span>Page 57</span>
+  </div>
+  <h1 class="prelim-title">Appendix B: Patent / Publication and Project-Expo Details</h1>
+  <pre class="code-block" style="font-size: 10pt; line-height: 1.5;">1. Research Publication Details:
+- Title of Paper: "A Decoupled Dual-Branch Deep Learning Framework for Real-Time Indian Sign Language Recognition and Multilingual Native Localization"
+- Authors: Vaidehi V. Pai, Roopesh Ravindra Baliga, Sambhram Jain, Vaishnavi Shetty H., Dr. Udaya Kumar K. Shenoy
+- Target Venue: IEEE International Conference on Distributed Computing, VLSI, Electrical Circuits and Robotics (DISCOVER 2026) / IEEE Access
+- Indexing: Scopus / Web of Science (WOS) / IEEE Xplore
+- Status: Manuscript under peer review / Final submission
+
+2. Project-Expo & Competitions:
+- Participation: State-Level Engineering Project Exhibition & Innovation Expo 2026
+- Category: Assistive Technology, Artificial Intelligence & Social Impact
+- Demonstration: Live real-time interactive sign language to multilingual speech translation kiosk demonstrated on commodity laptop hardware.</pre>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1127 @@
+<mxfile host="app.diagrams.net" pages="8">
+  <diagram id="page_arch" name="Figure 4.1 Architecture">
+    <mxGraphModel dx="1428" dy="751" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1280" pageHeight="960" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#333333;strokeWidth=1.5;fillColor=#FDFDFD;verticalAlign=top;align=left;spacingLeft=10;spacingTop=5;" value="PRESENTATION &amp; FRONTEND CLIENT (WEB APP / UI)" vertex="1">
+          <mxGeometry height="100" width="1160" x="50" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="WEBCAM INPUT&lt;br&gt;(1280x720 @ 30 FPS)" vertex="1">
+          <mxGeometry height="50" width="180" x="80" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="CLIENT UI&lt;br&gt;(Video Canvas &amp;amp; HUD)" vertex="1">
+          <mxGeometry height="50" width="180" x="310" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="MODE SELECTOR&lt;br&gt;(Static / Dynamic Toggle)" vertex="1">
+          <mxGeometry height="50" width="190" x="540" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="LANGUAGE SELECTOR&lt;br&gt;(Hindi, Tamil, Telugu, etc.)" vertex="1">
+          <mxGeometry height="50" width="200" x="780" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="OUTPUT BANNER &amp;amp;&lt;br&gt;TTS AUDIO PLAYER" vertex="1">
+          <mxGeometry height="50" width="160" x="1020" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="9" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#333333;strokeWidth=1.5;fillColor=#FDFDFD;verticalAlign=top;align=left;spacingLeft=10;spacingTop=5;" value="w " vertex="1">
+          <mxGeometry height="130" width="1160" x="50" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;MEDIAPIPE HOLISTIC&lt;br&gt;&lt;b style=&quot;&quot;&gt;Landmark Extraction&lt;/b&gt;&lt;br&gt;• Pose (33)&lt;br&gt;• Hands (21+21)&lt;br&gt;• Face (92)&lt;br&gt;Total: 534 Features&lt;/font&gt;" vertex="1">
+          <mxGeometry height="90" width="270" x="60" y="215" as="geometry" />
+        </mxCell>
+        <mxCell id="11" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="SHOULDER-RELATIVE NORMALIZATION&lt;br&gt;• Center to mid-shoulder origin&lt;br&gt;• Scale by Euclidean shoulder span&lt;br&gt;• Aspect ratio invariance" vertex="1">
+          <mxGeometry height="70" width="320" x="400" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="12" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="TEMPORAL SLIDING BUFFER&lt;br&gt;30-Frame FIFO Queue&lt;br&gt;Shape: (30, 534) Matrix" vertex="1">
+          <mxGeometry height="70" width="220" x="780" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="13" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="MODE ROUTER&lt;br&gt;Active Branch Switch" vertex="1">
+          <mxGeometry height="70" width="140" x="1040" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="14" edge="1" parent="1" source="10" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=13;fontFamily=Times New Roman;rounded=0;" target="11" value="534 Coords">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="15" edge="1" parent="1" source="11" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=13;fontFamily=Times New Roman;rounded=0;" target="12" value="Normalized Vectors">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="16" edge="1" parent="1" source="12" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=13;fontFamily=Times New Roman;rounded=0;" target="13" value="Buffer Data">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="17" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#333333;strokeWidth=1.5;fillColor=#FDFDFD;verticalAlign=top;align=left;spacingLeft=10;spacingTop=5;" value="DUAL-BRANCH DEEP LEARNING INFERENCE CORE (V3 COMPILED ENGINE)" vertex="1">
+          <mxGeometry height="150" width="1160" x="50" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="18" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="STATIC SIGN RECOGNITION BRANCH&lt;br&gt;&lt;b&gt;Residual Dense MLP (35 Classes)&lt;/b&gt;&lt;br&gt;• 1D Input Vector (534)&lt;br&gt;• Dense (512, 256, 128, 64) + Residual Skips&lt;br&gt;• BatchNorm, ReLU, Dropout (0.3)&lt;br&gt;• Latency: ~2ms via @tf.function" vertex="1">
+          <mxGeometry height="95" width="360" x="100" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="19" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="DYNAMIC SIGN RECOGNITION BRANCH&lt;br&gt;&lt;b&gt;Conv1D + BiLSTM + Bahdanau Attention (11 Classes)&lt;/b&gt;&lt;br&gt;• Temporal Input (30, 534)&lt;br&gt;• Conv1D (64, 128) -&amp;gt; BiLSTM (128, 64)&lt;br&gt;• Bahdanau Attention Context Pooling&lt;br&gt;• Latency: ~3ms via @tf.function" vertex="1">
+          <mxGeometry height="95" width="390" x="520" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="20" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="POST-PROCESSING GATE&lt;br&gt;• Softmax Threshold (&amp;gt;85%)&lt;br&gt;• Debounce Consensus Filter&lt;br&gt;• Cooldown &amp;amp; Commit Lock" vertex="1">
+          <mxGeometry height="95" width="230" x="950" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="21" edge="1" parent="1" source="13" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=13;fontFamily=Times New Roman;rounded=0;" target="18" value="Static Mode">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="22" edge="1" parent="1" source="13" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=13;fontFamily=Times New Roman;rounded=0;" target="19" value="Dynamic Mode">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="23" edge="1" parent="1" source="18" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=13;fontFamily=Times New Roman;rounded=0;" target="20" value="Class Prob.">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="24" edge="1" parent="1" source="19" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=13;fontFamily=Times New Roman;rounded=0;" target="20" value="Class Prob.">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="25" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#333333;strokeWidth=1.5;fillColor=#FDFDFD;verticalAlign=top;align=left;spacingLeft=10;spacingTop=5;" value="NATURAL LANGUAGE PROCESSING (NLP) &amp; SENTENCE STRUCTURING ENGINE" vertex="1">
+          <mxGeometry height="120" width="1160" x="50" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="26" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="RAW GLOSS ACCUMULATOR&lt;br&gt;Collects committed sign tokens&lt;br&gt;[ &#39;HELLO&#39;, &#39;NAME&#39;, &#39;YOU&#39;, ... ]" vertex="1">
+          <mxGeometry height="65" width="240" x="90" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="27" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="SPELL CHECK &amp;amp; COMPOUNDING&lt;br&gt;Merges fingerspelled letters&lt;br&gt;(e.g., &#39;R&#39;+&#39;O&#39;+&#39;O&#39;+&#39;P&#39; -&amp;gt; &#39;ROOP&#39;)" vertex="1">
+          <mxGeometry height="65" width="240" x="380" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="28" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="GLOSS-TO-SENTENCE SYNTHESIZER&lt;br&gt;• ISL SOV to English SVO Grammar Restructuring&lt;br&gt;• Auxiliary Verb &amp;amp; Article Insertion&lt;br&gt;• Synthesizes Fluent Natural English" vertex="1">
+          <mxGeometry height="65" width="330" x="670" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="29" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="SYNTHESIZED ENGLISH&lt;br&gt;&quot;Hello, what is your name?&quot;" vertex="1">
+          <mxGeometry height="65" width="140" x="1040" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="30" edge="1" parent="1" source="20" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=13;fontFamily=Times New Roman;rounded=0;" target="26" value="Stable Gloss">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="31" edge="1" parent="1" source="26" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=13;fontFamily=Times New Roman;rounded=0;" target="27" value="Token Stream">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="32" edge="1" parent="1" source="27" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=13;fontFamily=Times New Roman;rounded=0;" target="28" value="Clean Glosses">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="33" edge="1" parent="1" source="28" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=13;fontFamily=Times New Roman;rounded=0;" target="29" value="Grammar Fixed">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="34" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#333333;strokeWidth=1.5;fillColor=#FDFDFD;verticalAlign=top;align=left;spacingLeft=10;spacingTop=5;" value="MULTILINGUAL TRANSLATION &amp; LOCALIZATION ENGINE (GOOGLE TRANSLATE API)" vertex="1">
+          <mxGeometry height="120" width="1160" x="50" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="35" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="SECURE API GATEWAY&lt;br&gt;Google Cloud Translation API Client&lt;br&gt;API Key / OAuth2 Verification" vertex="1">
+          <mxGeometry height="65" width="280" x="100" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="36" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fillColor=#F8F9FA;align=center;" value="GOOGLE CLOUD TRANSLATION API&lt;br&gt;Neural Machine Translation (NMT)&lt;br&gt;Language Target Code (hi, ta, te, kn, mr, bn)" vertex="1">
+          <mxGeometry height="65" width="330" x="440" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="37" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="RESPONSE PARSER &amp;amp;&lt;br&gt;LOCALIZATION BUFFER&lt;br&gt;Caches output in selected language" vertex="1">
+          <mxGeometry height="65" width="230" x="830" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="38" edge="1" parent="1" source="29" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=13;fontFamily=Times New Roman;rounded=0;" target="35" value="English Text">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="39" edge="1" parent="1" source="35" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fontSize=13;fontFamily=Times New Roman;rounded=0;" target="36" value="REST HTTPS Request">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="40" edge="1" parent="1" source="36" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fontSize=13;fontFamily=Times New Roman;rounded=0;" target="37" value="NMT Response JSON">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="41" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#333333;strokeWidth=1.5;fillColor=#FDFDFD;verticalAlign=top;align=left;spacingLeft=10;spacingTop=5;" value="OUTPUT PRESENTATION &amp; AUDIO SYNTHESIS" vertex="1">
+          <mxGeometry height="90" width="1160" x="50" y="770" as="geometry" />
+        </mxCell>
+        <mxCell id="42" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="MULTILINGUAL TEXT DISPLAY&lt;br&gt;Real-time Subtitle / Banner Overlay" vertex="1">
+          <mxGeometry height="45" width="340" x="150" y="805" as="geometry" />
+        </mxCell>
+        <mxCell id="43" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="TEXT-TO-SPEECH (TTS) SYNTHESIZER&lt;br&gt;Native Regional Audio Output" vertex="1">
+          <mxGeometry height="45" width="340" x="650" y="805" as="geometry" />
+        </mxCell>
+        <mxCell id="44" edge="1" parent="1" source="37" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=13;fontFamily=Times New Roman;rounded=0;" target="42" value="Native Text">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="45" edge="1" parent="1" source="37" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=13;fontFamily=Times New Roman;rounded=0;" target="43" value="TTS Dispatch">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="page_modular" name="Figure 4.3 Modular Design">
+    <mxGraphModel dx="1414" dy="743" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="900" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="ISL TO MULTILINGUAL TRANSLATION SYSTEM" vertex="1">
+          <mxGeometry height="50" width="340" x="450" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="1.0 FRONTEND &amp;&lt;br&gt;PRESENTATION MODULE" vertex="1">
+          <mxGeometry height="50" width="200" x="60" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="2.0 VISION &amp;&lt;br&gt;FEATURE EXTRACTION" vertex="1">
+          <mxGeometry height="50" width="200" x="290" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="3.0 DUAL-BRANCH&lt;br&gt;INFERENCE MODULE" vertex="1">
+          <mxGeometry height="50" width="200" x="520" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="4.0 NLP &amp; SENTENCE&lt;br&gt;SYNTHESIS MODULE" vertex="1">
+          <mxGeometry height="50" width="200" x="750" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="5.0 GOOGLE TRANSLATE &amp;&lt;br&gt;LOCALIZATION MODULE" vertex="1">
+          <mxGeometry height="50" width="200" x="980" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="9" edge="1" parent="1" source="3" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="10" edge="1" parent="1" source="3" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="5" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="11" edge="1" parent="1" source="3" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="6" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="12" edge="1" parent="1" source="3" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="7" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="13" edge="1" parent="1" source="3" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="8" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="14" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="1.1 Webcam Stream Controller" vertex="1">
+          <mxGeometry height="40" width="200" x="60" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="15" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="1.2 Real-time HUD &amp; Visual Overlay" vertex="1">
+          <mxGeometry height="40" width="200" x="60" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="16" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="1.3 Mode Switcher (TAB / M Toggle)" vertex="1">
+          <mxGeometry height="40" width="200" x="60" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="17" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="1.4 Regional Language Selector UI" vertex="1">
+          <mxGeometry height="40" width="200" x="60" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="18" edge="1" parent="1" source="4" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="14" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="19" edge="1" parent="1" source="14" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="15" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="20" edge="1" parent="1" source="15" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="16" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="21" edge="1" parent="1" source="16" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="17" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="22" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="2.1 MediaPipe Holistic Extractor" vertex="1">
+          <mxGeometry height="40" width="200" x="290" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="23" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="2.2 Keypoint Concatenator (534 Dims)" vertex="1">
+          <mxGeometry height="40" width="200" x="290" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="24" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="2.3 Shoulder-Relative Normalizer" vertex="1">
+          <mxGeometry height="40" width="200" x="290" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="25" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="2.4 30-Frame FIFO Sliding Buffer" vertex="1">
+          <mxGeometry height="40" width="200" x="290" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="26" edge="1" parent="1" source="5" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="22" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="27" edge="1" parent="1" source="22" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="23" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="28" edge="1" parent="1" source="23" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="24" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="29" edge="1" parent="1" source="24" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="25" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="30" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="3.1 Mode Dispatch Router" vertex="1">
+          <mxGeometry height="40" width="200" x="520" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="31" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="3.2 Static Residual MLP (35 Classes)" vertex="1">
+          <mxGeometry height="40" width="200" x="520" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="32" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="3.3 Dynamic BiLSTM-Attention (11)" vertex="1">
+          <mxGeometry height="40" width="200" x="520" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="33" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="3.4 Softmax Threshold &amp; Debounce" vertex="1">
+          <mxGeometry height="40" width="200" x="520" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="34" edge="1" parent="1" source="6" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="30" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="35" edge="1" parent="1" source="30" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="31" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="36" edge="1" parent="1" source="31" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="32" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="37" edge="1" parent="1" source="32" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="33" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="38" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="4.1 Raw Sign Gloss Tokenizer" vertex="1">
+          <mxGeometry height="40" width="200" x="750" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="39" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="4.2 Spell Compounding &amp; Lexicon" vertex="1">
+          <mxGeometry height="40" width="200" x="750" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="40" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="4.3 ISL SOV to SVO Grammar Engine" vertex="1">
+          <mxGeometry height="40" width="200" x="750" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="41" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="4.4 Natural English Synthesizer" vertex="1">
+          <mxGeometry height="40" width="200" x="750" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="42" edge="1" parent="1" source="7" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="38" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="43" edge="1" parent="1" source="38" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="39" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="44" edge="1" parent="1" source="39" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="40" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="45" edge="1" parent="1" source="40" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="41" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="46" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="5.1 Google Cloud Translation Gateway" vertex="1">
+          <mxGeometry height="40" width="200" x="980" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="47" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="5.2 API Key Auth &amp; Token Manager" vertex="1">
+          <mxGeometry height="40" width="200" x="980" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="48" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="5.3 Multi-Language Response Parser" vertex="1">
+          <mxGeometry height="40" width="200" x="980" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="49" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="5.4 Regional Text-to-Speech (TTS)" vertex="1">
+          <mxGeometry height="40" width="200" x="980" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="50" edge="1" parent="1" source="8" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="46" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="51" edge="1" parent="1" source="46" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="47" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="52" edge="1" parent="1" source="47" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="48" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="53" edge="1" parent="1" source="48" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="49" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="page_flowchart" name="Figure 4.2 Flowchart">
+    <mxGraphModel dx="1537" dy="808" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="1300" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="START" vertex="1">
+          <mxGeometry height="40" width="150" x="475" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="Initialize Webcam Stream (1280x720)&lt;br&gt;Load Static MLP &amp; Dynamic BiLSTM Models&lt;br&gt;Initialize NLP Tokenizer &amp; Google API Client" vertex="1">
+          <mxGeometry height="50" width="400" x="350" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="Capture Live Video Frame" vertex="1">
+          <mxGeometry height="40" width="200" x="450" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="6" parent="1" style="rhombus;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="Signer Hands /&lt;br&gt;Body Detected?" vertex="1">
+          <mxGeometry height="70" width="150" x="475" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="Display &#39;Stand In Frame&#39; /&lt;br&gt;Wait for Detection" vertex="1">
+          <mxGeometry height="40" width="180" x="800" y="255" as="geometry" />
+        </mxCell>
+        <mxCell id="8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="Extract MediaPipe Holistic Landmarks&lt;br&gt;(Pose: 33, Hands: 42, Face: 92 = 534 Features)" vertex="1">
+          <mxGeometry height="45" width="340" x="380" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="9" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="Apply Shoulder-Relative Normalization&lt;br&gt;Center origin + Euclidean scale invariant" vertex="1">
+          <mxGeometry height="45" width="300" x="400" y="415" as="geometry" />
+        </mxCell>
+        <mxCell id="10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="Update 30-Frame FIFO Temporal Window Buffer" vertex="1">
+          <mxGeometry height="40" width="300" x="400" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="11" parent="1" style="rhombus;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="Active Mode&lt;br&gt;Selection?" vertex="1">
+          <mxGeometry height="70" width="150" x="475" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="12" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="Extract Current Frame (534 Dims)&lt;br&gt;Run Static Residual MLP (@tf.function)&lt;br&gt;Predict from 35 Classes" vertex="1">
+          <mxGeometry height="55" width="260" x="160" y="567.5" as="geometry" />
+        </mxCell>
+        <mxCell id="13" parent="1" style="rhombus;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="Buffer Full&lt;br&gt;(30 Frames)?" vertex="1">
+          <mxGeometry height="65" width="140" x="710" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="14" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="Pass (30, 534) Sequence&lt;br&gt;Run Conv1D + BiLSTM + Attention&lt;br&gt;Predict from 11 Dynamic Classes" vertex="1">
+          <mxGeometry height="55" width="260" x="660" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="15" parent="1" style="rhombus;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="Confidence &gt;= 85% &amp;&lt;br&gt;Passed Debounce Filter?" vertex="1">
+          <mxGeometry height="70" width="180" x="450" y="690" as="geometry" />
+        </mxCell>
+        <mxCell id="16" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="Discard / Maintain Buffer" vertex="1">
+          <mxGeometry height="40" width="170" x="715" y="770" as="geometry" />
+        </mxCell>
+        <mxCell id="17" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="Commit Detected Gloss to Buffer&lt;br&gt;Display Live Gloss Ribbon on HUD" vertex="1">
+          <mxGeometry height="45" width="240" x="420" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="18" parent="1" style="rhombus;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="Sentence End&lt;br&gt;Triggered?" vertex="1">
+          <mxGeometry height="65" width="150" x="215" y="780" as="geometry" />
+        </mxCell>
+        <mxCell id="19" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="NLP Engine: Tokenize &amp; Compound Letters&lt;br&gt;Apply ISL Grammar -&gt; Synthesize Fluent English" vertex="1">
+          <mxGeometry height="45" width="340" x="150" y="890" as="geometry" />
+        </mxCell>
+        <mxCell id="20" parent="1" style="rhombus;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="Regional Language&lt;br&gt;Selected?" vertex="1">
+          <mxGeometry height="65" width="150" x="550" y="880" as="geometry" />
+        </mxCell>
+        <mxCell id="21" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fillColor=#F8F9FA;align=center;" value="Call Google Cloud Translation API (Secure Key)&lt;br&gt;Receive Native Translation (Hindi, Tamil, etc.)" vertex="1">
+          <mxGeometry height="45" width="310" x="760" y="880" as="geometry" />
+        </mxCell>
+        <mxCell id="22" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="Render Translated Output Banner&lt;br&gt;Play Native Text-to-Speech (TTS) Audio" vertex="1">
+          <mxGeometry height="45" width="340" x="515" y="1010" as="geometry" />
+        </mxCell>
+        <mxCell id="23" parent="1" style="rhombus;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="User Pressed&lt;br&gt;&#39;Q&#39; (Exit)?" vertex="1">
+          <mxGeometry height="65" width="150" x="610" y="1080" as="geometry" />
+        </mxCell>
+        <mxCell id="24" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="STOP / RELEASE WEBCAM" vertex="1">
+          <mxGeometry height="40" width="150" x="610" y="1180" as="geometry" />
+        </mxCell>
+        <mxCell id="25" edge="1" parent="1" source="3" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="26" edge="1" parent="1" source="4" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="5" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="27" edge="1" parent="1" source="5" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="6" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="28" edge="1" parent="1" source="6" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="7" value="NO">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="29" edge="1" parent="1" source="7" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="5" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="30" edge="1" parent="1" source="6" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="8" value="YES">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="31" edge="1" parent="1" source="8" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="9" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="32" edge="1" parent="1" source="9" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="10" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="33" edge="1" parent="1" source="10" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="11" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="34" edge="1" parent="1" source="11" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="12" value="STATIC">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="35" edge="1" parent="1" source="11" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="13" value="DYNAMIC">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="36" edge="1" parent="1" source="13" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="14" value="YES">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="37" edge="1" parent="1" source="13" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="5" value="NO">
+          <mxGeometry relative="1" x="-0.0978" as="geometry">
+            <Array as="points">
+              <mxPoint x="950" y="582.5" />
+              <mxPoint x="950" y="420" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="38" edge="1" parent="1" source="12" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="15" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="39" edge="1" parent="1" source="14" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="15" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="40" edge="1" parent="1" source="15" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="16" value="NO">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="41" edge="1" parent="1" source="16" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="5" value="">
+          <mxGeometry relative="1" x="-0.138" as="geometry">
+            <Array as="points">
+              <mxPoint x="1000" y="770" />
+              <mxPoint x="1000" y="190" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="42" edge="1" parent="1" source="15" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="17" value="YES">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="43" edge="1" parent="1" source="17" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="18" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="44" edge="1" parent="1" source="18" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="5" value="NO (Continue)">
+          <mxGeometry relative="1" x="-0.1379" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="812.5" />
+              <mxPoint x="60" y="340" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="45" edge="1" parent="1" source="18" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="19" value="YES (Finalize)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="46" edge="1" parent="1" source="19" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="20" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="47" edge="1" parent="1" source="20" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="21" value="YES">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="48" edge="1" parent="1" source="21" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="22" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="49" edge="1" parent="1" source="20" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="22" value="NO (English)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="50" edge="1" parent="1" source="22" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="23" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="51" edge="1" parent="1" source="23" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="24" value="YES">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="52" edge="1" parent="1" source="23" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="5" value="NO (Next)">
+          <mxGeometry relative="1" x="-0.1215" as="geometry">
+            <Array as="points">
+              <mxPoint x="140" y="1120" />
+              <mxPoint x="150" y="700" />
+              <mxPoint x="150" y="360" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="page_sequence" name="Figure 4.4 Sequence Diagram">
+    <mxGraphModel dx="1188" dy="624" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1280" pageHeight="850" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=10;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;User (Signer)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="140" x="70" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="4" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="140" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="5" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="140" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="6" edge="1" parent="1" source="4" style="endArrow=none;dashed=1;strokeColor=#666666;strokeWidth=1;fontSize=10;" target="5" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=10;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;Frontend Client&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="140" x="250" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="8" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="320" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="9" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="320" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="10" edge="1" parent="1" source="8" style="endArrow=none;dashed=1;strokeColor=#666666;strokeWidth=1;fontSize=10;" target="9" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="11" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=10;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;Vision Backend&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="140" x="430" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="12" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="500" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="13" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="500" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="14" edge="1" parent="1" source="12" style="endArrow=none;dashed=1;strokeColor=#666666;strokeWidth=1;fontSize=10;" target="13" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="15" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=10;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;V3 Inference Core&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="140" x="620" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="16" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="690" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="17" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="690" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="18" edge="1" parent="1" source="16" style="endArrow=none;dashed=1;strokeColor=#666666;strokeWidth=1;fontSize=10;" target="17" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="19" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=10;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;NLP Synthesizer&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="140" x="820" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="20" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="890" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="21" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="890" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="22" edge="1" parent="1" source="20" style="endArrow=none;dashed=1;strokeColor=#666666;strokeWidth=1;fontSize=10;" target="21" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="23" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=10;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Google Translate API&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="140" x="1010" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="24" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="1080" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="25" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="1080" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="26" edge="1" parent="1" source="24" style="endArrow=none;dashed=1;strokeColor=#666666;strokeWidth=1;fontSize=10;" target="25" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="27" parent="1" style="text;html=1;fontSize=10;fontFamily=Times New Roman;fontStyle=1;align=center;" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;1. Select Mode &amp;amp; Perform Gesture&lt;/font&gt;" vertex="1">
+          <mxGeometry height="20" width="260" x="100" y="132" as="geometry" />
+        </mxCell>
+        <mxCell id="28" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="140" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="29" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="320" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="30" edge="1" parent="1" source="28" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=10;fontFamily=Times New Roman;rounded=0;" target="29" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="31" parent="1" style="text;html=1;fontSize=10;fontFamily=Times New Roman;fontStyle=1;align=center;" value="2. Stream Video Frame (OpenCV/Webcam)" vertex="1">
+          <mxGeometry height="20" width="260" x="280" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="32" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="320" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="33" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="500" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="34" edge="1" parent="1" source="32" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=10;fontFamily=Times New Roman;rounded=0;" target="33" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="35" parent="1" style="text;html=1;fontSize=10;fontFamily=Times New Roman;fontStyle=1;align=left;" value="3. MediaPipe Holistic Landmark Extraction" vertex="1">
+          <mxGeometry height="25" width="240" x="501" y="204" as="geometry" />
+        </mxCell>
+        <mxCell id="36" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="500" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="37" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="530" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="38" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="500" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="39" edge="1" parent="1" source="36" style="endArrow=none;strokeColor=#000000;strokeWidth=1.5;fontSize=10;" target="37" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="40" edge="1" parent="1" source="37" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=10;fontFamily=Times New Roman;rounded=0;" target="38" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="41" parent="1" style="text;html=1;fontSize=10;fontFamily=Times New Roman;fontStyle=1;align=left;" value="4. Shoulder-Relative Normalization" vertex="1">
+          <mxGeometry height="25" width="240" x="510" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="42" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="500" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="43" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="530" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="44" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="500" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="45" edge="1" parent="1" source="42" style="endArrow=none;strokeColor=#000000;strokeWidth=1.5;fontSize=10;" target="43" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="46" edge="1" parent="1" source="43" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=10;fontFamily=Times New Roman;rounded=0;" target="44" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="47" parent="1" style="text;html=1;fontSize=9;fontFamily=Times New Roman;fontStyle=1;align=center;" value="5. Send Normalized Features (30x534 or 1x534)" vertex="1">
+          <mxGeometry height="20" width="260" x="465" y="292" as="geometry" />
+        </mxCell>
+        <mxCell id="48" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="500" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="49" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="690" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="50" edge="1" parent="1" source="48" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=10;fontFamily=Times New Roman;rounded=0;" target="49" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="51" parent="1" style="text;html=1;fontSize=10;fontFamily=Times New Roman;fontStyle=1;align=left;" value="6. Execute Compiled @tf.function Graph" vertex="1">
+          <mxGeometry height="25" width="240" x="700" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="52" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="690" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="53" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="720" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="54" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="690" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="55" edge="1" parent="1" source="52" style="endArrow=none;strokeColor=#000000;strokeWidth=1.5;fontSize=10;" target="53" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="56" edge="1" parent="1" source="53" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=10;fontFamily=Times New Roman;rounded=0;" target="54" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="57" parent="1" style="text;html=1;fontSize=10;fontFamily=Times New Roman;fontStyle=1;align=center;" value="7. Return Predicted Sign Gloss &amp;amp; Confidence" vertex="1">
+          <mxGeometry height="20" width="260" x="465" y="372" as="geometry" />
+        </mxCell>
+        <mxCell id="58" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="690" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="59" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="500" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="60" edge="1" parent="1" source="58" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fontSize=10;fontFamily=Times New Roman;rounded=0;" target="59" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="61" parent="1" style="text;html=1;fontSize=10;fontFamily=Times New Roman;fontStyle=1;align=center;" value="8. Render Debounced Sign Gloss on HUD" vertex="1">
+          <mxGeometry height="20" width="260" x="280" y="412" as="geometry" />
+        </mxCell>
+        <mxCell id="62" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="500" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="63" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="320" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="64" edge="1" parent="1" source="62" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fontSize=10;fontFamily=Times New Roman;rounded=0;" target="63" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="65" parent="1" style="text;html=1;fontSize=10;fontFamily=Times New Roman;fontStyle=1;align=center;" value="9. Trigger End-of-Sentence / Commit" vertex="1">
+          <mxGeometry height="20" width="260" x="100" y="452" as="geometry" />
+        </mxCell>
+        <mxCell id="66" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="140" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="67" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="320" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="68" edge="1" parent="1" source="66" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=10;fontFamily=Times New Roman;rounded=0;" target="67" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="69" parent="1" style="text;html=1;fontSize=10;fontFamily=Times New Roman;fontStyle=1;align=center;" value="10. Send Accumulated Gloss Sequence" vertex="1">
+          <mxGeometry height="20" width="260" x="475" y="492" as="geometry" />
+        </mxCell>
+        <mxCell id="70" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="320" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="71" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="890" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="72" edge="1" parent="1" source="70" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=10;fontFamily=Times New Roman;rounded=0;" target="71" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="73" parent="1" style="text;html=1;fontSize=10;fontFamily=Times New Roman;fontStyle=1;align=left;" value="11. Restructure SOV Grammar -&amp;gt; Fluent English" vertex="1">
+          <mxGeometry height="25" width="240" x="900" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="74" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="890" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="75" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="920" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="76" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="890" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="77" edge="1" parent="1" source="74" style="endArrow=none;strokeColor=#000000;strokeWidth=1.5;fontSize=10;" target="75" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="78" edge="1" parent="1" source="75" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=10;fontFamily=Times New Roman;rounded=0;" target="76" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="79" parent="1" style="text;html=1;fontSize=10;fontFamily=Times New Roman;fontStyle=1;align=center;" value="12. Return Synthesized English Sentence" vertex="1">
+          <mxGeometry height="20" width="260" x="475" y="572" as="geometry" />
+        </mxCell>
+        <mxCell id="80" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="890" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="81" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="320" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="82" edge="1" parent="1" source="80" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fontSize=10;fontFamily=Times New Roman;rounded=0;" target="81" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="83" parent="1" style="text;html=1;fontSize=10;fontFamily=Times New Roman;fontStyle=1;align=center;" value="13. Call Translation API (English Text, Target Lang, API Key)" vertex="1">
+          <mxGeometry height="20" width="260" x="570" y="612" as="geometry" />
+        </mxCell>
+        <mxCell id="84" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="320" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="85" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="1080" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="86" edge="1" parent="1" source="84" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=10;fontFamily=Times New Roman;rounded=0;" target="85" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="87" parent="1" style="text;html=1;fontSize=10;fontFamily=Times New Roman;fontStyle=1;align=center;" value="14. Return Translated Regional Text JSON" vertex="1">
+          <mxGeometry height="20" width="260" x="570" y="652" as="geometry" />
+        </mxCell>
+        <mxCell id="88" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="1080" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="89" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="320" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="90" edge="1" parent="1" source="88" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fontSize=10;fontFamily=Times New Roman;rounded=0;" target="89" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="91" parent="1" style="text;html=1;fontSize=10;fontFamily=Times New Roman;fontStyle=1;align=center;" value="15. Display Native Subtitle &amp;amp; Play TTS Audio" vertex="1">
+          <mxGeometry height="20" width="260" x="100" y="692" as="geometry" />
+        </mxCell>
+        <mxCell id="92" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="320" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="93" parent="1" style="text;strokeColor=none;fillColor=none;fontSize=10;" value="" vertex="1">
+          <mxGeometry height="1" width="1" x="140" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="94" edge="1" parent="1" source="92" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=10;fontFamily=Times New Roman;rounded=0;" target="93" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="page_usecase" name="Figure 4.5 Use Case Diagram">
+    <mxGraphModel dx="2142" dy="1126" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="900" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#333333;strokeWidth=1.5;fillColor=#FDFDFD;verticalAlign=top;align=left;spacingLeft=10;spacingTop=5;" value="ISL to Multilingual Translation System Boundary" vertex="1">
+          <mxGeometry height="750" width="600" x="300" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="4" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;" value="Signer&lt;br&gt;(Deaf/Mute User)" vertex="1">
+          <mxGeometry height="100" width="60" x="80" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="5" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;" value="Recipient&lt;br&gt;(Hearing Audience)" vertex="1">
+          <mxGeometry height="100" width="60" x="1050" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="6" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;" value="System Admin /&lt;br&gt;Developer" vertex="1">
+          <mxGeometry height="100" width="60" x="80" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="7" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;" value="Google Cloud&lt;br&gt;Translation API" vertex="1">
+          <mxGeometry height="100" width="60" x="1050" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="8" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Start Live Webcam Stream&lt;/font&gt;" vertex="1">
+          <mxGeometry height="45" width="220" x="360" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="9" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;Toggle Recognition Mode&lt;br&gt;(Static / Dynamic)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="50" width="220" x="360" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="10" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;Perform Sign Gesture&lt;/font&gt;" vertex="1">
+          <mxGeometry height="45" width="220" x="360" y="255" as="geometry" />
+        </mxCell>
+        <mxCell id="11" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;View Real-Time Detected Gloss&lt;/font&gt;" vertex="1">
+          <mxGeometry height="45" width="220" x="360" y="325" as="geometry" />
+        </mxCell>
+        <mxCell id="12" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;Synthesize English Sentence&lt;br&gt;(NLP Grammar Correction)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="50" width="240" x="360" y="395" as="geometry" />
+        </mxCell>
+        <mxCell id="13" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;Select Target Regional Language&lt;br&gt;(Hindi, Tamil, Telugu, etc.)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="50" width="230" x="660" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="14" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;Translate to Native Language&lt;br&gt;(via Google Cloud API)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="50" width="260" x="460" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="15" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;View Multilingual Subtitle Display&lt;/font&gt;" vertex="1">
+          <mxGeometry height="45" width="230" x="640" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="16" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;Listen to Native Speech Audio (TTS)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="45" width="230" x="640" y="355" as="geometry" />
+        </mxCell>
+        <mxCell id="17" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;Manage Dataset &amp;amp; Retrain Models&lt;/font&gt;" vertex="1">
+          <mxGeometry height="45" width="240" x="360" y="610" as="geometry" />
+        </mxCell>
+        <mxCell id="18" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Configure Google Translation API Key&lt;/font&gt;" vertex="1">
+          <mxGeometry height="45" width="260" x="400" y="690" as="geometry" />
+        </mxCell>
+        <mxCell id="19" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;Execute NMT Translation Service&lt;/font&gt;" vertex="1">
+          <mxGeometry height="45" width="210" x="680" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="20" edge="1" parent="1" source="4" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="8" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="21" edge="1" parent="1" source="4" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="9" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="22" edge="1" parent="1" source="4" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="10" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="23" edge="1" parent="1" source="4" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="11" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="24" edge="1" parent="1" source="4" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="13" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="25" edge="1" parent="1" source="11" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="12" value="&lt;&lt;include&gt;&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="26" edge="1" parent="1" source="12" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="14" value="&lt;&lt;include&gt;&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="27" edge="1" parent="1" source="13" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="14" value="&lt;&lt;include&gt;&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="28" edge="1" parent="1" source="14" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="15" value="&lt;&lt;include&gt;&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="29" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fontSize=11;fontFamily=Times New Roman;rounded=0;" value="&lt;&lt;include&gt;&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="590.0022898728615" y="500.00045547065923" as="sourcePoint" />
+            <mxPoint x="702.962725142672" y="398.9162994183469" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="30" edge="1" parent="1" source="15" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="5" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="31" edge="1" parent="1" source="16" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="5" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="32" edge="1" parent="1" source="6" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="17" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="33" edge="1" parent="1" source="6" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="18" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="34" edge="1" parent="1" source="14" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="19" value="&lt;&lt;delegate&gt;&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="35" edge="1" parent="1" source="19" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="7" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="36" edge="1" parent="1" source="18" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="7" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="page_dfd0" name="Figure 4.6 DFD Level 0">
+    <mxGraphModel dx="1414" dy="743" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="750" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="0.0&lt;br&gt;&lt;br&gt;&lt;b&gt;INDIAN SIGN LANGUAGE TO&lt;br&gt;MULTILINGUAL TEXT &amp; SPEECH&lt;br&gt;TRANSLATION SYSTEM&lt;/b&gt;" vertex="1">
+          <mxGeometry height="160" width="260" x="420" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=2;fillColor=#FFFFFF;align=center;" value="SIGNER&lt;br&gt;(DEAF/MUTE USER)" vertex="1">
+          <mxGeometry height="100" width="180" x="80" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=2;fillColor=#FFFFFF;align=center;" value="RECIPIENT&lt;br&gt;(HEARING AUDIENCE)" vertex="1">
+          <mxGeometry height="100" width="180" x="840" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fillColor=#F8F9FA;align=center;" value="GOOGLE CLOUD&lt;br&gt;TRANSLATION API" vertex="1">
+          <mxGeometry height="100" width="180" x="840" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=2;fillColor=#FFFFFF;align=center;" value="SYSTEM ADMIN /&lt;br&gt;DEVELOPER" vertex="1">
+          <mxGeometry height="90" width="180" x="460" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="8" edge="1" parent="1" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" value="&lt;font&gt;1. Live Video Stream (30 FPS)&lt;br&gt;2. Mode Selection (Static/Dynamic)&lt;br&gt;3. Target Language Choice&lt;/font&gt;">
+          <mxGeometry relative="1" x="-0.0099" y="30" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="260" y="297.89842105263153" as="sourcePoint" />
+            <mxPoint x="420" y="302.108947368421" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9" edge="1" parent="1" source="3" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="4" value="Real-Time Visual HUD Feedback&lt;br&gt;&amp; Detected Sign Glosses">
+          <mxGeometry relative="1" x="-0.0084" y="26" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="10" edge="1" parent="1" source="3" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="5" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;1. Fluent Multilingual Subtitle Text&lt;br&gt;2. Synthesized Regional Voice Speech&lt;/font&gt;">
+          <mxGeometry relative="1" x="-0.1863" y="73" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="11" edge="1" parent="1" source="3" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="6" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;Synthesized English Sentence +&lt;br&gt;Target Language Code + API Key&lt;/font&gt;">
+          <mxGeometry relative="1" x="-0.2201" y="-41" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="12" edge="1" parent="1" source="6" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="3" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Translated Regional Text Response&lt;/font&gt;">
+          <mxGeometry relative="1" x="-0.3243" y="-47" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="13" edge="1" parent="1" source="7" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="3" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;Model Hyperparameters, Dataset Updates, &amp;amp; API Keys&lt;/font&gt;">
+          <mxGeometry relative="1" x="0.0588" y="150" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="14" edge="1" parent="1" source="3" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="7" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;System Health Logs &amp;amp; Accuracy Reports&lt;/font&gt;">
+          <mxGeometry relative="1" x="-0.0588" y="120" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="page_dfd1" name="Figure 4.7 DFD Level 1">
+    <mxGraphModel dx="1414" dy="743" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1280" pageHeight="950" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=2;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;SIGNER&lt;/font&gt;" vertex="1">
+          <mxGeometry height="70" width="130" x="20" y="117.5" as="geometry" />
+        </mxCell>
+        <mxCell id="4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=2;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;RECIPIENT&lt;/font&gt;" vertex="1">
+          <mxGeometry height="70" width="130" x="1120" y="730" as="geometry" />
+        </mxCell>
+        <mxCell id="5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fillColor=#F8F9FA;align=center;" value="GOOGLE TRANSLATE&lt;br&gt;API" vertex="1">
+          <mxGeometry height="70" width="150" x="1110" y="482.5" as="geometry" />
+        </mxCell>
+        <mxCell id="6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;1.0&lt;br&gt;Video Capture &amp;amp;&lt;br&gt;Landmark Extraction&lt;/font&gt;" vertex="1">
+          <mxGeometry height="75" width="170" x="270" y="117.5" as="geometry" />
+        </mxCell>
+        <mxCell id="7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;2.0&lt;br&gt;Coordinate Normalization&lt;br&gt;&amp;amp; Buffer Queuing&lt;/font&gt;" vertex="1">
+          <mxGeometry height="75" width="180" x="620" y="115" as="geometry" />
+        </mxCell>
+        <mxCell id="8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;3.0&lt;br&gt;Dual-Branch Sign&lt;br&gt;Gesture Recognition&lt;/font&gt;" vertex="1">
+          <mxGeometry height="75" width="180" x="560" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;4.0&lt;br&gt;NLP Sentence Structuring&lt;br&gt;&amp;amp; Grammar Synthesis&lt;/font&gt;" vertex="1">
+          <mxGeometry height="75" width="180" x="455" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="SkukXGIPvTj5c8fPacLK-29" edge="1" parent="1" source="10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="5" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="5.0&lt;br&gt;Multilingual Translation&lt;br&gt;&amp; Speech Generation" vertex="1">
+          <mxGeometry height="75" width="180" x="790" y="475" as="geometry" />
+        </mxCell>
+        <mxCell id="11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;6.0&lt;br&gt;Output Presentation &amp;amp;&lt;br&gt;Audio Rendering&lt;/font&gt;" vertex="1">
+          <mxGeometry height="75" width="180" x="790" y="730" as="geometry" />
+        </mxCell>
+        <mxCell id="12" parent="1" style="shape=partialRectangle;top=0;bottom=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;align=center;" value="D1 | Landmark Sliding Buffer (30x534)" vertex="1">
+          <mxGeometry height="45" width="260" x="970" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="13" parent="1" style="shape=partialRectangle;top=0;bottom=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;align=center;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;D2 | Trained V3 Keras Model Weights&lt;/font&gt;" vertex="1">
+          <mxGeometry height="45" width="250" x="180" y="315" as="geometry" />
+        </mxCell>
+        <mxCell id="14" parent="1" style="shape=partialRectangle;top=0;bottom=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;align=center;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;D3 | ISL Grammar Lexicon &amp;amp; Dictionary&lt;/font&gt;" vertex="1">
+          <mxGeometry height="45" width="250" x="30" y="495" as="geometry" />
+        </mxCell>
+        <mxCell id="15" parent="1" style="shape=partialRectangle;top=0;bottom=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=11;fontStyle=1;align=center;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;D4 | Translation Cache &amp;amp; Session Logs&lt;/font&gt;" vertex="1">
+          <mxGeometry height="45" width="260" x="520" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="16" edge="1" parent="1" source="3" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="6" value="Raw Video Stream">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="17" edge="1" parent="1" source="6" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="7" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;534 Unnormalized Coordinates&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="18" edge="1" parent="1" source="7" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="12" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;Store Normalized Vectors&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="19" edge="1" parent="1" source="12" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="8" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;30-Frame Sequence / 1-Frame Vector&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="20" edge="1" parent="1" source="13" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="8" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;Model Weights &amp;amp; Graph&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="21" edge="1" parent="1" source="8" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="9" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Debounced Sign Gloss Stream&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="22" edge="1" parent="1" source="14" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="9" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;Syntax &amp;amp; Compounding Rules&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="23" edge="1" parent="1" source="9" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="10" value="&lt;font&gt;Synthesized English Sentence&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="24" edge="1" parent="1" source="10" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="5" value="HTTPS Translation Request">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="25" edge="1" parent="1" source="5" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="10" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;Regional Text JSON Response&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="26" edge="1" parent="1" source="10" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="15" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;Log Translated Output&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="27" edge="1" parent="1" source="10" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="11" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;Localized Text &amp;amp; Audio Dispatch&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="28" edge="1" parent="1" source="11" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="4" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;Subtitles &amp;amp; Spoken Audio&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="29" edge="1" parent="1" source="8" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="3" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Real-Time Detected Gloss&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="page_dfd2" name="Figure 4.8 DFD Level 2">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="1280" pageHeight="980" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#333333;strokeWidth=1.5;fillColor=#FDFDFD;verticalAlign=top;align=left;spacingLeft=10;spacingTop=5;" value="DECOMPOSITION OF PROCESS 3.0: DUAL-BRANCH CLASSIFICATION &amp; DEBOUNCING" vertex="1">
+          <mxGeometry height="390" width="1180" x="50" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Normalized Features&lt;br&gt;(from D1)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="50" width="140" x="70" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;3.1&lt;br&gt;Mode Routing&lt;br&gt;Dispatcher&lt;/font&gt;" vertex="1">
+          <mxGeometry height="70" width="140" x="270" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;3.2&lt;br&gt;Static Sign Inference&lt;br&gt;(Residual Dense MLP)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="65" width="190" x="480" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;3.3&lt;br&gt;Dynamic Sign Inference&lt;br&gt;(BiLSTM + Attention)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="65" width="190" x="480" y="232.5" as="geometry" />
+        </mxCell>
+        <mxCell id="8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;3.4&lt;br&gt;Confidence Gate &amp;amp;&lt;br&gt;Threshold Filter (&amp;gt;85%)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="70" width="180" x="780" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;3.5&lt;br&gt;Consecutive Frame&lt;br&gt;Debounce &amp;amp; Commit&lt;/font&gt;" vertex="1">
+          <mxGeometry height="70" width="180" x="1030" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="10" edge="1" parent="1" source="4" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="5" value="Feature Vectors">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="11" edge="1" parent="1" source="5" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="6" value="Single Vector (534) [Static Mode]">
+          <mxGeometry relative="1" x="-0.9829" y="26" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="420" y="150" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="12" edge="1" parent="1" source="5" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="7" value="Sequence Matrix (30, 534) [Dynamic Mode]">
+          <mxGeometry relative="1" x="0.4882" y="-11" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="13" edge="1" parent="1" source="6" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="8" value="Raw Softmax Probs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="14" edge="1" parent="1" source="7" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="8" value="Raw Softmax Probs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="15" edge="1" parent="1" source="8" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="9" value="High-Confidence Label">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="16" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=13;fontStyle=1;strokeColor=#333333;strokeWidth=1.5;fillColor=#FDFDFD;verticalAlign=top;align=left;spacingLeft=10;spacingTop=5;" value="DECOMPOSITION OF PROCESS 4.0 &amp; 5.0: NLP SYNTHESIS &amp; GOOGLE TRANSLATION PIPELINE" vertex="1">
+          <mxGeometry height="420" width="1180" x="50" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="17" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;4.1&lt;br&gt;Gloss Buffer Tokenizer&lt;br&gt;&amp;amp; Character Compounding&lt;/font&gt;" vertex="1">
+          <mxGeometry height="70" width="190" x="100" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="18" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;4.2&lt;br&gt;ISL Grammar Syntax&lt;br&gt;Restructuring Engine&lt;/font&gt;" vertex="1">
+          <mxGeometry height="70" width="190" x="360" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="19" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;4.3&lt;br&gt;Natural English&lt;br&gt;Sentence Synthesizer&lt;/font&gt;" vertex="1">
+          <mxGeometry height="70" width="190" x="620" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="20" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fillColor=#F8F9FA;align=center;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;5.1&lt;br&gt;Google API Request&lt;br&gt;Formatter &amp;amp; Auth Header&lt;/font&gt;" vertex="1">
+          <mxGeometry height="70" width="190" x="880" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="21" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=2;fillColor=#FFFFFF;align=center;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;GOOGLE CLOUD&lt;br&gt;TRANSLATE NMT&lt;/font&gt;" vertex="1">
+          <mxGeometry height="60" width="130" x="1090" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="22" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;5.2&lt;br&gt;Multi-Language JSON&lt;br&gt;Response Parser&lt;/font&gt;" vertex="1">
+          <mxGeometry height="65" width="170" x="820" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="23" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=12;fontStyle=1;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;align=center;arcSize=15;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;5.3&lt;br&gt;Regional TTS Audio&lt;br&gt;&amp;amp; Subtitle Dispatcher&lt;/font&gt;" vertex="1">
+          <mxGeometry height="65" width="190" x="460" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="24" edge="1" parent="1" source="9" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="17" value="Committed Sign Gloss Stream">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="25" edge="1" parent="1" source="17" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="18" value="Tokenized Word Sequence">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="26" edge="1" parent="1" source="18" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="19" value="Reordered SVO Structure">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="27" edge="1" parent="1" source="19" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="20" value="Fluent English String">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="28" edge="1" parent="1" source="20" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="21" value="HTTPS POST (Payload + API Key)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="29" edge="1" parent="1" source="21" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="22" value="Translated JSON String">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="30" edge="1" parent="1" source="22" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;rounded=0;" target="23" value="Localized Native Text">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
