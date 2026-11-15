@@ -32,6 +32,8 @@ export default function CameraStudio({
   onToggleLandmarks,
   onToggleHudOverlay,
 }) {
+  const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+
   return (
     <div className="camera-studio-container">
       {/* Studio Header Bar */}
@@ -45,20 +47,21 @@ export default function CameraStudio({
               type="button"
               className={`source-segment-btn ${cameraSource === 'native' ? 'active' : ''}`}
               onClick={() => onChangeCameraSource && onChangeCameraSource('native')}
-              title="Google MediaPipe Holistic directly on local webcam (Maximum 99% accuracy & authentic visuals)"
+              title="Direct hardware camera via local Python server (Best for localhost)"
             >
               <Cpu size={12} className="source-btn-icon" />
               <span>Direct MediaPipe</span>
-              <span className="source-tag-recommended">PRO</span>
+              <span className="source-tag-recommended">{isLocal ? 'LOCAL' : 'OFFLINE'}</span>
             </button>
             <button
               type="button"
               className={`source-segment-btn ${cameraSource === 'browser' ? 'active' : ''}`}
               onClick={() => onChangeCameraSource && onChangeCameraSource('browser')}
-              title="Browser WebRTC camera"
+              title="Browser WebRTC camera (Required for cloud website access)"
             >
               <Globe size={12} className="source-btn-icon" />
               <span>Browser WebRTC</span>
+              <span className="source-tag-recommended">CLOUD</span>
             </button>
           </div>
 
@@ -92,6 +95,19 @@ export default function CameraStudio({
           )}
         </div>
       </div>
+
+      {!isLocal && cameraSource === 'native' && (
+        <div style={{ background: 'rgba(234, 179, 8, 0.15)', border: '1px solid #eab308', borderRadius: '8px', padding: '10px 14px', fontSize: '13px', color: '#fef08a', margin: '0 16px 12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}>
+          <span>⚠️ <strong>Cloud Server Notice:</strong> Direct MediaPipe accesses the host computer's USB camera (when running locally). On the cloud website, please click <strong>Browser WebRTC</strong> to use your laptop or phone camera!</span>
+          <button 
+            type="button" 
+            onClick={() => onChangeCameraSource && onChangeCameraSource('browser')}
+            style={{ background: '#eab308', color: '#000', border: 'none', borderRadius: '6px', padding: '6px 12px', fontWeight: 'bold', cursor: 'pointer', whiteSpace: 'nowrap' }}
+          >
+            Switch to Browser WebRTC
+          </button>
+        </div>
+      )}
 
       {/* Main Viewport */}
       <div className="camera-viewport-frame">

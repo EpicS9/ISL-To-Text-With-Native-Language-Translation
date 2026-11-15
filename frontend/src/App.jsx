@@ -23,7 +23,12 @@ export default function App() {
 
   // Studio & Model States
   const [studioTab, setStudioTab] = useState('camera'); // 'camera' | 'photo'
-  const [cameraSource, setCameraSource] = useState(() => localStorage.getItem('isl_camera_source') || 'native');
+  const [cameraSource, setCameraSource] = useState(() => {
+    const saved = localStorage.getItem('isl_camera_source');
+    if (saved) return saved;
+    const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    return isLocal ? 'native' : 'browser';
+  });
   const [availableCameras, setAvailableCameras] = useState([]);
   const [selectedCameraIndex, setSelectedCameraIndex] = useState(() => {
     const saved = localStorage.getItem('isl_camera_index');
