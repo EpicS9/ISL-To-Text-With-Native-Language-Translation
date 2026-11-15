@@ -23,18 +23,8 @@ export default function App() {
 
   // Studio & Model States
   const [studioTab, setStudioTab] = useState('camera'); // 'camera' | 'photo'
-  const [cameraSource, setCameraSource] = useState(() => {
-    const saved = localStorage.getItem('isl_camera_source');
-    if (saved) return saved;
-    const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-    return isLocal ? 'native' : 'browser';
-  });
   const [availableCameras, setAvailableCameras] = useState([]);
-  const [selectedCameraIndex, setSelectedCameraIndex] = useState(() => {
-    const saved = localStorage.getItem('isl_camera_index');
-    return saved !== null ? Number(saved) : 0;
-  });
-  const [streamKey, setStreamKey] = useState(Date.now());
+  const [selectedCameraId, setSelectedCameraId] = useState(() => localStorage.getItem('isl_selected_camera_id') || '');
   const [activeMode, setActiveMode] = useState('STATIC'); // 'STATIC' | 'DYNAMIC'
   const [threshold, setThreshold] = useState(0.80); // 80% confidence required to guarantee symbol accuracy
   const [debounceHold, setDebounceHold] = useState(0.80); // 0.80s deliberate hold time gap before committing
@@ -143,31 +133,36 @@ export default function App() {
       .catch(err => console.error('Could not fetch models info:', err));
   }, [customBackendUrl]);
 
-  // 3. Fetch Available Cameras (e.g. USB Webcams, Iriun Webcam)
+  // 3. Detect Connected Cameras on the System
+  const detectCameras = async () => {
+    try {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) return;
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const videoDevices = devices.filter(d => d.kind === 'videoinput');
+      const formatted = videoDevices.map((d, idx) => ({
+        id: d.deviceId,
+        name: d.label || `Camera ${idx + 1}` + (d.deviceId ? ` (${d.deviceId.slice(0, 5)})` : ''),
+        is_iriun: (d.label || '').toLowerCase().includes('iriun')
+      }));
+      if (formatted.length > 0) {
+        setAvailableCameras(formatted);
+        setSelectedCameraId((prev) => {
+          if (prev && formatted.some(c => c.id === prev)) return prev;
+          return formatted[0].id;
+        });
+      }
+    } catch (err) {
+      console.warn('Could not enumerate cameras:', err);
+    }
+  };
+
   useEffect(() => {
-    fetch(getApiUrl('/api/camera/devices'))
-      .then(res => res.json())
-      .then(data => {
-        if (data.cameras && data.cameras.length > 0) {
-          setAvailableCameras(data.cameras);
-          const saved = localStorage.getItem('isl_camera_index');
-          if (saved !== null) {
-            const numSaved = Number(saved);
-            const exists = data.cameras.some(c => c.index === numSaved);
-            if (exists) {
-              setSelectedCameraIndex(numSaved);
-              return;
-            }
-          }
-          // Prioritize physical hardware webcam over virtual/Iriun webcams
-          const physicalCam = data.cameras.find(c => !c.is_iriun);
-          const defaultIdx = physicalCam ? physicalCam.index : data.cameras[0].index;
-          setSelectedCameraIndex(defaultIdx);
-          localStorage.setItem('isl_camera_index', String(defaultIdx));
-        }
-      })
-      .catch(err => console.error('Could not fetch camera devices:', err));
-  }, [customBackendUrl]);
+    detectCameras();
+    if (navigator.mediaDevices && navigator.mediaDevices.addEventListener) {
+      navigator.mediaDevices.addEventListener('devicechange', detectCameras);
+      return () => navigator.mediaDevices.removeEventListener('devicechange', detectCameras);
+    }
+  }, []);
 
   // 4. Global Keyboard Shortcuts matching realtime_isl_translator_v3.py BAT file exactly:
   // [TAB] or [M]: Toggle Mode (STATIC <-> DYNAMIC)
@@ -269,9 +264,12 @@ export default function App() {
             if (data.fps !== undefined) setFps(data.fps);
           }
 
-          // Draw skeletal landmark overlay on overlay canvas (browser fallback mode)
-          if (showLandmarks && data.landmarks && canvasRef.current && videoRef.current) {
+          // Draw skeletal landmark overlay on overlay canvas
+          if (showLandmarks && data.landmarks && canvasRef.current) {
             drawLandmarks(data.landmarks, canvasRef.current);
+          } else if (canvasRef.current) {
+            const ctx = canvasRef.current.getContext('2d');
+            ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
           }
         } catch (e) {
           console.error('Error parsing WS message:', e);
@@ -294,24 +292,12 @@ export default function App() {
     };
   }, []);
 
-  // Sync mode & config to WebSocket and Native Camera whenever changed
+  // Sync mode & config to WebSocket whenever changed
   useEffect(() => {
     if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
       wsRef.current.send(jsonConfig(activeMode, threshold, debounceHold, showHudOverlay));
     }
-    if (cameraSource === 'native') {
-      fetch(getApiUrl('/api/camera/config'), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          mode: activeMode,
-          threshold: threshold,
-          debounce_hold: debounceHold,
-          draw_hud_overlay: showHudOverlay
-        })
-      }).catch(() => {});
-    }
-  }, [activeMode, threshold, debounceHold, showHudOverlay, cameraSource]);
+  }, [activeMode, threshold, debounceHold, showHudOverlay]);
 
   const jsonConfig = (m, th, dh, hud) => JSON.stringify({
     type: 'config',
@@ -321,8 +307,15 @@ export default function App() {
     draw_hud_overlay: hud
   });
 
-  // 5. Authentic Google MediaPipe Landmark Styling on Canvas (Browser Fallback Mode)
+  // 5. Authentic Google MediaPipe Landmark Styling on Canvas
   const drawLandmarks = (landmarks, canvas) => {
+    if (!canvas) return;
+    if (videoRef.current && videoRef.current.videoWidth > 0) {
+      if (canvas.width !== videoRef.current.videoWidth || canvas.height !== videoRef.current.videoHeight) {
+        canvas.width = videoRef.current.videoWidth;
+        canvas.height = videoRef.current.videoHeight;
+      }
+    }
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -339,12 +332,12 @@ export default function App() {
       };
 
       const segments = [
-        { indices: [[0,1],[1,2],[2,3],[3,4]], color: FINGER_COLORS.thumb },
-        { indices: [[0,5],[5,6],[6,7],[7,8]], color: FINGER_COLORS.index },
-        { indices: [[5,9],[9,10],[10,11],[11,12]], color: FINGER_COLORS.middle },
-        { indices: [[9,13],[13,14],[14,15],[15,16]], color: FINGER_COLORS.ring },
-        { indices: [[13,17],[17,18],[18,19],[19,20]], color: FINGER_COLORS.pinky },
-        { indices: [[0,17]], color: FINGER_COLORS.palm }
+        { indices: [[0, 1], [1, 2], [2, 3], [3, 4]], color: FINGER_COLORS.thumb },
+        { indices: [[0, 5], [5, 6], [6, 7], [7, 8]], color: FINGER_COLORS.index },
+        { indices: [[5, 9], [9, 10], [10, 11], [11, 12]], color: FINGER_COLORS.middle },
+        { indices: [[9, 13], [13, 14], [14, 15], [15, 16]], color: FINGER_COLORS.ring },
+        { indices: [[13, 17], [17, 18], [18, 19], [19, 20]], color: FINGER_COLORS.pinky },
+        { indices: [[0, 17]], color: FINGER_COLORS.palm }
       ];
 
       // Draw bone connections
@@ -415,158 +408,105 @@ export default function App() {
     drawPose(landmarks.pose);
   };
 
-  // 6. Camera Lifecycle & Source Management
-  const handleCameraSourceChange = async (newSource) => {
-    if (newSource === cameraSource) return;
+  // 6. Camera Lifecycle & Device Management
+  const handleSelectCameraId = async (newId) => {
+    setSelectedCameraId(newId);
+    localStorage.setItem('isl_selected_camera_id', newId);
     if (isCameraActive) {
       await stopActiveCamera();
-    }
-    setCameraSource(newSource);
-    localStorage.setItem('isl_camera_source', newSource);
-  };
-
-  const handleSelectCameraIndex = async (index) => {
-    setSelectedCameraIndex(index);
-    localStorage.setItem('isl_camera_index', String(index));
-    if (cameraSource === 'native' && isCameraActive) {
-      try {
-        await fetch(getApiUrl('/api/camera/config'), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ camera_index: index })
-        });
-        setStreamKey(Date.now());
-      } catch (e) {
-        console.error('Error switching camera index:', e);
-      }
+      await startCamera(newId);
     }
   };
 
   const toggleMirror = () => {
-    setIsMirror(prev => {
-      const next = !prev;
-      if (cameraSource === 'native') {
-        fetch(getApiUrl('/api/camera/config'), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ mirror: next })
-        }).catch(() => {});
-      }
-      return next;
-    });
+    setIsMirror(prev => !prev);
   };
 
   const toggleLandmarks = () => {
     setShowLandmarks(prev => {
       const next = !prev;
-      if (cameraSource === 'native') {
-        fetch(getApiUrl('/api/camera/config'), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ draw_landmarks: next })
-        }).catch(() => {});
-      }
-      return next;
-    });
-  };
-
-  const toggleHudOverlay = () => {
-    setShowHudOverlay(prev => {
-      const next = !prev;
-      if (cameraSource === 'native') {
-        fetch(getApiUrl('/api/camera/config'), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ draw_hud_overlay: next })
-        }).catch(() => {});
+      if (!next && canvasRef.current) {
+        const ctx = canvasRef.current.getContext('2d');
+        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
       }
       return next;
     });
   };
 
   const stopActiveCamera = async () => {
-    if (frameLoopRef.current) cancelAnimationFrame(frameLoopRef.current);
+    if (frameLoopRef.current) {
+      cancelAnimationFrame(frameLoopRef.current);
+      frameLoopRef.current = null;
+    }
     if (mediaStreamRef.current) {
       mediaStreamRef.current.getTracks().forEach(track => track.stop());
       mediaStreamRef.current = null;
     }
     if (videoRef.current) videoRef.current.srcObject = null;
-    if (cameraSource === 'native') {
-      try {
-        await fetch(getApiUrl('/api/camera/stop'), { method: 'POST' });
-      } catch (e) {
-        console.error('Error stopping native camera:', e);
-      }
+    if (canvasRef.current) {
+      const ctx = canvasRef.current.getContext('2d');
+      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     }
     setIsCameraActive(false);
     setPrediction(null);
+  };
+
+  const startCamera = async (overrideDeviceId = null) => {
+    setCameraError(null);
+    try {
+      const targetId = overrideDeviceId !== null ? overrideDeviceId : selectedCameraId;
+      let constraints = {
+        video: targetId ? {
+          deviceId: { exact: targetId },
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        } : {
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+          facingMode: 'user'
+        },
+        audio: false
+      };
+
+      let stream;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia(constraints);
+      } catch (deviceErr) {
+        console.warn('Fallback without exact deviceId:', deviceErr);
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: { width: { ideal: 1280 }, height: { ideal: 720 } },
+          audio: false
+        });
+      }
+
+      mediaStreamRef.current = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        await videoRef.current.play();
+      }
+      setIsCameraActive(true);
+
+      // Re-query cameras now that permission is active to populate real hardware device names
+      await detectCameras();
+
+      if (canvasRef.current && videoRef.current) {
+        canvasRef.current.width = videoRef.current.videoWidth || 1280;
+        canvasRef.current.height = videoRef.current.videoHeight || 720;
+      }
+
+      startFrameCaptureLoop();
+    } catch (err) {
+      console.error('Webcam access error:', err);
+      setCameraError(err.message || 'Unable to access webcam. Check browser permissions.');
+      setIsCameraActive(false);
+    }
   };
 
   const toggleCamera = async () => {
     if (isCameraActive) {
       await stopActiveCamera();
     } else {
-      setCameraError(null);
-      if (cameraSource === 'native') {
-        // Direct Native Camera Engine (OpenCV + MediaPipe Holistic in Python)
-        try {
-          const res = await fetch(getApiUrl('/api/camera/start'), {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              camera_index: selectedCameraIndex,
-              mirror: isMirror,
-              draw_landmarks: showLandmarks,
-              draw_hud_overlay: showHudOverlay,
-              mode: activeMode,
-              threshold: threshold,
-              debounce_hold: debounceHold
-            })
-          });
-          const data = await res.json();
-          if (data.status === 'started' || data.is_running) {
-            setIsCameraActive(true);
-            setStreamKey(Date.now());
-          } else {
-            setCameraError('Unable to open native webcam. Please verify your camera device is plugged in and not in use by another program.');
-            setIsCameraActive(false);
-          }
-        } catch (err) {
-          console.error('Failed to start native camera:', err);
-          setCameraError('Could not reach backend camera API: ' + err.message);
-          setIsCameraActive(false);
-        }
-      } else {
-        // Browser WebRTC camera
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({
-            video: {
-              width: { ideal: 1280 },
-              height: { ideal: 720 },
-              facingMode: 'user'
-            },
-            audio: false
-          });
-
-          mediaStreamRef.current = stream;
-          if (videoRef.current) {
-            videoRef.current.srcObject = stream;
-            await videoRef.current.play();
-          }
-          setIsCameraActive(true);
-
-          if (canvasRef.current && videoRef.current) {
-            canvasRef.current.width = videoRef.current.videoWidth || 1280;
-            canvasRef.current.height = videoRef.current.videoHeight || 720;
-          }
-
-          startFrameCaptureLoop();
-        } catch (err) {
-          console.error('Webcam access error:', err);
-          setCameraError(err.message || 'Unable to access webcam. Check browser permissions.');
-          setIsCameraActive(false);
-        }
-      }
+      await startCamera();
     }
   };
 
@@ -781,16 +721,12 @@ export default function App() {
                 showHudOverlay={showHudOverlay}
                 cameraError={cameraError}
                 fps={fps}
-                cameraSource={cameraSource}
-                onChangeCameraSource={handleCameraSourceChange}
-                nativeStreamUrl={getApiUrl(`/api/camera/stream?t=${streamKey}`)}
                 availableCameras={availableCameras}
-                selectedCameraIndex={selectedCameraIndex}
-                onSelectCameraIndex={handleSelectCameraIndex}
+                selectedCameraId={selectedCameraId}
+                onSelectCameraId={handleSelectCameraId}
                 onToggleCamera={toggleCamera}
                 onToggleMirror={toggleMirror}
                 onToggleLandmarks={toggleLandmarks}
-                onToggleHudOverlay={toggleHudOverlay}
               />
 
               {/* Right Column: Recognition Panel */}

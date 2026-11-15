@@ -1577,10 +1577,24 @@ async def websocket_inference_endpoint(websocket: WebSocket):
                 rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
                 # Process MediaPipe
-                results = mp_holistic.process(rgb_frame)
-                has_landmarks = bool(results.left_hand_landmarks or results.right_hand_landmarks or results.pose_landmarks)
+                if mp_holistic is None:
+                    try:
+                        mp_holistic = get_mp_holistic()
+                    except Exception:
+                        pass
 
-                if not has_landmarks or not engine:
+                results = mp_holistic.process(rgb_frame) if mp_holistic else None
+                has_landmarks = bool(results and (results.left_hand_landmarks or results.right_hand_landmarks or results.pose_landmarks))
+
+                overlay_landmarks = None
+                if has_landmarks:
+                    overlay_landmarks = {
+                        "pose": [[lm.x, lm.y] for lm in results.pose_landmarks.landmark] if results.pose_landmarks else [],
+                        "left_hand": [[lm.x, lm.y] for lm in results.left_hand_landmarks.landmark] if results.left_hand_landmarks else [],
+                        "right_hand": [[lm.x, lm.y] for lm in results.right_hand_landmarks.landmark] if results.right_hand_landmarks else []
+                    }
+
+                if not has_landmarks:
                     await websocket.send_text(json.dumps({
                         "status": "no_hand",
                         "sign": None,
@@ -1595,14 +1609,29 @@ async def websocket_inference_endpoint(websocket: WebSocket):
                     }))
                     continue
 
+                if engine is None:
+                    try:
+                        engine = get_engine()
+                    except Exception:
+                        pass
+
+                if not engine:
+                    await websocket.send_text(json.dumps({
+                        "status": "warming_up",
+                        "sign": "Warming Up Models...",
+                        "confidence": 0.0,
+                        "top3": [],
+                        "mode": current_mode,
+                        "latency_ms": round((time.time() - t_infer_start) * 1000, 1),
+                        "fps": round(measured_fps, 1),
+                        "landmarks": overlay_landmarks,
+                        "committed_sign": None,
+                        "source": "browser"
+                    }))
+                    continue
+
                 raw_vec = extract_keypoints(results)
                 norm_vec, origin, scale = normalize_vector(raw_vec, w, h)
-
-                overlay_landmarks = {
-                    "pose": [[lm.x, lm.y] for lm in results.pose_landmarks.landmark] if results.pose_landmarks else [],
-                    "left_hand": [[lm.x, lm.y] for lm in results.left_hand_landmarks.landmark] if results.left_hand_landmarks else [],
-                    "right_hand": [[lm.x, lm.y] for lm in results.right_hand_landmarks.landmark] if results.right_hand_landmarks else []
-                }
 
                 # Compute browser hand stillness / motion displacement
                 browser_hand_pts = []

@@ -1,15 +1,12 @@
-import React, { useRef, useEffect } from 'react';
-import { 
-  Camera, 
-  CameraOff, 
-  FlipHorizontal, 
-  Eye, 
-  EyeOff, 
-  Info, 
+import React from 'react';
+import {
+  Camera,
+  CameraOff,
+  FlipHorizontal,
+  Eye,
+  EyeOff,
   AlertTriangle,
-  Cpu,
-  Globe,
-  Sparkles
+  Cpu
 } from 'lucide-react';
 
 export default function CameraStudio({
@@ -21,61 +18,31 @@ export default function CameraStudio({
   showHudOverlay = true,
   cameraError,
   fps,
-  cameraSource = 'native', // 'native' | 'browser'
-  onChangeCameraSource,
-  nativeStreamUrl,
   availableCameras = [],
-  selectedCameraIndex = 0,
-  onSelectCameraIndex,
+  selectedCameraId = '',
+  onSelectCameraId,
   onToggleCamera,
   onToggleMirror,
   onToggleLandmarks,
-  onToggleHudOverlay,
 }) {
-  const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-
   return (
     <div className="camera-studio-container">
       {/* Studio Header Bar */}
       <div className="studio-header">
         <div className="studio-header-title">
           <span className="section-label">LIVE CAMERA STUDIO</span>
-          
-          {/* Camera Source Switcher Pill */}
-          <div className="camera-source-segmented">
-            <button
-              type="button"
-              className={`source-segment-btn ${cameraSource === 'native' ? 'active' : ''}`}
-              onClick={() => onChangeCameraSource && onChangeCameraSource('native')}
-              title="Direct hardware camera via local Python server (Best for localhost)"
-            >
-              <Cpu size={12} className="source-btn-icon" />
-              <span>Direct MediaPipe</span>
-              <span className="source-tag-recommended">{isLocal ? 'LOCAL' : 'OFFLINE'}</span>
-            </button>
-            <button
-              type="button"
-              className={`source-segment-btn ${cameraSource === 'browser' ? 'active' : ''}`}
-              onClick={() => onChangeCameraSource && onChangeCameraSource('browser')}
-              title="Browser WebRTC camera (Required for cloud website access)"
-            >
-              <Globe size={12} className="source-btn-icon" />
-              <span>Browser WebRTC</span>
-              <span className="source-tag-recommended">CLOUD</span>
-            </button>
-          </div>
 
-          {/* Camera Hardware Device Dropdown (Iriun Webcam, USB Webcams) */}
-          {cameraSource === 'native' && availableCameras && availableCameras.length > 0 && (
+          {/* Camera Hardware Device Dropdown (Auto-detects all connected cameras) */}
+          {availableCameras && availableCameras.length > 0 && (
             <div className="camera-device-select-wrapper">
               <select
                 className="camera-device-select font-mono"
-                value={selectedCameraIndex}
-                onChange={(e) => onSelectCameraIndex && onSelectCameraIndex(Number(e.target.value))}
-                title="Select camera hardware device (e.g. Iriun Webcam or USB webcam)"
+                value={selectedCameraId}
+                onChange={(e) => onSelectCameraId && onSelectCameraId(e.target.value)}
+                title="Select camera hardware device (e.g. Integrated Camera, USB Webcam, or Iriun)"
               >
-                {availableCameras.map((cam) => (
-                  <option key={cam.index} value={cam.index}>
+                {availableCameras.map((cam, idx) => (
+                  <option key={cam.id || idx} value={cam.id}>
                     {cam.is_iriun ? '📱 ' : '📷 '}
                     {cam.name}
                   </option>
@@ -89,65 +56,40 @@ export default function CameraStudio({
           {isCameraActive && (
             <span className="live-stat-pill">
               <span className="live-pulse"></span>
-              {cameraSource === 'native' ? 'DIRECT MEDIAPIPE' : 'WEBRTC FEED'}
+              MEDIAPIPE VISION FEED
               {fps > 0 ? ` • ${fps} FPS` : ''}
             </span>
           )}
         </div>
       </div>
 
-      {!isLocal && cameraSource === 'native' && (
-        <div style={{ background: 'rgba(234, 179, 8, 0.15)', border: '1px solid #eab308', borderRadius: '8px', padding: '10px 14px', fontSize: '13px', color: '#fef08a', margin: '0 16px 12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}>
-          <span>⚠️ <strong>Cloud Server Notice:</strong> Direct MediaPipe accesses the host computer's USB camera (when running locally). On the cloud website, please click <strong>Browser WebRTC</strong> to use your laptop or phone camera!</span>
-          <button 
-            type="button" 
-            onClick={() => onChangeCameraSource && onChangeCameraSource('browser')}
-            style={{ background: '#eab308', color: '#000', border: 'none', borderRadius: '6px', padding: '6px 12px', fontWeight: 'bold', cursor: 'pointer', whiteSpace: 'nowrap' }}
-          >
-            Switch to Browser WebRTC
-          </button>
-        </div>
-      )}
-
       {/* Main Viewport */}
       <div className="camera-viewport-frame">
-        {/* 1. Direct Native MediaPipe Stream (Recommended: High-Precision OpenCV + MediaPipe) */}
-        {cameraSource === 'native' && isCameraActive && nativeStreamUrl && (
-          <img
-            key={nativeStreamUrl}
-            src={nativeStreamUrl}
-            alt="Google MediaPipe Holistic Live Feed"
-            className={`camera-video-element ${isMirror ? 'mirrored' : ''}`}
-            crossOrigin="anonymous"
-          />
-        )}
-
-        {/* 2. Browser WebRTC Video Source (Fallback) */}
+        {/* Video Element for Webcam Feed */}
         <video
           ref={videoRef}
           autoPlay
           playsInline
           muted
           className={`camera-video-element ${isMirror ? 'mirrored' : ''}`}
-          style={{ display: (cameraSource === 'browser' && isCameraActive) ? 'block' : 'none' }}
+          style={{ display: isCameraActive ? 'block' : 'none', zIndex: 1 }}
         />
 
-        {/* Overlay Canvas for Skeletal Landmarks in Browser Mode */}
+        {/* Overlay Canvas for Skeletal Landmarks */}
         <canvas
           ref={canvasRef}
           className={`camera-canvas-overlay ${isMirror ? 'mirrored' : ''}`}
-          style={{ display: (cameraSource === 'browser' && isCameraActive && showLandmarks) ? 'block' : 'none' }}
+          style={{
+            display: (isCameraActive && showLandmarks) ? 'block' : 'none',
+            zIndex: 10
+          }}
         />
 
         {/* Positioning Guide Outline */}
         {isCameraActive && (
-          <div className="camera-positioning-guide">
+          <div className="camera-positioning-guide" style={{ zIndex: 12 }}>
             <div className="guide-box">
-              <span className="guide-hint">
-                {cameraSource === 'native' 
-                  ? '✨ Native MediaPipe Holistic V3 Stream • DirectShow 720p HD' 
-                  : 'Align upper body & hands within frame'}
-              </span>
+              <span className="guide-hint">Align upper body & hands within frame</span>
             </div>
           </div>
         )}
@@ -169,16 +111,12 @@ export default function CameraStudio({
                 <div className="standby-icon-circle">
                   <Camera size={32} />
                 </div>
-                <h4 className="standby-title font-display">
-                  {cameraSource === 'native' ? 'Direct MediaPipe Studio Standby' : 'Browser Camera Inactive'}
-                </h4>
+                <h4 className="standby-title font-display">Direct MediaPipe Studio Standby</h4>
                 <p className="standby-desc">
-                  {cameraSource === 'native'
-                    ? 'Captures directly from your webcam with Google MediaPipe Holistic in Python (1280x720 @ 30 FPS) with compiled V3 models.'
-                    : 'Start the browser camera to begin real-time Indian Sign Language detection and translation.'}
+                  Start your webcam to begin real-time MediaPipe skeletal tracking, hand landmark detection, and ISL translation.
                 </p>
                 <button onClick={onToggleCamera} className="primary-btn start-camera-btn">
-                  <Camera size={16} /> {cameraSource === 'native' ? 'Start Direct MediaPipe Feed' : 'Start Browser Webcam'}
+                  <Camera size={16} /> Start MediaPipe Camera
                 </button>
               </div>
             )}
@@ -225,18 +163,6 @@ export default function CameraStudio({
             {showLandmarks ? <Eye size={15} /> : <EyeOff size={15} />}
             <span className="btn-label-text">Skeletons</span>
           </button>
-
-          {cameraSource === 'native' && (
-            <button
-              onClick={onToggleHudOverlay}
-              className={`control-icon-btn ${showHudOverlay ? 'active' : ''}`}
-              title="Toggle authentic V3 Engine HUD overlay (Top banner, hold commit bar, candidates, translation ribbon)"
-              disabled={!isCameraActive}
-            >
-              <Sparkles size={15} />
-              <span className="btn-label-text">V3 HUD</span>
-            </button>
-          )}
         </div>
       </div>
 
@@ -258,10 +184,8 @@ export default function CameraStudio({
         <span><strong style={{ color: '#ffb74d' }}>[2]</strong> Dynamic</span>
         <span><strong style={{ color: '#ffd54f' }}>[SPACE]</strong> Add Sign</span>
         <span><strong style={{ color: '#ef5350' }}>[C]</strong> Clear</span>
-        <span><strong style={{ color: '#ab47bc' }}>[BKSP]</strong> Delete</span>
-        <span><strong style={{ color: '#4fc3f7' }}>[H]</strong> Skeletons</span>
+        <span><strong style={{ color: '#ab47bc' }}>[H]</strong> Toggle Mesh</span>
       </div>
     </div>
   );
 }
-
