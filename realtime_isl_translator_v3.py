@@ -161,8 +161,15 @@ def normalize_vector(vec, frame_width, frame_height):
 # =====================================================================
 class DecoupledISLEngineV3:
     def __init__(self, models_dir="models_v3"):
-        if not os.path.isdir(models_dir):
-            models_dir = "models"
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        if not os.path.isabs(models_dir):
+            candidate = os.path.join(base_dir, models_dir)
+            if os.path.isdir(candidate):
+                models_dir = candidate
+            elif os.path.isdir(os.path.join(base_dir, "models")):
+                models_dir = os.path.join(base_dir, "models")
+        elif not os.path.isdir(models_dir):
+            models_dir = os.path.join(base_dir, "models")
         self.models_dir = models_dir
 
         print(f"[ENGINE V3] Initializing dual models from {self.models_dir}...")

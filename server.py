@@ -726,37 +726,59 @@ LINGUISTIC_LEXICON = {
 }
 
 
+startup_error = None
+
 def get_engine():
-    global engine
+    global engine, startup_error
     if engine is None:
-        models_dir = "models_v3" if os.path.exists("models_v3") else "models"
-        engine = DecoupledISLEngineV3(models_dir=models_dir)
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        models_dir = os.path.join(base_dir, "models_v3")
+        if not os.path.isdir(models_dir):
+            models_dir = os.path.join(base_dir, "models")
+        try:
+            engine = DecoupledISLEngineV3(models_dir=models_dir)
+        except Exception as e:
+            import traceback
+            startup_error = traceback.format_exc()
+            print(f"[ERROR] Failed to load DecoupledISLEngineV3: {e}\n{startup_error}")
+            raise
     return engine
+
+def get_mp_holistic():
+    global mp_holistic, startup_error
+    if mp_holistic is None:
+        try:
+            mp_holistic = mp.solutions.holistic.Holistic(
+                static_image_mode=False,
+                model_complexity=0,
+                smooth_landmarks=True,
+                enable_segmentation=False,
+                refine_face_landmarks=False,
+                min_detection_confidence=0.5,
+                min_tracking_confidence=0.5,
+            )
+        except Exception as e:
+            import traceback
+            startup_error = traceback.format_exc()
+            print(f"[ERROR] Failed to initialize MediaPipe: {e}\n{startup_error}")
+            raise
+    return mp_holistic
 
 @app.on_event("startup")
 def load_models_on_startup():
     """Initializes MediaPipe Holistic and DecoupledISLEngineV3."""
-    global mp_holistic
     print("\n[STARTUP] Initializing ISL Translation Studio Server...")
     try:
         get_engine()
         print("[STARTUP] V3 Dual-Model Engine Loaded Successfully!")
     except Exception as e:
-        print(f"[ERROR] Failed to load DecoupledISLEngineV3: {e}")
+        print(f"[ERROR] Engine startup failed: {e}")
 
     try:
-        mp_holistic = mp.solutions.holistic.Holistic(
-            static_image_mode=False,
-            model_complexity=0,
-            smooth_landmarks=True,
-            enable_segmentation=False,
-            refine_face_landmarks=False,
-            min_detection_confidence=0.5,
-            min_tracking_confidence=0.5,
-        )
+        get_mp_holistic()
         print("[STARTUP] MediaPipe Holistic Model Initialized Successfully!\n")
     except Exception as e:
-        print(f"[ERROR] Failed to initialize MediaPipe: {e}")
+        print(f"[ERROR] MediaPipe startup failed: {e}")
 
 
 # =============================================================================
@@ -767,10 +789,24 @@ def load_models_on_startup():
 @app.get("/healthz")
 def health_check():
     """Real health check verifying backend status and model readiness."""
+    global engine, mp_holistic
+    # Attempt lazy recovery if not loaded yet
+    if engine is None:
+        try:
+            get_engine()
+        except Exception:
+            pass
+    if mp_holistic is None:
+        try:
+            get_mp_holistic()
+        except Exception:
+            pass
+
     models_ready = engine is not None and mp_holistic is not None
     return {
         "status": "healthy" if models_ready else "degraded",
         "models_ready": models_ready,
+        "error": startup_error if not models_ready else None,
         "version": "3.0.0",
         "static_classes_count": len(engine.static_classes) if engine else 0,
         "dynamic_classes_count": len(engine.dynamic_classes) if engine else 0,
@@ -782,14 +818,16 @@ def health_check():
 @app.get("/api/models/info")
 def get_models_info():
     """Returns technical details of the V3 models."""
-    if not engine:
-        raise HTTPException(status_code=503, detail="Model engine not loaded.")
+    try:
+        curr_engine = get_engine()
+    except Exception as e:
+        raise HTTPException(status_code=503, detail=f"Model engine loading failed: {e}")
     return {
         "version": "3.0.0",
         "architecture": "Decoupled Dual-Model (Static Residual MLP + Dynamic BiLSTM-Attention)",
         "modes": ["STATIC", "DYNAMIC"],
-        "static_classes": engine.static_classes.tolist(),
-        "dynamic_classes": engine.dynamic_classes.tolist(),
+        "static_classes": curr_engine.static_classes.tolist(),
+        "dynamic_classes": curr_engine.dynamic_classes.tolist(),
         "sequence_length": SEQUENCE_LENGTH,
         "feature_dim": FEATURE_DIM,
         "thresholds": {
