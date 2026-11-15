@@ -26,5 +26,5 @@ COPY --chown=user . .
 # Hugging Face Spaces default port
 EXPOSE 7860
 
-# Run FastAPI production server
-CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "7860"]
+# Run FastAPI production server (dynamically adapts to $PORT)
+CMD ["python", "server.py"]
