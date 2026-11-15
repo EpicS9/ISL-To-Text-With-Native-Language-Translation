@@ -1,0 +1,16 @@
+.git
+.git_old_backup
+data/
+data_v1/
+isl_env/
+.venv/
+venv/
+frontend/node_modules/
+frontend/.vercel/
+__pycache__/
+*.pyc
+Output Images/
+*.bat
+test_portable/
+ISL_Translation_Studio/
+*.zip
