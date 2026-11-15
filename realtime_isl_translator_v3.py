@@ -194,24 +194,78 @@ class DecoupledISLEngineV3:
 
     def _load_static_model(self):
         keras_path = os.path.join(self.models_dir, "isl_static_model_final.keras")
+        num_classes = len(self.static_classes)
+
+        inp = layers.Input(shape=(FEATURE_DIM,), name="keypoints")
+        x = layers.Dense(960, name="stem")(inp)
+        x = layers.BatchNormalization(name="batch_normalization_11")(x)
+        x = layers.Activation("gelu", name="activation_22")(x)
+        drop14 = layers.Dropout(0.2, name="dropout_14")(x)
+
+        # Block 1
+        d31 = layers.Dense(128, name="dense_31")(drop14)
+        bn12 = layers.BatchNormalization(name="batch_normalization_12")(d31)
+        act23 = layers.Activation("gelu", name="activation_23")(bn12)
+        dr15 = layers.Dropout(0.5, name="dropout_15")(act23)
+        d32 = layers.Dense(128, name="dense_32")(dr15)
+        bn13 = layers.BatchNormalization(name="batch_normalization_13")(d32)
+        d33 = layers.Dense(128, use_bias=False, name="dense_33")(drop14)
+        add10 = layers.Add(name="add_10")([bn13, d33])
+        act24 = layers.Activation("gelu", name="activation_24")(add10)
+
+        # Block 2
+        d34 = layers.Dense(448, name="dense_34")(act24)
+        bn14 = layers.BatchNormalization(name="batch_normalization_14")(d34)
+        act25 = layers.Activation("gelu", name="activation_25")(bn14)
+        dr16 = layers.Dropout(0.35, name="dropout_16")(act25)
+        d35 = layers.Dense(448, name="dense_35")(dr16)
+        bn15 = layers.BatchNormalization(name="batch_normalization_15")(d35)
+        d36 = layers.Dense(448, use_bias=False, name="dense_36")(act24)
+        add11 = layers.Add(name="add_11")([bn15, d36])
+        act26 = layers.Activation("gelu", name="activation_26")(add11)
+
+        # Block 3
+        d37 = layers.Dense(768, name="dense_37")(act26)
+        bn16 = layers.BatchNormalization(name="batch_normalization_16")(d37)
+        act27 = layers.Activation("gelu", name="activation_27")(bn16)
+        dr17 = layers.Dropout(0.5, name="dropout_17")(act27)
+        d38 = layers.Dense(768, name="dense_38")(dr17)
+        bn17 = layers.BatchNormalization(name="batch_normalization_17")(d38)
+        d39 = layers.Dense(768, use_bias=False, name="dense_39")(act26)
+        add12 = layers.Add(name="add_12")([bn17, d39])
+        act28 = layers.Activation("gelu", name="activation_28")(add12)
+
+        # Block 4
+        d40 = layers.Dense(384, name="dense_40")(act28)
+        bn18 = layers.BatchNormalization(name="batch_normalization_18")(d40)
+        act29 = layers.Activation("gelu", name="activation_29")(bn18)
+        dr18 = layers.Dropout(0.4, name="dropout_18")(act29)
+        d41 = layers.Dense(384, name="dense_41")(dr18)
+        bn19 = layers.BatchNormalization(name="batch_normalization_19")(d41)
+        d42 = layers.Dense(384, use_bias=False, name="dense_42")(act28)
+        add13 = layers.Add(name="add_13")([bn19, d42])
+        act30 = layers.Activation("gelu", name="activation_30")(add13)
+
+        # Block 5
+        d43 = layers.Dense(448, name="dense_43")(act30)
+        bn20 = layers.BatchNormalization(name="batch_normalization_20")(d43)
+        act31 = layers.Activation("gelu", name="activation_31")(bn20)
+        dr19 = layers.Dropout(0.3, name="dropout_19")(act31)
+        d44 = layers.Dense(448, name="dense_44")(dr19)
+        bn21 = layers.BatchNormalization(name="batch_normalization_21")(d44)
+        d45 = layers.Dense(448, use_bias=False, name="dense_45")(act30)
+        add14 = layers.Add(name="add_14")([bn21, d45])
+        act32 = layers.Activation("gelu", name="activation_32")(add14)
+
+        # Head
+        d46 = layers.Dense(128, activation="gelu", name="dense_46")(act32)
+        dr20 = layers.Dropout(0.2, name="dropout_20")(d46)
+        out = layers.Dense(num_classes, activation="softmax", name="predictions")(dr20)
+
+        model = keras.Model(inp, out, name="Static_Residual_MLP")
+
         with zipfile.ZipFile(keras_path) as z:
-            cfg = json.loads(z.read("config.json"))
             w_bytes = z.read("model.weights.h5")
-
-        def clean_dict(d):
-            if isinstance(d, dict):
-                d.pop("quantization_config", None)
-                d.pop("optional", None)
-                if "batch_shape" in d:
-                    d["batch_input_shape"] = d.pop("batch_shape")
-                for v in d.values():
-                    clean_dict(v)
-            elif isinstance(d, list):
-                for item in d:
-                    clean_dict(item)
-
-        clean_dict(cfg)
-        model = keras.models.model_from_json(json.dumps(cfg))
 
         with tempfile.NamedTemporaryFile(suffix=".weights.h5", delete=False) as tmp:
             tmp.write(w_bytes)
